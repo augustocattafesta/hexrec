@@ -63,7 +63,7 @@ def hxsim():
     """Application main entry point.
     """
     # !! Setting all kwargs manually raises problems with hxrecon.py
-    num_events = 100
+    num_events = 100000
     noise = 0
     gain = 1
     output_file_path = '/home/augusto/hexrecdata/sim_line.h5'
