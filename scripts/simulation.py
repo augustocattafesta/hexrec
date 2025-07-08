@@ -67,14 +67,12 @@ def hxsim():
     noise = 0
     gain = 1
     output_file_path = '/home/augusto/hexrecdata/sim_line.h5'
-    # pylint: disable=too-many-locals, invalid-name
-    rng.initialize(seed=None)#kwargs['seed'])
-    # spectrum = LineForest('Cu', 'K')#, kwargs['srclevel']) # Inserire riga monocromatica 
+    rng.initialize(seed=None)
     spectrum = Line(6000)
-    beam = GaussianBeam(0, 0, 0.1)#, kwargs['srcposx'], kwargs['srcposy'], kwargs['srcsigma'])   # Definire esagono
+    beam = GaussianBeam(0, 0, 0.1)
     source = Source(spectrum, beam)
-    material = Material('Si', 0.116)#kwargs['actmedium'], kwargs['fano'])
-    sensor = Sensor(material, 0.03, 40.0)#kwargs['thickness'], kwargs['transdiffsigma'])
+    material = Material('Si', 0.116)
+    sensor = Sensor(material, 0.03, 40.0)
     photon_list = PhotonList(source, sensor, num_events)
     readout_mode = HexagonalReadoutMode.CIRCULAR
     readout_args = 500, 0, 0
@@ -93,7 +91,7 @@ def hxsim():
     kwargs['pitch'] = 0.005
     kwargs['noise'] = noise
     kwargs['gain'] = gain
-    # IT WORKS !!
+
 
     output_file.update_header(**kwargs)
     logger.info('Starting the event loop...')
@@ -110,4 +108,3 @@ def hxsim():
 
 if __name__ == '__main__':
     hxsim()
-    # hxsim(**vars(HXSIM_ARGPARSER.parse_args()))
