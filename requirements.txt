@@ -1,0 +1,11 @@
+loguru
+matplotlib
+nist-calculators
+numpy
+pydata-sphinx-theme
+scipy
+tables
+tqdm
+uncertainties
+xraydb
+hexsample
