@@ -2,7 +2,6 @@
 """
 
 import argparse
-import numpy as np
 
 from loguru import logger
 from tqdm import tqdm
@@ -12,16 +11,16 @@ from hexsample.readout import HexagonalReadoutMode, readout_chip
 from hexsample.fileio import digioutput_class
 from hexsample.hexagon import HexagonalLayout
 from hexsample.mc import PhotonList
-from hexsample.source import GaussianBeam, Source, SpectrumBase
+from hexsample.source import GaussianBeam, Source
 from hexsample.sensor import Material, Sensor
 
 from hexrec import HEXREC_DATA
+from hexrec.source import Line
 
 __description__ = \
 """Simulate a list of digitized events from a monochromatic X-ray source.
 """
 
-# creating parser
 parser = argparse.ArgumentParser(description=__description__)
 parser.add_argument('--outfile', default='hexrec_sim.h5',
                     help='Output file name (default: hexrec_sim.h5)')
@@ -32,14 +31,6 @@ parser.add_argument('--energy', default=6000., type=float,
 parser.add_argument('--noise', default=0, type=float,
                     help='Noise charge rms [electrons] (default: 0)')
 args = parser.parse_args()
-
-# define this class elsewhere
-class Line(SpectrumBase):
-    def __init__(self, energy):
-        self.energy = energy
-
-    def rvs(self, size):
-        return np.full(size, self.energy)
 
 
 def simulate(args):
