@@ -2,8 +2,13 @@
 """
 
 import argparse
+import numpy as np
 import matplotlib.pyplot as plt
 import tables
+
+from hexsample.analysis import fit_histogram
+from hexsample.hist import Histogram1d
+from hexsample.modeling import Gaussian
 
 __description__ = \
 """Plot mc and recon position and energy distributions
@@ -23,14 +28,13 @@ def hist(args):
         recon_table = file.root.recon.recon_table.read()
         mc_table = file.root.mc.mc_table.read()
 
-    # Implement hist methods
-
-    # Recon energy distr
-    fig, ax = plt.subplots(1, 1)
-    ax.hist(recon_table['energy'], bins=bins)
-    ax.set_xlabel('Reconstructed Energy [eV]')
-    ax.set_ylabel('Occurrencies')
-    fig.suptitle('Reconstructed Energy Distribution')
+    # Recon energy distribution
+    recon_en = recon_table['energy']
+    e_binning = np.linspace(min(recon_en), max(recon_en), bins)
+    recon_en_hist = Histogram1d(e_binning, xlabel='Reconstructed Energy [eV]')
+    recon_en_hist.fill(recon_en)
+    plt.figure('Reconstructed Energy Distribution')
+    fitstatus = fit_histogram(recon_en_hist, fit_model=Gaussian, show_figure=True)
 
     # Recon position distr
     fig, axs = plt.subplots(2, 2)
