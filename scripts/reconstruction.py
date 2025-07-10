@@ -17,6 +17,12 @@ __description__ = \
 
 parser = argparse.ArgumentParser(description=__description__)
 parser.add_argument('infile', help='Input file path')
+parser.add_argument('--zsupthreshold', default=0, type=float,
+                     help='zero suppresion threshold in ADC counts (default: 0)')
+parser.add_argument('--nneighbors', default=6, type=int, 
+                    help='number of neighbors to be considered (default: 6)')
+parser.add_argument('--suffix', default='recon', type=str,
+                    help='suffix for the output file (default: recon)')
 args = parser.parse_args()
 
 def hxrecon(args):
@@ -24,9 +30,9 @@ def hxrecon(args):
     """
     input_file_path = args.infile
     kwargs = {}
-    kwargs['zsupthreshold'] = 0
-    kwargs['nneighbors'] = 6
-    kwargs['suffix'] = 'recon'
+    kwargs['zsupthreshold'] = args.zsupthreshold
+    kwargs['nneighbors'] = args.nneighbors
+    kwargs['suffix'] = args.suffix
 
     input_file = DigiInputFileCircular(input_file_path)
     header = input_file.header
