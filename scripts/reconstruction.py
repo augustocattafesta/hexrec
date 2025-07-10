@@ -25,7 +25,7 @@ def hxrecon(args):
     input_file_path = args.infile
     kwargs = {}
     kwargs['zsupthreshold'] = 0
-    kwargs['nneighbors'] = 2
+    kwargs['nneighbors'] = 6
     kwargs['suffix'] = 'recon'
 
     input_file = DigiInputFileCircular(input_file_path)
