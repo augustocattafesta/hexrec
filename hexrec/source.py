@@ -21,26 +21,26 @@ class TriangularBeam(BeamBase):
     y0 : float
         The y-coordinate of the center of the hexagon in cm.
 
-    A : np.ndarray
+    v0 : np.ndarray
         The (x, y) coordinates of the first vertex of the hexagon in cm.
 
-    B : np.ndarray
+    v1 : np.ndarray
         The (x, y) coordinates of the second vertex of the hexagon in cm.
     """
 
-    A_xy: tuple = (0, 0)
-    B_xy: tuple = (0, 0)
+    v0: tuple = (0, 0)
+    v1: tuple = (0, 0)
 
     def rvs(self, size: int = 1) -> Tuple[np.ndarray, np.ndarray]:
-        assert len(self.A_xy) == 2
-        assert len(self.B_xy) == 2
-        
-        A = np.array([[*self.A_xy]])
-        B = np.array([[*self.B_xy]])
-        C = np.array([[self.x0, self.y0]])
+        assert len(self.v0) == 2
+        assert len(self.v1) == 2
 
-        a = A - C
-        b = B - C
+        v0_array = np.array([[*self.v0]])
+        v1_array = np.array([[*self.v1]])
+        center = np.array([[self.x0, self.y0]])
+
+        a = v0_array - center
+        b = v1_array - center
 
         u = np.random.uniform(0, 1, (2, size))
 
@@ -48,7 +48,10 @@ class TriangularBeam(BeamBase):
         u[:, mask] = 1 - u[:, mask]
         w = np.dot(a.T, u[0, :, None].T) + np.dot(b.T, u[1, :, None].T)
 
-        return w[0] + C[0, 0], w[1] + C[0, 1]
+        x = w[0] + center[0, 0]
+        y = w[1] + center[0, 1]
+
+        return x, y
 
 class Line(SpectrumBase):
     """Class describing a monochromatic emission line at a given

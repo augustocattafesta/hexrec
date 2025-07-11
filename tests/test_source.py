@@ -5,12 +5,13 @@ import matplotlib.pyplot as plt
 
 from loguru import logger
 
-from hexrec.source import Line, TriangularBeam
 
 from hexsample.hist import Histogram1d, Histogram2d
 from hexsample.plot import setup_gca
-from hexsample.hexagon import HexagonalGrid, HexagonalLayout
 from hexsample.display import HexagonalGridDisplay
+
+from hexrec.source import Line, TriangularBeam
+from hexrec.hexagon import HexagonalGrid, HexagonalLayout
 
 def test_triangular_beam(num_photons = 1000000):
     """Test for TriangularBeam class
@@ -44,36 +45,28 @@ def test_triangular_beam_grid(num_photons = 100000):
     layout = HexagonalLayout('ODD_Q')
     pitch = 0.005
     grid = HexagonalGrid(layout, 10, 8, pitch)
-    x0, y0 = grid.pixel_to_world(target_col, target_row)
+    display = HexagonalGridDisplay(grid)
+    display.draw(pixel_labels=True)
+
+    a, b, c = grid.find_vertices(target_col, target_row, i=1)
+    x0, y0 = a[0], a[1]
+    beam = TriangularBeam(x0, y0, tuple(b), tuple(c))
+    x, y = beam.rvs(num_photons)
+    plt.scatter(x, y, color='red', s=0.1)
+    plt.plot(x0, y0, '+b')
+
     logger.debug(f'Grid size -> {10, 8}')
     logger.debug(f'Target hexagon -> {target_col, target_row}')
     logger.debug(f'Target hexagon center -> {x0, y0}')
-    display = HexagonalGridDisplay(grid)
-    display.draw(pixel_labels=True)
-    plt.plot(x0, y0, '+b')
-
-    # Find vertex
-    l = pitch / 2   # Not sure about this value, maybe different between layouts
-    if grid.pointy_topped():
-        A_xy = (x0 + l*np.sqrt(3)/2, y0 - l/2)
-        B_xy = (x0 + l*np.sqrt(3)/2, y0 + l/2)
-    else:
-        A_xy = (x0 + l, y0)
-        B_xy = (x0 + l/2, y0 + l*np.sqrt(3)/2)
-
-    beam = TriangularBeam(x0, y0, A_xy, B_xy)
-    x, y = beam.rvs(num_photons)
-    plt.scatter(x, y, color='red', s=0.1)
-    display.setup_gca()
-
 
     col, row = grid.world_to_pixel(x, y)
     pixel = np.array([col, row]).T
     pixel_vals = np.unique(pixel, return_counts=True, axis=0)
-
     logger.debug(f'Total number of photons: {num_photons}')
     for p_val, p_counts in zip(*pixel_vals):
         logger.debug(f'Pixel {tuple(p_val)} hit {p_counts}')
+
+    display.setup_gca()
 
 def test_line(energy = 6000, size = 100000):
     """Test for line class
