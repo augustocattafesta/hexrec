@@ -1,10 +1,57 @@
 """Extension of Source class from hexsample
 """
 
+from dataclasses import dataclass
+from typing import Tuple
+
 import numpy as np
 import matplotlib.pyplot as plt
 
-from hexsample.source import SpectrumBase
+from hexsample.source import BeamBase, SpectrumBase
+
+@dataclass
+class TriangularBeam(BeamBase):
+    """Triangular X-ray beam inside an hexagon 
+
+    Arguments
+    ---------
+    x0 : float
+        The x-coordinate of the center of the hexagon in cm.
+
+    y0 : float
+        The y-coordinate of the center of the hexagon in cm.
+
+    v0 : np.ndarray
+        The (x, y) coordinates of the first vertex of the hexagon in cm.
+
+    v1 : np.ndarray
+        The (x, y) coordinates of the second vertex of the hexagon in cm.
+    """
+
+    v0: tuple = (0, 0)
+    v1: tuple = (0, 0)
+
+    def rvs(self, size: int = 1) -> Tuple[np.ndarray, np.ndarray]:
+        assert len(self.v0) == 2
+        assert len(self.v1) == 2
+
+        v0_array = np.array([[*self.v0]])
+        v1_array = np.array([[*self.v1]])
+        center = np.array([[self.x0, self.y0]])
+
+        a = v0_array - center
+        b = v1_array - center
+
+        u = np.random.uniform(0, 1, (2, size))
+
+        mask = u[0, :] + u[1, :] > 1
+        u[:, mask] = 1 - u[:, mask]
+        w = np.dot(a.T, u[0, :, None].T) + np.dot(b.T, u[1, :, None].T)
+
+        x = w[0] + center[0, 0]
+        y = w[1] + center[0, 1]
+
+        return x, y
 
 class Line(SpectrumBase):
     """Class describing a monochromatic emission line at a given
