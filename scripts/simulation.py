@@ -9,56 +9,53 @@ from tqdm import tqdm
 from hexsample import rng
 from hexsample.readout import HexagonalReadoutMode, readout_chip
 from hexsample.fileio import digioutput_class
-from hexsample.hexagon import HexagonalLayout
 from hexsample.mc import PhotonList
 from hexsample.source import GaussianBeam, Source
 from hexsample.sensor import Material, Sensor
 
 from hexrec import HEXREC_DATA
-from hexrec.source import Line
+from hexrec.source import Line, TriangularBeam
+from hexrec.hexagon import HexagonalLayout, HexagonalGrid
+from hexrec.app import ArgumentParser
 
 __description__ = \
 """Simulate a list of digitized events from a monochromatic X-ray source.
 """
 
-parser = argparse.ArgumentParser(description=__description__)
-parser.add_argument('--outfile', default='hexrec_sim.h5',
-                    help='Output file name (default: hexrec_sim.h5)')
-parser.add_argument('--numevents', default=1000, type=int,
-                    help='Number of events to generate (default: 1000)')
-parser.add_argument('--energy', default=6000., type=float,
-                    help='Energy [eV] of the monochromatic source (default: 6000)')
-parser.add_argument('--noise', default=0, type=float,
-                    help='Noise charge rms [electrons] (default: 0)')
-args = parser.parse_args()
+PARSER = ArgumentParser(description=__description__)
+PARSER.add_numevents(1000)
+PARSER.add_outfile(HEXREC_DATA / 'sim.h5')
+PARSER.add_line_source_options()
+PARSER.add_simple_readout_options()
+# PARSER.add_sensor_options()
 
 
-def simulate(args):
+
+def simulate(**kwargs):
     """Application main entry point.
     """
-    output_file_path = HEXREC_DATA / args.outfile
-
-    # Creating kwargs to update header, otherwise hxrecon returns errors due to problems with header
-    # To be compatible with hexsample, keep all of these
-    kwargs = {}
-    kwargs['readoutmode'] = 'CIRCULAR'
-    kwargs['layout'] = 'ODD_R'
-    kwargs['numcolumns'] = 304
-    kwargs['numrows'] = 352
-    kwargs['pitch'] = 0.005
-    kwargs['noise'] = args.noise
-    kwargs['gain'] = 1
+    output_file_path = HEXREC_DATA / kwargs['outfile']
 
     rng.initialize(seed=None)
-    spectrum = Line(args.energy)
-    beam = GaussianBeam(0, 0, 0.1)
+    grid_args = HexagonalLayout(kwargs['layout']), kwargs['numcolumns'], kwargs['numrows'], kwargs['pitch']
+    
+    if kwargs['beamshape'].lower() == 'gaussian':
+        beam = GaussianBeam(kwargs['srcposx'], kwargs['srcposy'], kwargs['srcsigma'])
+    if kwargs['beamshape'] == 'triangular':
+        grid = HexagonalGrid(*grid_args)
+        target_col, target_row = grid.world_to_pixel(kwargs['srcposx'], kwargs['srcposy'])
+        center, v0, v1 = grid.find_vertices(target_col, target_row)
+        beam = TriangularBeam(*center, tuple(v0), tuple(v1))
+
+    spectrum = Line(kwargs['energy'])
     source = Source(spectrum, beam)
     material = Material('Si', 0.116)
     sensor = Sensor(material, 0.03, 40.0)
-    photon_list = PhotonList(source, sensor, args.numevents)
-    readout_mode = HexagonalReadoutMode.CIRCULAR
+    photon_list = PhotonList(source, sensor, kwargs['numevents'])
+    readout_mode = HexagonalReadoutMode(kwargs['readoutmode'])
     readout_args = 500, 0, 0
-    hxsim_args = HexagonalLayout('ODD_R'), 304, 352, 0.005, args.noise, 1
+
+    hxsim_args = *grid_args, kwargs['noise'], 1
     readout = readout_chip(readout_mode, *hxsim_args)
     logger.info(f'Readout chip: {readout}')
     output_file = digioutput_class(readout_mode)(output_file_path)
@@ -76,4 +73,4 @@ def simulate(args):
     return output_file_path
 
 if __name__ == '__main__':
-    simulate(args)
+    simulate(**vars(PARSER.parse_args()))
