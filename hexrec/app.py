@@ -36,7 +36,7 @@ class ArgumentParser(ArgumentParser):
         group = self.add_argument_group('line source', 'X-ray source properties')
         group.add_argument('--energy', type=float, default=6000.,
                            help='energy of the monochromatic source')
-        beams = ['gaussian', 'triangular']
+        beams = ['gaussian', 'triangular', 'hexagonal']
         group.add_argument('--beamshape', type=str, choices=beams, default='gaussian',
                            help='X-ray beam morphology')
         group.add_argument('--srcposx', type=float, default=0.,

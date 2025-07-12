@@ -10,7 +10,7 @@ from hexsample.hist import Histogram1d, Histogram2d
 from hexsample.plot import setup_gca
 from hexsample.display import HexagonalGridDisplay
 
-from hexrec.source import Line, TriangularBeam
+from hexrec.source import Line, TriangularBeam, HexagonalBeam
 from hexrec.hexagon import HexagonalGrid, HexagonalLayout
 
 def test_triangular_beam(num_photons = 1000000):
@@ -24,7 +24,7 @@ def test_triangular_beam(num_photons = 1000000):
     x, y = beam.rvs(num_photons)
     binning_x = np.linspace(min(x), max(x), 100)
     binning_y = np.linspace(min(y), max(y), 100)
-    plt.figure('Traingular beam')
+    plt.figure('Triangular beam')
     Histogram2d(binning_x, binning_y).fill(x, y).plot()
     setup_gca(xlabel='x [cm]', ylabel='y [cm]')
     plt.figure('Triangular beam x projection')
@@ -64,7 +64,61 @@ def test_triangular_beam_grid(num_photons = 100000):
     pixel_vals = np.unique(pixel, return_counts=True, axis=0)
     logger.debug(f'Total number of photons: {num_photons}')
     for p_val, p_counts in zip(*pixel_vals):
-        logger.debug(f'Pixel {tuple(p_val)} hit {p_counts}')
+        logger.debug(f'Pixel {tuple(p_val)} hit {p_counts} times')
+
+    display.setup_gca()
+
+def test_hexagonal_beam(num_photons = 1000000):
+    """Test for HexagonalBeam class
+
+    Args:
+        size (int, optional): _description_. Defaults to 10000.
+    """
+    beam = HexagonalBeam(0, 0, (1, 0), (.5, np.sqrt(3)/2))
+    x, y = beam.rvs(num_photons)
+    binning_x = np.linspace(min(x), max(x), 100)
+    binning_y = np.linspace(min(y), max(y), 100)
+    plt.figure('Hexagonal beam')
+    Histogram2d(binning_x, binning_y).fill(x, y).plot()
+    setup_gca(xlabel='x [cm]', ylabel='y [cm]')
+    plt.figure('Hexagonal beam x projection')
+    hx = Histogram1d(binning_x).fill(x)
+    hx.plot()
+    plt.figure('Hexagonal beam x projection')
+    hy = Histogram1d(binning_y).fill(y)
+    hy.plot()
+
+def test_hexagonal_beam_grid(num_photons = 100000):
+    """Test for TrinagularBeam on hexagonal grid
+
+    Args:
+        num_photons (int, optional): _description_. Defaults to 100000.
+    """
+    target_col = 5
+    target_row = 6
+    layout = HexagonalLayout('ODD_Q')
+    pitch = 0.005
+    grid = HexagonalGrid(layout, 10, 8, pitch)
+    display = HexagonalGridDisplay(grid)
+    display.draw(pixel_labels=True)
+
+    a, b, c = grid.find_vertices(target_col, target_row)
+    x0, y0 = a[0], a[1]
+    beam = HexagonalBeam(x0, y0, tuple(b), tuple(c))
+    x, y = beam.rvs(num_photons)
+    plt.scatter(x, y, color='red', s=0.1)
+    plt.plot(x0, y0, '+b')
+
+    logger.debug(f'Grid size -> {10, 8}')
+    logger.debug(f'Target hexagon -> {target_col, target_row}')
+    logger.debug(f'Target hexagon center -> {x0, y0}')
+
+    col, row = grid.world_to_pixel(x, y)
+    pixel = np.array([col, row]).T
+    pixel_vals = np.unique(pixel, return_counts=True, axis=0)
+    logger.debug(f'Total number of photons: {num_photons}')
+    for p_val, p_counts in zip(*pixel_vals):
+        logger.debug(f'Pixel {tuple(p_val)} hit {p_counts} times')
 
     display.setup_gca()
 
@@ -92,7 +146,9 @@ def test_line(energy = 6000, size = 100000):
 
 if __name__ == '__main__':
     # test_triangular_beam()
-    test_triangular_beam_grid()
+    # test_triangular_beam_grid()
     # test_line(energy=7000)
+    # test_hexagonal_beam()
+    test_hexagonal_beam_grid()
 
     plt.show()

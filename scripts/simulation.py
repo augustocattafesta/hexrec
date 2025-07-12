@@ -14,7 +14,7 @@ from hexsample.source import GaussianBeam, Source
 from hexsample.sensor import Material, Sensor
 
 from hexrec import HEXREC_DATA
-from hexrec.source import Line, TriangularBeam
+from hexrec.source import Line, TriangularBeam, HexagonalBeam
 from hexrec.hexagon import HexagonalLayout, HexagonalGrid
 from hexrec.app import ArgumentParser
 
@@ -46,6 +46,11 @@ def simulate(**kwargs):
         target_col, target_row = grid.world_to_pixel(kwargs['srcposx'], kwargs['srcposy'])
         center, v0, v1 = grid.find_vertices(target_col, target_row)
         beam = TriangularBeam(*center, tuple(v0), tuple(v1))
+    if kwargs['beamshape'] == 'hexagonal':
+        grid = HexagonalGrid(*grid_args)
+        target_col, target_row = grid.world_to_pixel(kwargs['srcposx'], kwargs['srcposy'])
+        center, v0, v1 = grid.find_vertices(target_col, target_row)
+        beam = HexagonalBeam(*center, tuple(v0), tuple(v1))
 
     spectrum = Line(kwargs['energy'])
     source = Source(spectrum, beam)
