@@ -8,6 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from hexsample.source import BeamBase, SpectrumBase
+from hexrec.hexagon import HexagonalGrid
 
 @dataclass
 class TriangularBeam(BeamBase):
@@ -32,6 +33,18 @@ class TriangularBeam(BeamBase):
     v1: tuple = (0, 0)
 
     def rvs(self, size: int = 1) -> Tuple[np.ndarray, np.ndarray]:
+        """Overloaded method.
+
+        Arguments
+        ---------
+        size : int
+            The number of X-ray photon positions to be generated.
+
+        Returns
+        -------
+        x, y : 2-element tuple of np.ndarray of shape ``size``
+            The photon positions on the x-y plane.
+        """
         assert len(self.v0) == 2
         assert len(self.v1) == 2
 
@@ -51,6 +64,60 @@ class TriangularBeam(BeamBase):
         x = w[0] + center[0, 0]
         y = w[1] + center[0, 1]
 
+        return x, y
+
+@dataclass
+class HexagonalBeam(BeamBase):
+    """Triangular X-ray beam inside an hexagon 
+
+    Arguments
+    ---------
+    x0 : float
+        The x-coordinate of the center of the hexagon in cm.
+
+    y0 : float
+        The y-coordinate of the center of the hexagon in cm.
+
+    v0 : np.ndarray
+        The (x, y) coordinates of the first vertex of the hexagon in cm.
+
+    v1 : np.ndarray
+        The (x, y) coordinates of the second vertex of the hexagon in cm.
+
+    """
+    v0: tuple = (0, 0)
+    v1: tuple = (0, 0)
+    
+    def rvs(self, size: int = 1) -> Tuple[np.ndarray, np.ndarray]:
+        """Overloaded method.
+
+        Arguments
+        ---------
+        size : int
+            The number of X-ray photon positions to be generated.
+
+        Returns
+        -------
+        x, y : 2-element tuple of np.ndarray of shape ``size``
+            The photon positions on the x-y plane.
+        """
+        _, size_t = np.unique(np.random.randint(0, 6, size), return_counts=True)
+        x = np.zeros(size)
+        y = np.zeros(size)
+        
+        j = 0
+        c = np.array([self.x0, self.y0])
+        for i, t_s in enumerate(size_t):
+            rotator = HexagonalGrid.create_rotator(np.pi/3*i)
+            v0_rot = rotator((self.v0[0] - c[0], self.v0[1] - c[1])) + c
+            v1_rot = rotator((self.v1[0] - c[0], self.v1[1] - c[1])) + c
+            beam = TriangularBeam(self.x0, self.y0, tuple(v0_rot), tuple(v1_rot))
+            x_tr, y_tr = beam.rvs(t_s)
+
+            x[j:j+t_s] = x_tr
+            y[j:j+t_s] = y_tr
+            j += t_s
+        
         return x, y
 
 class Line(SpectrumBase):
