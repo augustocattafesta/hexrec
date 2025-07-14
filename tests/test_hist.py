@@ -1,4 +1,4 @@
-"""Test of analysis.py
+"""Test of hist.py
 """
 
 import numpy as np
@@ -11,6 +11,8 @@ from hexrec.hexagon import HexagonalGrid, HexagonalLayout
 
 
 def test_histogram_heatmap():
+    """Test for Histogram2d class
+    """
     infile_path = HEXREC_DATA / 'hexagonal_sim_recon.h5'
 
     grid = HexagonalGrid(HexagonalLayout('ODD_R'), 304, 352, 0.005)

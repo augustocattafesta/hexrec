@@ -40,4 +40,3 @@ class Histogram2d(HistogramBase):
         colorbar = plt.colorbar()
         if self.labels[2] is not None:
             colorbar.set_label(self.labels[2])
-        
