@@ -48,3 +48,10 @@ class ArgumentParser(ArgumentParser):
         group.add_argument('--trngindex', type=int, default=0,
             help='triangular section of the hexagon')
 
+    def add_analysis_options(self) -> None:
+        """Add an option group for the analysis.
+        """ 
+        group = self.add_argument_group('analysis', 'Options for analysis')
+        group.add_argument('--bins', type=int, default=100,
+                           help='number of bins for histogram analysis')
+        # Could add save plot option
