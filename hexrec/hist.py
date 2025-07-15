@@ -27,7 +27,8 @@ class Histogram2d(HistogramBase):
         bins = self.binning
         w = self.content.T.flatten()
         if mean:
-            w  = w / self.entries.T.flatten()
+            with np.errstate(divide='ignore', invalid='ignore'):  # suppress possible divide-by-zero warnings
+                w  = w / self.entries.T.flatten()
         if logz:
             # Hack for a deprecated functionality in matplotlib 3.3.0
             # Parameters norm and vmin/vmax should not be used simultaneously
