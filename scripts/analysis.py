@@ -58,18 +58,18 @@ def analyze(**kwargs):
     x_mc = mc_table['absx'] - x0
     y_mc = mc_table['absy'] - y0
 
-    _, xbins_pos, ybins_pos = np.histogram2d(x_mc, y_mc, bins)
+    _, xbins_pos_mc, ybins_pos_mc = np.histogram2d(x_mc, y_mc, bins)
 
     plt.figure('Montecarlo position')
-    h_pos_mc = Histogram2d(xbins_pos, ybins_pos, xlabel=xlabel_pos, ylabel=ylabel_pos)
+    h_pos_mc = Histogram2d(xbins_pos_mc, ybins_pos_mc, xlabel=xlabel_pos, ylabel=ylabel_pos)
     h_pos_mc.fill(x_mc, y_mc).plot(logz=False)
     plt.tight_layout()
     plt.figure('Montecarlo position x projection')
-    h_pos_mc_x = Histogram1d(xbins=xbins_pos, xlabel=xlabel_pos)
+    h_pos_mc_x = Histogram1d(xbins=xbins_pos_mc, xlabel=xlabel_pos)
     h_pos_mc_x.fill(x_mc).plot()
     plt.tight_layout()
     plt.figure('Montecarlo position y projection')
-    h_pos_mc_y = Histogram1d(xbins=ybins_pos, xlabel=ylabel_pos)
+    h_pos_mc_y = Histogram1d(xbins=ybins_pos_mc, xlabel=ylabel_pos)
     h_pos_mc_y.fill(y_mc).plot()
     plt.tight_layout()
 
@@ -77,16 +77,18 @@ def analyze(**kwargs):
     x_rc = recon_table['posx'] - x0
     y_rc = recon_table['posy'] - y0
 
+    _, xbins_pos_rc, ybins_pos_rc = np.histogram2d(x_rc, y_rc, bins)
+
     plt.figure('Reconstructed position')
-    h_pos_rc = Histogram2d(xbins_pos, ybins_pos, xlabel=xlabel_pos, ylabel=ylabel_pos)
+    h_pos_rc = Histogram2d(xbins_pos_rc, ybins_pos_rc, xlabel=xlabel_pos, ylabel=ylabel_pos)
     h_pos_rc.fill(x_rc, y_rc).plot(logz=True)
     plt.tight_layout()
     plt.figure('Reconstructed position x projection')
-    h_pos_rc_x = Histogram1d(xbins=xbins_pos, xlabel=xlabel_pos)
+    h_pos_rc_x = Histogram1d(xbins=xbins_pos_rc, xlabel=xlabel_pos)
     h_pos_rc_x.fill(x_rc).plot()
     plt.tight_layout()
     plt.figure('Reconstructed position y projection')
-    h_pos_rc_y = Histogram1d(xbins=ybins_pos, xlabel=ylabel_pos)
+    h_pos_rc_y = Histogram1d(xbins=ybins_pos_rc, xlabel=ylabel_pos)
     h_pos_rc_y.fill(y_rc).plot()
     plt.tight_layout()
 
@@ -94,7 +96,7 @@ def analyze(**kwargs):
     dist = np.sqrt((x_mc-x_rc)**2 + (y_mc-y_rc)**2)
 
     plt.figure('Position distance')
-    h_dist = Histogram2d(xbins_pos, ybins_pos, xlabel_pos, ylabel_pos, 'Mean distance [cm]')
+    h_dist = Histogram2d(xbins_pos_mc, ybins_pos_mc, xlabel_pos, ylabel_pos, 'Mean distance [cm]')
     h_dist.fill(x_mc, y_mc, weights=dist).plot(mean=True)
     plt.tight_layout()
 
@@ -107,7 +109,7 @@ def analyze(**kwargs):
     dphi = np.rad2deg(phi_mc - phi_rc)
 
     plt.figure('Angle difference')
-    h_angle = Histogram2d(xbins_pos, ybins_pos, xlabel_pos, ylabel_pos,
+    h_angle = Histogram2d(xbins_pos_mc, ybins_pos_mc, xlabel_pos, ylabel_pos,
                           zlabel='Mean angle difference [deg]')
     h_angle.fill(x_mc[mask], y_mc[mask], weights=dphi).plot(mean=True)
     plt.tight_layout()
