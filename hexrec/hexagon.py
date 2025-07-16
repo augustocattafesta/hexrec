@@ -46,7 +46,7 @@ class HexagonalGrid(HexagonalGrid):
         x0, y0 = self.pixel_to_world(col, row)
         a = np.array([x0, y0]).T
 
-        size = self.pitch / 2   # Not sure about this, ask
+        size = self.pitch / np.sqrt(3)
         rotator = self.create_rotator(i*np.pi/3)
 
         if self.pointy_topped():
