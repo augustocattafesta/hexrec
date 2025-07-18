@@ -54,4 +54,7 @@ class ArgumentParser(ArgumentParser):
         group = self.add_argument_group('analysis', 'Options for analysis')
         group.add_argument('--bins', type=int, default=100,
                            help='number of bins for histogram analysis')
+        group.add_argument('--fit', type=bool, default=False,
+                           help='fit the reconstructed position against true ' \
+                           'position')
         # Could add save plot option
