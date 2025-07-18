@@ -110,7 +110,7 @@ def analyze(**kwargs):
     plt.figure('Angle difference')
     h_angle = Histogram2d(xbins_pos_mc, ybins_pos_mc, xlabel_pos, ylabel_pos,
                           zlabel='Mean angle difference [deg]')
-    h_angle.fill(x_mc[mask], y_mc[mask], weights=dphi).plot(mean=True)
+    # h_angle.fill(x_mc[mask], y_mc[mask], weights=dphi).plot(mean=True)
     plt.tight_layout()
 
     # X axis position difference 
@@ -125,8 +125,23 @@ def analyze(**kwargs):
     mean = np.mean(dx)
     std = np.std(dx)
 
-    logger.info(f'Mean: {mean:.3f}')
-    logger.info(f'Std: {std:.3f}')
+    logger.info(f'x-axis mean: {mean:.3f}')
+    logger.info(f'x-axis rms: {std:.3f}')
+
+    # X axis position difference 
+    dy = (y_mc - y_rc)/pitch
+
+    dy_bins = np.linspace(min(dy), max(dy), bins)
+    plt.figure('Y position difference')
+    h_dy = Histogram1d(dy_bins, xlabel='dy/pitch')
+    h_dy.fill(dy).plot()
+    plt.tight_layout()
+
+    mean = np.mean(dy)
+    std = np.std(dy)
+
+    logger.info(f'y-axis mean: {mean:.3f}')
+    logger.info(f'y-axis rms: {std:.3f}')
 
     # x_rec vs x_true
     if kwargs['fit']:
@@ -165,9 +180,11 @@ def analyze(**kwargs):
 
         plt.figure('profile')
         plt.errorbar(bin_center, y_profile, y_profile_std, fmt='.k')
+        plt.xlabel('eta')
+        plt.ylabel('x_mc / pitch')
         plt.plot(xx, power_law(xx, popt[0]))
         logger.info(f'Fit: gamma {popt[0]} +- {np.sqrt(pcov)[0, 0]}')
-        chisq = np.sum((y_profile - power_law(bin_center, popt[0])**2/y_profile_std**2))
+        chisq = np.sum((y_profile - power_law(bin_center, popt[0])/y_profile_std)**2)
         ddof = len(y_profile)-1
         logger.info(f'chisq / dof: {chisq:.1f} / {ddof}')
         plt.tight_layout()

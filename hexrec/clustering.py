@@ -20,25 +20,21 @@ class Cluster(Cluster):
     def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray) -> None:
         super().__init__(x, y, pha)
 
-    def barycenter_1d(self, pitch) -> Tuple[float, float]:
-        # Va bene solo se i due pixel sono su asse x
+    def fitted_position(self) -> Tuple[float, float]:
         if not self.x.shape[0] == 2:
             raise RuntimeError(f'Clusters must contain only 2 pixels')
         
-        # Bisogna gestire meglio questa cosa, perchè se va più carica nel pixel
-        # adiacente quando vado a sommare la posizione è di quella adiacente e non
-        # quella centrale
+        pitch = np.sqrt((self.x[0] - self.x[1])**2 + (self.y[0] - self.y[1])**2)
+        n = np.array([self.x[1] - self.x[0], self.y[1] - self.y[0]])
+        n = n / np.sqrt(n[0]**2 + n[1]**2)
 
-        # inoltre non va bene per tutte le orientazioni degli esagoni e dei triangoli
-        x0 = 0.0012499999999999734
-        if self.x[0] == x0:
-            eta = self.pha[1] / self.pulse_height()
-            x = PowerLaw().eval(eta/0.5, 0.5, GAMMA_BARYCENTER1D)*pitch + self.x[0]
-        else:
-            eta = self.pha[0] / self.pulse_height()
-            x = PowerLaw().eval(eta/0.5, 0.5, GAMMA_BARYCENTER1D)*pitch + self.x[1]
+        eta = self.pha[1] / self.pulse_height()
+        r_fit = PowerLaw().eval(eta/0.5, 0.5, GAMMA_BARYCENTER1D)*pitch
 
-        return x, self.y[0]
+        x_fit = self.x[0] + r_fit * n[0]
+        y_fit = self.y[0] + r_fit * n[1]
+
+        return x_fit, y_fit
         
 
 @dataclass

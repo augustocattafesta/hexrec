@@ -11,7 +11,7 @@ from hexsample.fileio import DigiInputFileCircular, ReconOutputFile
 from hexsample.hexagon import HexagonalLayout
 from hexsample.recon import ReconEvent
 
-from hexrec.recon import ReconEvent1DBary
+from hexrec.recon import ReconEventFitted
 from hexrec.clustering import ClusteringNN
 
 __description__ = \
@@ -62,7 +62,7 @@ def hxrecon(args):
             if rcmethod == 'centroid':
                 recon_event = ReconEvent(*args)
             elif rcmethod == 'fit':
-                recon_event = ReconEvent1DBary(*args)
+                recon_event = ReconEventFitted(*args)
             mc_event = input_file.mc_event(i)
             output_file.add_row(recon_event, mc_event)
 

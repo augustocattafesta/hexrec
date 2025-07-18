@@ -9,7 +9,7 @@ from hexsample.recon import DEFAULT_IONIZATION_POTENTIAL
 from hexrec.clustering import Cluster
 
 @dataclass
-class ReconEvent1DBary:
+class ReconEventFitted:
 
     """Descriptor for a reconstructed event with only two pixels.
 
@@ -50,4 +50,4 @@ class ReconEvent1DBary:
     def position(self) -> Tuple[float, float]:
         """Return the reconstructed position of the event.
         """
-        return self.cluster.barycenter_1d(0.005)
+        return self.cluster.fitted_position()
