@@ -11,6 +11,7 @@ from scipy.optimize import curve_fit
 from hexsample.hist import Histogram1d
 from hexsample.analysis import fit_histogram
 from hexsample.modeling import Gaussian
+from hexsample.recon import DEFAULT_IONIZATION_POTENTIAL
 
 from hexrec.hist import Histogram2d
 from hexrec.hexagon import HexagonalGrid, HexagonalLayout
@@ -43,7 +44,7 @@ def analyze(**kwargs):
 
     # Recon energy distr
     energy = recon_table['energy']
-    xbins_en = np.linspace(min(energy), max(energy), bins)
+    xbins_en = np.arange(min(energy), max(energy), DEFAULT_IONIZATION_POTENTIAL)
     plt.figure('Reconstructed energy')
     h_energy = Histogram1d(xbins_en, xlabel='Energy [eV]')
     h_energy.fill(energy)
@@ -146,7 +147,7 @@ def analyze(**kwargs):
     # x_rec vs x_true
     if kwargs['fit']:
         p = 0.005
-        eta = x_rc/p
+        eta = abs(x_rc/p)
         pos = x_mc/p
         plt.figure('eta')
         plt.scatter(eta, pos, s=0.1)
