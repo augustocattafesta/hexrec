@@ -5,7 +5,6 @@ import argparse
 from tqdm import tqdm
 
 from hexsample import logger
-# from hexsample.clustering import ClusteringNN
 from hexsample.readout import HexagonalReadoutCircular
 from hexsample.fileio import DigiInputFileCircular, ReconOutputFile
 from hexsample.hexagon import HexagonalLayout
@@ -28,6 +27,8 @@ parser.add_argument('--nneighbors', default=6, type=int,
                     help='number of neighbors to be considered (default: 6)')
 parser.add_argument('--suffix', default='recon', type=str,
                     help='suffix for the output file (default: recon)')
+parser.add_argument('--gamma', default=0.257, type=float,
+                    help='index of the power law for position fit')
 args = parser.parse_args()
 
 def hxrecon(args):
@@ -35,6 +36,7 @@ def hxrecon(args):
     """
     input_file_path = args.infile
     rcmethod = args.rcmethod
+    gamma = args.gamma
     kwargs = {}
     kwargs['zsupthreshold'] = args.zsupthreshold
     kwargs['nneighbors'] = args.nneighbors
@@ -47,7 +49,7 @@ def hxrecon(args):
     readout = HexagonalReadoutCircular(*args)
     logger.info(f'Readout chip: {readout}')
 
-    clustering = ClusteringNN(readout, kwargs['zsupthreshold'], kwargs['nneighbors'])
+    clustering = ClusteringNN(readout, kwargs['zsupthreshold'], kwargs['nneighbors'], gamma)
     suffix = kwargs['suffix']
     output_file_path = input_file_path.replace('.h5', f'_{suffix}.h5')
     # ... and saved into an output file.
