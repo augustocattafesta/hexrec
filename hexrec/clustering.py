@@ -14,11 +14,10 @@ from hexsample.readout import HexagonalReadoutCircular
 from hexsample.clustering import Cluster, ClusteringBase
 from hexsample.modeling import PowerLaw
 
-GAMMA_BARYCENTER1D = 0.267
-
 class Cluster(Cluster):
-    def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray) -> None:
+    def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray, gamma: float) -> None:
         super().__init__(x, y, pha)
+        self.gamma = gamma
 
     def fitted_position(self) -> Tuple[float, float]:
         if not self.x.shape[0] == 2:
@@ -29,13 +28,12 @@ class Cluster(Cluster):
         n = n / np.sqrt(n[0]**2 + n[1]**2)
 
         eta = self.pha[1] / self.pulse_height()
-        r_fit = PowerLaw().eval(eta/0.5, 0.5, GAMMA_BARYCENTER1D)*pitch
+        r_fit = PowerLaw().eval(eta/0.5, 0.5, self.gamma)*pitch
 
         x_fit = self.x[0] + r_fit * n[0]
         y_fit = self.y[0] + r_fit * n[1]
 
         return x_fit, y_fit
-        
 
 @dataclass
 class ClusteringNN(ClusteringBase):
@@ -53,6 +51,7 @@ class ClusteringNN(ClusteringBase):
     """
 
     num_neighbors: int
+    gamma: float
 
     def run(self, event) -> Cluster:
         """Overladed method.
@@ -108,4 +107,4 @@ class ClusteringNN(ClusteringBase):
         row = row[mask]
         pha = pha[mask]
         x, y = self.grid.pixel_to_world(col, row)
-        return Cluster(x, y, pha)
+        return Cluster(x, y, pha, self.gamma)
