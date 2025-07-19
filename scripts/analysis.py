@@ -144,52 +144,6 @@ def analyze(**kwargs):
     logger.info(f'y-axis mean: {mean:.3f}')
     logger.info(f'y-axis rms: {std:.3f}')
 
-    # x_rec vs x_true
-    if kwargs['fit']:
-        p = 0.005
-        eta = abs(x_rc/p)
-        pos = x_mc/p
-        plt.figure('eta')
-        plt.scatter(eta, pos, s=0.1)
-        plt.xlabel('q2/(q1 + q2)')
-        plt.ylabel('x_mc / pitch')
-        xx = np.linspace(0, 0.5, 1000)
-        yy = (xx/0.5)**(0.25)*0.5
-        plt.plot(xx, yy, '-r')
-        plt.tight_layout()
-
-        profile_bins = 20
-        eta_bins = np.linspace(0.05, 0.5, profile_bins)
-        y_profile = np.zeros(profile_bins-1)
-        y_profile_std = np.zeros(profile_bins-1)
-        bin_center = (eta_bins[:-1] + eta_bins[1:])/2
-        edges_zip = zip(eta_bins[:-1], eta_bins[1:])
-
-        for i, edges in enumerate(edges_zip):
-            mask = (eta > edges[0]) & (eta < edges[1])
-            y_true = pos[mask]
-
-            mean = np.mean(y_true)
-            mean_std = np.std(y_true) / np.sqrt(y_true.shape[0])
-            y_profile[i] = mean
-            y_profile_std[i] = mean_std
-
-        def power_law(x, gamma):
-            return (x/0.5)**gamma*0.5
-        
-        popt, pcov = curve_fit(power_law, bin_center, y_profile, sigma=y_profile_std)
-
-        plt.figure('profile')
-        plt.errorbar(bin_center, y_profile, y_profile_std, fmt='.k')
-        plt.xlabel('eta')
-        plt.ylabel('x_mc / pitch')
-        plt.plot(xx, power_law(xx, popt[0]))
-        logger.info(f'Fit: gamma {popt[0]} +- {np.sqrt(pcov)[0, 0]}')
-        chisq = np.sum((y_profile - power_law(bin_center, popt[0])/y_profile_std)**2)
-        ddof = len(y_profile)-1
-        logger.info(f'chisq / dof: {chisq:.1f} / {ddof}')
-        plt.tight_layout()
-
 if __name__ == '__main__':
     analyze(**vars(PARSER.parse_args()))
     plt.show()

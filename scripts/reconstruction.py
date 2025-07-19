@@ -5,7 +5,6 @@ import argparse
 from tqdm import tqdm
 
 from hexsample import logger
-# from hexsample.clustering import ClusteringNN
 from hexsample.readout import HexagonalReadoutCircular
 from hexsample.fileio import DigiInputFileCircular, ReconOutputFile
 from hexsample.hexagon import HexagonalLayout
@@ -28,7 +27,7 @@ parser.add_argument('--nneighbors', default=6, type=int,
                     help='number of neighbors to be considered (default: 6)')
 parser.add_argument('--suffix', default='recon', type=str,
                     help='suffix for the output file (default: recon)')
-parser.add_argument('--gamma', default=0.267, type=float,
+parser.add_argument('--gamma', default=0.257, type=float,
                     help='index of the power law for position fit')
 args = parser.parse_args()
 

@@ -54,7 +54,18 @@ class ArgumentParser(ArgumentParser):
         group = self.add_argument_group('analysis', 'Options for analysis')
         group.add_argument('--bins', type=int, default=100,
                            help='number of bins for histogram analysis')
-        group.add_argument('--fit', type=bool, default=False,
-                           help='fit the reconstructed position against true ' \
-                           'position')
         # Could add save plot option
+    
+    def add_eta_options(self) -> None:
+        """Add an option group for eta function analysis.
+        """
+        group = self.add_argument_group('analysis', 'Options for eta function analysis')
+        group.add_argument('--npixels', type=int, default=2,
+                           help='dimension of the cluster for the analysis')
+        group.add_argument('--zsupthreshold', type=int, default=30,
+            help='zero-suppression threshold in ADC counts')
+        group.add_argument('--nneighbors', type=int, default=6,
+            help='number of neighbors to be considered (0--6)')
+        group.add_argument('--bins', type=int, default=20,
+            help='number of bins for the profile of eta')
+
