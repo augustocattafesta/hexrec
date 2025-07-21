@@ -11,4 +11,8 @@ HEXREC_BIN = HEXREC_ROOT / 'bin'
 
 HEXREC_DATA = Path().home() / 'hexrecdata'
 if not Path.exists(HEXREC_DATA):
-    Path().mkdir(HEXREC_DATA)
+    Path.mkdir(HEXREC_DATA)
+
+HEXREC_MODELS = HEXREC_DATA / 'models'
+if not Path.exists(HEXREC_MODELS):
+    Path.mkdir(HEXREC_MODELS)

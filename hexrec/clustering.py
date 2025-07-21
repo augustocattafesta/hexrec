@@ -1,9 +1,5 @@
 """Extension of clustering.py from hexsample
 """
-
-# Definire la funzione di fit e un metodo per valutarla in funzione dei primi
-# due valori di pha
-
 from dataclasses import dataclass
 from typing import Tuple
 
@@ -23,9 +19,8 @@ class Cluster(Cluster):
         if not self.x.shape[0] == 2:
             raise RuntimeError(f'Clusters must contain only 2 pixels')
         
-        pitch = np.sqrt((self.x[0] - self.x[1])**2 + (self.y[0] - self.y[1])**2)
-        n = np.array([self.x[1] - self.x[0], self.y[1] - self.y[0]])
-        n = n / np.sqrt(n[0]**2 + n[1]**2)
+        pitch = np.sqrt((self.x[0] - self.x[1])**2 + (self.y[0] - self.y[1])**2)    # provare a semplificare        n = np.array([self.x[1] - self.x[0], self.y[1] - self.y[0]])
+        n = n / np.sqrt(n[0]**2 + n[1]**2)  # magari semplificare queste due righe
 
         eta = self.pha[1] / self.pulse_height()
         r_fit = PowerLaw().eval(eta/0.5, 0.5, self.gamma)*pitch
