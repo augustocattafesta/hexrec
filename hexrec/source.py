@@ -87,7 +87,7 @@ class HexagonalBeam(BeamBase):
     """
     v0: tuple = (0, 0)
     v1: tuple = (0, 0)
-    
+
     def rvs(self, size: int = 1) -> Tuple[np.ndarray, np.ndarray]:
         """Overloaded method.
 
@@ -104,7 +104,7 @@ class HexagonalBeam(BeamBase):
         _, size_t = np.unique(np.random.randint(0, 6, size), return_counts=True)
         x = np.zeros(size)
         y = np.zeros(size)
-        
+
         j = 0
         c = np.array([self.x0, self.y0])
         for i, t_s in enumerate(size_t):
@@ -117,7 +117,7 @@ class HexagonalBeam(BeamBase):
             x[j:j+t_s] = x_tr
             y[j:j+t_s] = y_tr
             j += t_s
-        
+
         return x, y
 
 class Line(SpectrumBase):

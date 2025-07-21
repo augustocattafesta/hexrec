@@ -51,7 +51,7 @@ class ClusteringNN(ClusteringBase):
     """
 
     num_neighbors: int
-    gamma: float
+    gamma: float = None
 
     def run(self, event) -> Cluster:
         """Overladed method.

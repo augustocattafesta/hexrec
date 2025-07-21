@@ -29,7 +29,7 @@ class ArgumentParser(ArgumentParser):
             help='conversion factors between electron equivalent and ADC counts')
         group.add_argument('--zsupthreshold', type=int, default=0,
             help='zero-suppression threshold in ADC counts')
-        
+
     def add_line_source_options(self) -> None:
         """Add an option group for line source properties.
         """
@@ -50,12 +50,12 @@ class ArgumentParser(ArgumentParser):
 
     def add_analysis_options(self) -> None:
         """Add an option group for the analysis.
-        """ 
+        """
         group = self.add_argument_group('analysis', 'Options for analysis')
         group.add_argument('--bins', type=int, default=100,
                            help='number of bins for histogram analysis')
         # Could add save plot option
-    
+
     def add_eta_options(self) -> None:
         """Add an option group for eta function analysis.
         """
@@ -69,3 +69,17 @@ class ArgumentParser(ArgumentParser):
         group.add_argument('--bins', type=int, default=20,
             help='number of bins for the profile of eta')
 
+    def add_reconstruction_options(self) -> None:
+        """Add an option group for reconstruction.
+        """
+        group = self.add_argument_group('reconstruction', 'Options for event reconstruction')
+        group.add_argument('--zsupthreshold', type=int, default=30,
+            help='zero-suppression threshold in ADC counts')
+        group.add_argument('--nneighbors', type=int, default=6,
+            help='number of neighbors to be considered (0--6)')
+        group.add_argument('--rcmethod', choices=['centroid', 'fit'], type=str,
+            default='centroid', help='How to reconstruct position')
+        group.add_argument('--gamma', default=0.272, type=float,
+            help='index of the power law for position fit')
+        group.add_argument('--suffix', default='recon', type=str,
+                    help='suffix for the output file')

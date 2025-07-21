@@ -9,3 +9,5 @@ tqdm
 uncertainties
 xraydb
 hexsample
+keras==3.10
+tensorflow==2.19.0
