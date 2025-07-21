@@ -27,7 +27,8 @@ class Histogram2d(HistogramBase):
         bins = self.binning
         w = self.content.T.flatten()
         if mean:
-            with np.errstate(divide='ignore', invalid='ignore'):  # suppress possible divide-by-zero warnings
+            # suppress possible divide-by-zero warnings
+            with np.errstate(divide='ignore', invalid='ignore'):
                 w  = w / self.entries.T.flatten()
         if logz:
             # Hack for a deprecated functionality in matplotlib 3.3.0

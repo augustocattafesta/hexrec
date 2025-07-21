@@ -25,12 +25,11 @@ PARSER.add_infile()
 PARSER.add_eta_options()
 # If use neural net for this, also add argument to choose bewteen fit and NN
 
-def eta(**kwargs):
+def hexeta(**kwargs):
     """Script to analyze eta function for 2 pixels events 
     from a simulation file
     """
     kwargs['nneighbors'] = 6
-    gamma = None
 
     input_file_path = kwargs['infile']
     input_file = DigiInputFileCircular(input_file_path)
@@ -39,13 +38,14 @@ def eta(**kwargs):
         header['pitch'], header['noise'], header['gain']
     readout = HexagonalReadoutCircular(*args)
     logger.info(f'Readout chip: {readout}')
-    clustering = ClusteringNN(readout, kwargs['zsupthreshold'], kwargs['nneighbors'], gamma)
+    clustering = ClusteringNN(readout, kwargs['zsupthreshold'], kwargs['nneighbors'])
 
     pha = []
     x_pix = []
     y_pix = []
     absx = []
     absy = []
+    n = []
 
     for i, event in tqdm(enumerate(input_file)):
         cluster = clustering.run(event)
@@ -53,6 +53,7 @@ def eta(**kwargs):
             pha.append(cluster.pha)
             x_pix.append(cluster.x[0])
             y_pix.append(cluster.y[0])
+            n.append([cluster.x[1] - cluster.x[0], cluster.y[1] - cluster.y[0]])
 
             mc_event = input_file.mc_event(i)
             absx.append(mc_event.absx)
@@ -65,9 +66,13 @@ def eta(**kwargs):
     y_pix = np.array(y_pix)
     absx = np.array(absx)
     absy = np.array(absy)
+    n = np.array(n)
+    n = n / np.sqrt(np.sum(n**2, axis=1, keepdims=True))
 
     eta = pha[:, 1] / pha.sum(axis=1)
-    dr = np.sqrt((absx-x_pix)**2 + (absy-y_pix)**2) / header['pitch']
+    # dr = np.sqrt((absx-x_pix)**2 + (absy-y_pix)**2) / header['pitch'] # must project onto n versor
+    pos = np.array([absx-x_pix, absy-y_pix]).T / header['pitch']
+    dr = abs(pos[:, 0]*n[:, 0] + pos[:, 1]*n[:, 1])
 
     plt.figure('Scatter plot')
     plt.scatter(eta, dr, s=0.1)
@@ -88,9 +93,11 @@ def eta(**kwargs):
         mean = np.mean(y_true)
         mean_std = np.std(y_true) / np.sqrt(y_true.shape[0])
         y_profile[i] = mean
-        y_profile_std[i] = mean_std 
+        y_profile_std[i] = mean_std
 
-    fit_model = lambda x, gamma: PowerLaw().eval(x/0.5, 0.5, gamma)
+    def fit_model(x, gamma):
+        return PowerLaw().eval(x/0.5, 0.5, gamma)
+
     popt, pcov = curve_fit(fit_model, bin_center, y_profile, sigma=y_profile_std)
 
     plt.figure('profile')
@@ -108,5 +115,5 @@ def eta(**kwargs):
     logger.info(f'chi / dof: {chisq:.1f} / {ddof}')
 
 if __name__ == '__main__':
-    eta(**vars(PARSER.parse_args()))
+    hexeta(**vars(PARSER.parse_args()))
     plt.show()

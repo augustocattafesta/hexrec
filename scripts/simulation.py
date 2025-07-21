@@ -1,8 +1,6 @@
 """Script to simulate events.
 """
 
-import argparse
-
 from loguru import logger
 from tqdm import tqdm
 
@@ -27,9 +25,6 @@ PARSER.add_numevents(1000)
 PARSER.add_outfile(HEXREC_DATA / 'sim.h5')
 PARSER.add_line_source_options()
 PARSER.add_simple_readout_options()
-# PARSER.add_sensor_options()
-
-
 
 def simulate(**kwargs):
     """Application main entry point.
@@ -38,7 +33,7 @@ def simulate(**kwargs):
 
     rng.initialize(seed=None)
     grid_args = HexagonalLayout(kwargs['layout']), kwargs['numcolumns'], kwargs['numrows'], kwargs['pitch']
-    
+
     if kwargs['beamshape'].lower() == 'gaussian':
         beam = GaussianBeam(kwargs['srcposx'], kwargs['srcposy'], kwargs['srcsigma'])
     if kwargs['beamshape'] == 'triangular':
@@ -51,6 +46,8 @@ def simulate(**kwargs):
         target_col, target_row = grid.world_to_pixel(kwargs['srcposx'], kwargs['srcposy'])
         center, v0, v1 = grid.find_vertices(target_col, target_row)
         beam = HexagonalBeam(*center, tuple(v0), tuple(v1))
+    else:
+        raise RuntimeError
 
     spectrum = Line(kwargs['energy'])
     source = Source(spectrum, beam)

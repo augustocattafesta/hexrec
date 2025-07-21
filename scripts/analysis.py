@@ -26,7 +26,6 @@ PARSER.add_infile()
 PARSER.add_analysis_options()
 
 
-
 def analyze(**kwargs):
     """Script to analyze a reconstructed file
     """
