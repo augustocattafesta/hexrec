@@ -24,8 +24,9 @@ class Cluster(Cluster):
         if not self.x.shape[0] == 2:
             raise RuntimeError(f'Clusters must contain only 2 pixels')
         
-        pitch = np.sqrt((self.x[0] - self.x[1])**2 + (self.y[0] - self.y[1])**2)    # provare a semplificare        n = np.array([self.x[1] - self.x[0], self.y[1] - self.y[0]])
-        n = n / np.sqrt(n[0]**2 + n[1]**2)  # magari semplificare queste due righe
+        diff = np.array([np.diff(self.x), np.diff(self.y)])
+        pitch = np.sqrt(np.sum(diff**2))
+        n = diff / pitch
 
         eta = self.pha[1] / self.pulse_height()
         r_fit = PowerLaw().eval(eta/0.5, 0.5, self.gamma)*pitch
@@ -36,8 +37,12 @@ class Cluster(Cluster):
         return x_fit, y_fit
     
     def nnet_position(self) -> Tuple[float, float]:
-        pitch = np.sqrt((self.x[0] - self.x[1])**2 + (self.y[0] - self.y[1])**2)    # provare a semplificare        n = np.array([self.x[1] - self.x[0], self.y[1] - self.y[0]])
+        diff = np.array([np.diff(self.x), np.diff(self.y)])
+        pitch = np.sqrt(np.sum(diff**2))
         xdata = np.array([self.grid]) / np.sum(self.grid)
+        pitch = 0.005   # It is necessary to correctly reconstruct position
+        # Must find a way to give the value without calculating it
+        # maybe in clusterinNN? It would also speed up the process, also in fitted_position
         (x_pred, y_pred) = self.model.evaluate(xdata)[0]
         x_net = self.x[0] + x_pred*pitch
         y_net = self.y[0] + y_pred*pitch

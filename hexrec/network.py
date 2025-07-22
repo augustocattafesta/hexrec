@@ -1,8 +1,5 @@
 # Deve contenere il necessario per gestire i modelli (training, salvataggio, caricamento e valutazione)
 # Si può anche inserire l'utilizzo di tflite, utile per valutare in cicli for
-# Creare anche uno script per eseguire l'addestramento, che prende in inuput il file e salva il modello da qualche parte
-# Bisogna creare un nuovo metodo in Cluster in cui si calcola la posizione con NN
-# Bisogna aggiungere una nuova classe di ReconEvent in cui viene utilizzata la ricostruzione con NN
 
 from dataclasses import dataclass
 from pathlib import Path
