@@ -9,9 +9,10 @@ from hexsample.fileio import DigiInputFileCircular, ReconOutputFile
 from hexsample.hexagon import HexagonalLayout
 from hexsample.recon import ReconEvent
 
-from hexrec.recon import ReconEventFitted
-from hexrec.clustering import ClusteringNN
 from hexrec.app import ArgumentParser
+from hexrec.clustering import ClusteringNN
+from hexrec.recon import ReconEventFitted, ReconEventNNet
+from hexrec.network import ModelBase
 
 __description__ = \
 """Run the reconstruction on a file produced by hxsim.py
@@ -32,8 +33,13 @@ def hxrecon(**kwargs):
     readout = HexagonalReadoutCircular(*args)
     logger.info(f'Readout chip: {readout}')
 
+    if kwargs['nnmodel'] is not None:
+        model = ModelBase.load(kwargs['nnmodel'])
+    else:
+        model = None
+
     clustering = ClusteringNN(readout, kwargs['zsupthreshold'], kwargs['nneighbors'],
-                              kwargs['gamma'])
+                              kwargs['gamma'], model)
     suffix = kwargs['suffix']
     output_file_path = input_file_path.replace('.h5', f'_{suffix}.h5')
     # ... and saved into an output file.
@@ -49,6 +55,8 @@ def hxrecon(**kwargs):
                 recon_event = ReconEvent(*args)
             elif kwargs['rcmethod'] == 'fit':
                 recon_event = ReconEventFitted(*args)
+            elif kwargs['rcmethod'] == 'nnet':
+                recon_event = ReconEventNNet(*args)
             else:
                 raise RuntimeError
 

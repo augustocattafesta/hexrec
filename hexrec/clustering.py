@@ -10,10 +10,15 @@ from hexsample.readout import HexagonalReadoutCircular
 from hexsample.clustering import Cluster, ClusteringBase
 from hexsample.modeling import PowerLaw
 
+from hexrec.network import ModelBase
+
 class Cluster(Cluster):
-    def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray, gamma: float) -> None:
+    def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray, grid: np.ndarray,
+                gamma: float = None, model: ModelBase = None) -> None:
         super().__init__(x, y, pha)
         self.gamma = gamma
+        self.grid = grid
+        self.model = model
 
     def fitted_position(self) -> Tuple[float, float]:
         if not self.x.shape[0] == 2:
@@ -29,6 +34,16 @@ class Cluster(Cluster):
         y_fit = self.y[0] + r_fit * n[1]
 
         return x_fit, y_fit
+    
+    def nnet_position(self) -> Tuple[float, float]:
+        pitch = np.sqrt((self.x[0] - self.x[1])**2 + (self.y[0] - self.y[1])**2)    # provare a semplificare        n = np.array([self.x[1] - self.x[0], self.y[1] - self.y[0]])
+        xdata = np.array([self.grid]) / np.sum(self.grid)
+        (x_pred, y_pred) = self.model.evaluate(xdata)[0]
+        x_net = self.x[0] + x_pred*pitch
+        y_net = self.y[0] + y_pred*pitch
+
+        return x_net, y_net
+
 
 @dataclass
 class ClusteringNN(ClusteringBase):
@@ -47,6 +62,7 @@ class ClusteringNN(ClusteringBase):
 
     num_neighbors: int
     gamma: float = None
+    model: ModelBase = None
 
     def run(self, event) -> Cluster:
         """Overladed method.
@@ -75,6 +91,12 @@ class ClusteringNN(ClusteringBase):
             col = np.array(col)
             row = np.array(row)
             pha = np.array(pha)
+
+            # Creating the grid for CNN
+            grid = np.zeros(shape=(3,3))
+            grid[1,1] = pha[0]
+            for _pha, _col, _row in zip(pha, col, row):
+                grid[_row-row[0]+1, _col-col[0]+1] = _pha
         # pylint: disable = invalid-name
         elif isinstance(event, DigiEventRectangular):
             seed_col, seed_row = event.highest_pixel()
@@ -88,6 +110,7 @@ class ClusteringNN(ClusteringBase):
             pha = np.array([event(_col, _row) for _col, _row in zip(col, row)])
         # Zero suppressing the event (whatever the readout type)...
         pha = self.zero_suppress(pha)
+        grid = self.zero_suppress(grid)
         # Array indexes in order of decreasing pha---note that we use -pha to
         # trick argsort into sorting values in decreasing order.
         idx = np.argsort(-pha)
@@ -102,4 +125,4 @@ class ClusteringNN(ClusteringBase):
         row = row[mask]
         pha = pha[mask]
         x, y = self.grid.pixel_to_world(col, row)
-        return Cluster(x, y, pha, self.gamma)
+        return Cluster(x, y, pha, grid, self.gamma, self.model)
