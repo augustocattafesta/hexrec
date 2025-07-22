@@ -33,10 +33,9 @@ def hxrecon(**kwargs):
     readout = HexagonalReadoutCircular(*args)
     logger.info(f'Readout chip: {readout}')
 
+    model = None
     if kwargs['nnmodel'] is not None:
         model = ModelBase.load(kwargs['nnmodel'])
-    else:
-        model = None
 
     clustering = ClusteringNN(readout, kwargs['zsupthreshold'], kwargs['nneighbors'],
                               kwargs['gamma'], model)
@@ -49,7 +48,7 @@ def hxrecon(**kwargs):
 
     for i, event in tqdm(enumerate(input_file)):
         cluster = clustering.run(event)
-        if cluster.size() == 2:
+        if kwargs['npixels'] == -1 or cluster.size() == kwargs['npixels']:
             args = event.trigger_id, event.timestamp(), event.livetime, cluster
             if kwargs['rcmethod'] == 'centroid':
                 recon_event = ReconEvent(*args)
