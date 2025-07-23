@@ -20,7 +20,7 @@ class Histogram2d(HistogramBase):
         """
         HistogramBase.__init__(self, (xbins, ybins), [xlabel, ylabel, zlabel])
 
-    def _plot(self, mean: bool = False, logz: bool = False, **kwargs) -> None:
+    def _plot(self, logz: bool = False, mean: bool = False, **kwargs) -> None:
         """Overloaded make_plot() method.
         """
         x, y = (v.flatten() for v in np.meshgrid(self.bin_centers(0), self.bin_centers(1)))
