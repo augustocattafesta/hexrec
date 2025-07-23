@@ -21,8 +21,11 @@ class Cluster(Cluster):
         self.model = model
 
     def fitted_position(self) -> Tuple[float, float]:
+        """Return the reconstructed position of a two pixels cluster
+        using the eta function fit 
+        """
         if not self.x.shape[0] == 2:
-            raise RuntimeError(f'Clusters must contain only 2 pixels')
+            raise RuntimeError(f'Cluster must contain only 2 pixels')
         
         diff = np.array([np.diff(self.x), np.diff(self.y)])
         pitch = np.sqrt(np.sum(diff**2))
@@ -34,9 +37,12 @@ class Cluster(Cluster):
         x_fit = self.x[0] + r_fit * n[0]
         y_fit = self.y[0] + r_fit * n[1]
 
-        return x_fit, y_fit
+        return x_fit[0], y_fit[0]
     
     def nnet_position(self) -> Tuple[float, float]:
+        """Return the reconstructed position of a two pixels cluster
+        using a neural network model 
+        """
         diff = np.array([np.diff(self.x), np.diff(self.y)])
         pitch = np.sqrt(np.sum(diff**2))
         xdata = np.array([self.grid]) / np.sum(self.grid)
