@@ -45,5 +45,6 @@ def test_histogram_heatmap():
     h.plot(mean=False)
 
 if __name__ == '__main__':
-    test_histogram_heatmap()
-    plt.show()
+    #test_histogram_heatmap()
+    #plt.show()
+    pass
