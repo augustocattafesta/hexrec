@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hexrec"
+version = "0.0.0"
+description = "Descrizione del progetto"
+authors = [{name="Augusto Cattafesta", email="augustocattafesta@gmail.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+dependencies = [
+    "numpy",
+    "loguru",
+    "scipy",
+    "matplotlib",
+    "nist-calculators",
+    "pydata-sphinx-theme",
+    "tables",
+    "tqdm",
+    "uncertainties",
+    "xraydb",
+    "keras==3.10",
+    "tensorflow==2.19.0",
+    "hexsample @ git+https://github.com/lucabaldini/hexsample.git@main"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
