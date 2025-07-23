@@ -3,11 +3,8 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import tables
 
-from hexrec import HEXREC_DATA
 from hexrec.hist import Histogram2d
-from hexrec.hexagon import HexagonalGrid, HexagonalLayout
 
 
 def test_histogram_heatmap():
@@ -20,7 +17,7 @@ def test_histogram_heatmap():
     z = np.exp(-x**2)*np.exp(-y**2)
 
     _, xbins, ybins = np.histogram2d(x, y, bins=bins)
-    
+
     plt.figure('Events distribution')
     h = Histogram2d(xbins, ybins, 'X', 'Y')
     h.fill(x, y).plot()
@@ -34,5 +31,5 @@ def test_histogram_heatmap():
     h.fill(x, y, weights=z).plot(mean=True)
 
 if __name__ == '__main__':
-   test_histogram_heatmap()
-   plt.show()
+    test_histogram_heatmap()
+    plt.show()
