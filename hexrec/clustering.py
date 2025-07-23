@@ -13,7 +13,7 @@ from hexsample.modeling import PowerLaw
 from hexrec.network import ModelBase
 
 class Cluster(Cluster):
-    def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray, grid: np.ndarray,
+    def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray, grid: np.ndarray = None,
                 gamma: float = None, model: ModelBase = None) -> None:
         super().__init__(x, y, pha)
         self.gamma = gamma
