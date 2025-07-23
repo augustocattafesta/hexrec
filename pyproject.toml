@@ -22,7 +22,7 @@ dependencies = [
     "xraydb",
     "keras==3.10",
     "tensorflow==2.19.0",
-    "hexrec @ git+https://github.com/lucabaldini/hexsample.git@main"
+    "hexsample @ git+https://github.com/lucabaldini/hexsample.git@main"
 ]
 
 [tool.setuptools.packages.find]
