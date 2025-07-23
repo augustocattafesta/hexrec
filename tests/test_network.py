@@ -24,8 +24,8 @@ def test_model_base():
     base = ModelBase(model)
     path = base.save(model_name)
 
-    loaded = ModelBase.load(model_name)
-    print(loaded.model.summary())
+    loaded = ModelBase.load(path)
+    # print(loaded.model.summary())
 
 def test_load_pretrained():
     pretrained = ModelBase.load_pretrained()
@@ -39,5 +39,5 @@ def test_load_pretrained():
 
 
 if __name__ == '__main__':
-    # test_model_base()
+    test_model_base()
     test_load_pretrained()
