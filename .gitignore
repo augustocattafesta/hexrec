@@ -1,3 +1,7 @@
 __pycache__
 to_do.txt
 done.txt
+cnn_log.txt
+
+dist/
+hexrec.egg-info

@@ -1,7 +1,9 @@
 # Deve contenere il necessario per gestire i modelli (training, salvataggio, caricamento e valutazione)
 # Si può anche inserire l'utilizzo di tflite, utile per valutare in cicli for
 
+
 from dataclasses import dataclass
+from importlib import resources
 from pathlib import Path
 
 import numpy as np
@@ -34,19 +36,18 @@ class ModelBase:
         return output_path
 
     @classmethod
-    def load(cls, name: str) -> 'ModelBase':
-        """Load a saved model from the data directory
+    def load(cls, path: str) -> 'ModelBase':
 
-        Args:
-            name (str): model name
-
-        Returns:
-            ModelBase: class instance
-        """
-        input_path = HEXREC_MODELS / f'{name}.keras'
-        model = keras.models.load_model(input_path)
+        model = keras.models.load_model(path)
 
         return cls(model)
+    
+    @classmethod
+    def load_pretrained(cls) -> 'ModelBase':
+        """Load the pre-trained model in hexrec
+        """
+        with resources.path('hexrec.models', 'model.keras') as model_path:
+            return cls.load(str(model_path))
 
     def train(self, xdata: np.ndarray, ydata: np.ndarray, epochs: int,
               val_split: float = 0.2, **kwargs) -> None:
