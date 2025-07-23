@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from hexsample.hexagon import HexagonalGrid, HexagonalLayout
 
-from hexrec.clustering import Cluster, GAMMA_BARYCENTER1D
+from hexrec.clustering import Cluster
 
 
 
@@ -25,7 +25,7 @@ def test_cluster():
     y = np.array([pix0[1], pix1[1]])
 
     eta = np.linspace(0, 0.5, 100)
-    yy = 0.5*(eta/0.5)**GAMMA_BARYCENTER1D
+    yy = 0.5*(eta/0.5)**0.267
 
     # pulse_height = 100
     # pha = np.array([[1 - eta_i, eta_i] for eta_i in eta])*pulse_height
