@@ -46,7 +46,7 @@ def test_cluster():
     # plt.show()
 
     cluster = Cluster(x, y, np.array([90, 10]))
-    print(cluster.barycenter_1d(0.005), cluster.centroid())
+    print(cluster.fitted_position(0.005), cluster.centroid())
 
 
 if __name__ == '__main__':
