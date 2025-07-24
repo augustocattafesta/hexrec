@@ -83,8 +83,6 @@ class ArgumentParser(ArgumentParser):
             default='centroid', help='How to reconstruct position')
         group.add_argument('--gamma', default=0.272, type=float,
             help='index of the power law for position fit')
-        group.add_argument('--nnmodel', default=None, type=str,
-            help='model to use for reconstruction with neural network')
         group.add_argument('--suffix', default='recon', type=str,
                     help='suffix for the output file')
 
@@ -101,3 +99,12 @@ class ArgumentParser(ArgumentParser):
             help='cluster size of events to analyze, -1 means all events')
         group.add_argument('--epochs', type=int, default=10,
             help='number of epochs for training')
+
+    def add_nnet_recon_options(self) -> None:
+        """Add an option group for neural network reconstruction
+        """
+        group = self.add_argument_group('nnetwork', 'Options for event neural network training')
+        group.add_argument('--nnmodel', type=str, default='pretrained', choices=['pretrained', 'custom'],
+            help='model to use for neural network reconstruction')
+        group.add_argument('--modelpath', type=str, default=None,
+            help='path of the model to use, in case of custom model')

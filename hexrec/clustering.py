@@ -13,12 +13,18 @@ from hexsample.modeling import PowerLaw
 from hexrec.network import ModelBase
 
 class Cluster(Cluster):
-    def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray, grid: np.ndarray = None,
+    def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray, 
                 gamma: float = None, model: ModelBase = None) -> None:
         super().__init__(x, y, pha)
         self.gamma = gamma
-        self.grid = grid
         self.model = model
+
+    def size(self) -> int:
+        """Return the size of the cluster, calculated as the number of
+        pixels with charge greater than zero (overload the size function
+        of hexsample because if NNet is used, size of x is always 7)
+        """
+        return np.count_nonzero(self.pha)
 
     def fitted_position(self) -> Tuple[float, float]:
         """Return the reconstructed position of a two pixels cluster
@@ -40,16 +46,18 @@ class Cluster(Cluster):
         return x_fit[0], y_fit[0]
     
     def nnet_position(self) -> Tuple[float, float]:
-        """Return the reconstructed position of a two pixels cluster
+        """Return the reconstructed position of a pixels cluster
         using a neural network model 
         """
-        diff = np.array([np.diff(self.x), np.diff(self.y)])
+        diff = np.array([np.diff(self.x[:2]), np.diff(self.y[:2])])
         pitch = np.sqrt(np.sum(diff**2))
-        xdata = np.array([self.grid]) / np.sum(self.grid)
-        pitch = 0.005   # It is necessary to correctly reconstruct position
-        # Must find a way to give the value without calculating it
-        # maybe in clusterinNN? It would also speed up the process, also in fitted_position
-        (x_pred, y_pred) = self.model.evaluate(xdata)[0]
+
+        pha_norm = self.pha / self.pulse_height()
+        x_norm = (self.x - self.x[0]) / pitch
+        y_norm = (self.y - self.y[0]) / pitch
+
+        xdata = np.array([pha_norm, x_norm, y_norm]).T.reshape(1, len(self.pha)*3)
+        (x_pred, y_pred) = self.model.predict(xdata)[0]
         x_net = self.x[0] + x_pred*pitch
         y_net = self.y[0] + y_pred*pitch
 
@@ -102,12 +110,6 @@ class ClusteringNN(ClusteringBase):
             col = np.array(col)
             row = np.array(row)
             pha = np.array(pha)
-
-            # Creating the grid for CNN
-            grid = np.zeros(shape=(3,3))
-            grid[1,1] = pha[0]
-            for _pha, _col, _row in zip(pha, col, row):
-                grid[_row-row[0]+1, _col-col[0]+1] = _pha
         # pylint: disable = invalid-name
         elif isinstance(event, DigiEventRectangular):
             seed_col, seed_row = event.highest_pixel()
@@ -121,7 +123,6 @@ class ClusteringNN(ClusteringBase):
             pha = np.array([event(_col, _row) for _col, _row in zip(col, row)])
         # Zero suppressing the event (whatever the readout type)...
         pha = self.zero_suppress(pha)
-        grid = self.zero_suppress(grid)
         # Array indexes in order of decreasing pha---note that we use -pha to
         # trick argsort into sorting values in decreasing order.
         idx = np.argsort(-pha)
@@ -130,10 +131,11 @@ class ClusteringNN(ClusteringBase):
         # neighbors are used for track reconstruction.
         mask = idx[:self.num_neighbors + 1]
         # If there's any zero left in the target pixels, get rid of it.
-        mask = mask[pha[mask] > 0]
+        if self.model is None:
+            mask = mask[pha[mask] > 0]
         # Trim the relevant arrays.
         col = col[mask]
         row = row[mask]
         pha = pha[mask]
         x, y = self.grid.pixel_to_world(col, row)
-        return Cluster(x, y, pha, grid, self.gamma, self.model)
+        return Cluster(x, y, pha, gamma=self.gamma, model=self.model)

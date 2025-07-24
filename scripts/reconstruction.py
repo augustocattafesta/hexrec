@@ -21,6 +21,7 @@ __description__ = \
 PARSER = ArgumentParser(description=__description__)
 PARSER.add_infile()
 PARSER.add_reconstruction_options()
+PARSER.add_nnet_recon_options()
 
 def hxrecon(**kwargs):
     """Application main entry point.
@@ -34,11 +35,17 @@ def hxrecon(**kwargs):
     logger.info(f'Readout chip: {readout}')
 
     model = None
-    if kwargs['nnmodel'] is not None:
-        model = ModelBase.load(kwargs['nnmodel'])
+    if kwargs['rcmethod'] == 'nnet':
+        if kwargs['nnmodel'] == 'pretrained':
+            model = ModelBase.load_pretrained()
+        elif kwargs['nnmodel'] == 'custom':
+            if kwargs['modelname'] is not None:
+                model = ModelBase.load(kwargs['modelname'])
+            else:
+                raise RuntimeError('insert a custom model name --modelname MODELNAME')
 
     clustering = ClusteringNN(readout, kwargs['zsupthreshold'], kwargs['nneighbors'],
-                              kwargs['gamma'], model)
+                              kwargs['gamma'],model=model)
     suffix = kwargs['suffix']
     output_file_path = input_file_path.replace('.h5', f'_{suffix}.h5')
     # ... and saved into an output file.

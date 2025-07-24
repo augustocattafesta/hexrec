@@ -52,10 +52,11 @@ class ModelBase:
     def train(self, xdata: np.ndarray, ydata: np.ndarray, epochs: int,
               val_split: float = 0.2, **kwargs) -> None:
         
-        self.model.fit(xdata, ydata, epochs=epochs, 
+        return self.model.fit(xdata, ydata, epochs=epochs, 
                        validation_split=val_split, **kwargs)
 
-    def evaluate(self, xdata: np.ndarray):
-        prediction = self.model({'input_layer': xdata})
+    def predict(self, xdata: np.ndarray):
+        input_layer_name = self.model.layers[0].name
+        prediction = self.model({input_layer_name: xdata})
 
         return  prediction.numpy()
