@@ -128,7 +128,7 @@ def analyze(**kwargs):
     logger.info(f'x-axis mean: {mean:.3f}')
     logger.info(f'x-axis rms: {std:.3f}')
 
-    # X axis position difference 
+    # Y axis position difference 
     dy = (y_mc - y_rc)/pitch
 
     dy_bins = np.linspace(min(dy), max(dy), bins)
@@ -142,6 +142,12 @@ def analyze(**kwargs):
 
     logger.info(f'y-axis mean: {mean:.3f}')
     logger.info(f'y-axis rms: {std:.3f}')
+
+    # 2D histogram position differences
+    plt.figure('X and Y position difference')
+    h_dxy = Histogram2d(dx_bins, dy_bins, 'dx/pitch', 'dy/pitch')
+    h_dxy.fill(dx, dy).plot(logz=False)
+    plt.tight_layout()
 
 if __name__ == '__main__':
     analyze(**vars(PARSER.parse_args()))
