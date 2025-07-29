@@ -12,7 +12,7 @@ from hexsample.recon import ReconEvent
 from hexrec.app import ArgumentParser
 from hexrec.clustering import ClusteringNN
 from hexrec.recon import ReconEventFitted, ReconEventNNet
-from hexrec.network import ModelBase
+from hexrec.network import ModelBase, ModelDNN, ModelGNN
 
 __description__ = \
 """Run the reconstruction on a file produced by hxsim.py
@@ -35,17 +35,22 @@ def hxrecon(**kwargs):
     logger.info(f'Readout chip: {readout}')
 
     model = None
-    if kwargs['rcmethod'] == 'nnet':
+    if kwargs['rcmethod'] == 'dnn':
         if kwargs['nnmodel'] == 'pretrained':
-            model = ModelBase.load_pretrained()
+            model = ModelDNN.load_pretrained()
         elif kwargs['nnmodel'] == 'custom':
             if kwargs['modelname'] is not None:
-                model = ModelBase.load(kwargs['modelname'])
+                model = ModelDNN.load(kwargs['modelname'])
             else:
                 raise RuntimeError('insert a custom model name --modelname MODELNAME')
+    elif kwargs['rcmethod'] == 'gnn':
+        if kwargs['nnmodel'] == 'pretrained':
+            model = ModelGNN.load_pretrained()
+        else:
+            raise RuntimeError('only pretrained model available')
 
     clustering = ClusteringNN(readout, kwargs['zsupthreshold'], kwargs['nneighbors'],
-                              kwargs['gamma'],model=model)
+                              header['pitch'], kwargs['gamma'], model=model)
     suffix = kwargs['suffix']
     output_file_path = input_file_path.replace('.h5', f'_{suffix}.h5')
     # ... and saved into an output file.
@@ -61,7 +66,7 @@ def hxrecon(**kwargs):
                 recon_event = ReconEvent(*args)
             elif kwargs['rcmethod'] == 'fit':
                 recon_event = ReconEventFitted(*args)
-            elif kwargs['rcmethod'] == 'nnet':
+            elif kwargs['rcmethod'] == 'dnn' or kwargs['rcmethod'] == 'gnn':
                 recon_event = ReconEventNNet(*args)
             else:
                 raise RuntimeError

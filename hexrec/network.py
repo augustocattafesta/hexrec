@@ -10,6 +10,7 @@ from typing import Tuple
 
 from loguru import logger
 import numpy as np
+import matplotlib.pyplot as plt
 import keras
 from keras.layers import Input
 from keras.optimizers import Adam
@@ -216,6 +217,7 @@ class ModelGNN(ModelBase):
         loss_function = torch.nn.MSELoss()
         best_val_loss = float('inf')
 
+        self.history = {'loss':[], 'val_loss':[]}
         for epoch in range(1, epochs):
             self.model.train()
             total_loss = 0
@@ -227,9 +229,10 @@ class ModelGNN(ModelBase):
                 optimizer.step()
                 optimizer.zero_grad()
                 total_loss += loss.item()
-                num_bathces += 1
+                num_batches += 1
             
             avg_train_loss = total_loss / num_batches
+            self.history['loss'].append(avg_train_loss)
             if kwargs.get('verbose', True):
                 logger.info(f'Epoch {epoch:03d} -- Train Loss {avg_train_loss:.4f}')
             
@@ -244,6 +247,7 @@ class ModelGNN(ModelBase):
                         val_batches += 1
 
                 avg_val_loss = val_loss / val_batches
+                self.history['val_loss'].append(avg_val_loss)
                 if kwargs.get('verbose', True):
                     logger.info(f'\t\t -- Val Loss {avg_val_loss:.4f}')
             
@@ -253,6 +257,13 @@ class ModelGNN(ModelBase):
                     model_name = kwargs.get('name', 'model.pt')
                     self.save(model_name)
                     logger.info(f'\t\t -- Model saved ({model_name})')
+        
+        self.plot_history()
+
+    def plot_history(self):
+        plt.plot(self.history['loss'], label='loss')
+        plt.plto(self.history['val_loss'], label='val_loss')
+        plt.show()
 
     def predict(self, xdata: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         predict_loader = self.data_loader(xdata)

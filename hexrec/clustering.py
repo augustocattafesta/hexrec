@@ -13,11 +13,25 @@ from hexsample.modeling import PowerLaw
 from hexrec.network import ModelDNN, ModelGNN, ModelBase
 
 class Cluster(Cluster):
-    def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray, 
+    def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray, pitch: float = None,
                 gamma: float = None, model: ModelBase =None) -> None:
         super().__init__(x, y, pha)
         self.gamma = gamma
         self.model = model
+        self.pitch = pitch
+
+    @property
+    def xdata(self):
+        if self.model is not None:
+            pha_norm = self.pha / self.pulse_height()
+            x_norm = (self.x - self.x[0]) / self.pitch
+            y_norm = (self.y - self.y[0]) / self.pitch
+
+            data_array = np.array([pha_norm, x_norm, y_norm]).T  
+            if type(self.model) == ModelDNN:
+                return data_array.reshape(1, 21)
+            elif type(self.model) == ModelGNN:
+                return data_array
 
     def size(self) -> int:
         """Return the size of the cluster, calculated as the number of
@@ -27,18 +41,17 @@ class Cluster(Cluster):
         return np.count_nonzero(self.pha)
 
     def fitted_position(self) -> Tuple[float, float]:
-        """Return the reconstructed position of a two pixels cluster
+        """Return the reconstructed position of a two pixel cluster
         using the eta function fit 
         """
         if not self.x.shape[0] == 2:
             raise RuntimeError(f'Cluster must contain only 2 pixels')
         
         diff = np.array([np.diff(self.x), np.diff(self.y)])
-        pitch = np.sqrt(np.sum(diff**2))
-        n = diff / pitch
+        n = diff / self.pitch
 
         eta = self.pha[1] / self.pulse_height()
-        r_fit = PowerLaw().eval(eta/0.5, 0.5, self.gamma)*pitch
+        r_fit = PowerLaw().eval(eta/0.5, 0.5, self.gamma)*self.pitch
 
         x_fit = self.x[0] + r_fit * n[0]
         y_fit = self.y[0] + r_fit * n[1]
@@ -49,21 +62,9 @@ class Cluster(Cluster):
         """Return the reconstructed position of a pixels cluster
         using a neural network model 
         """
-        diff = np.array([np.diff(self.x[:2]), np.diff(self.y[:2])])
-        pitch = np.sqrt(np.sum(diff**2))
-
-        pha_norm = self.pha / self.pulse_height()
-        x_norm = (self.x - self.x[0]) / pitch
-        y_norm = (self.y - self.y[0]) / pitch
-
-        if type(self.model) == ModelDNN:
-            xdata = np.array([pha_norm, x_norm, y_norm]).T.reshape(1, len(self.pha)*3)
-        elif type(self.model) == ModelGNN:
-            xdata = np.stack((pha_norm, x_norm, y_norm), axis=2)
-
-        x_pred, y_pred = self.model.predict(xdata)
-        x_net = self.x[0] + x_pred*pitch
-        y_net = self.y[0] + y_pred*pitch
+        x_pred, y_pred = self.model.predict(self.xdata)
+        x_net = self.x[0] + x_pred*self.pitch
+        y_net = self.y[0] + y_pred*self.pitch
 
         return x_net, y_net
 
@@ -84,8 +85,10 @@ class ClusteringNN(ClusteringBase):
     """
 
     num_neighbors: int
+    pitch: float = None
     gamma: float = None
     model: ModelBase = None
+    
 
     def run(self, event) -> Cluster:
         """Overladed method.
@@ -142,4 +145,4 @@ class ClusteringNN(ClusteringBase):
         row = row[mask]
         pha = pha[mask]
         x, y = self.grid.pixel_to_world(col, row)
-        return Cluster(x, y, pha, gamma=self.gamma, model=self.model)
+        return Cluster(x, y, pha, pitch=self.pitch, gamma=self.gamma, model=self.model)
