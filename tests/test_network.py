@@ -11,9 +11,10 @@ from keras.optimizers import Adam
 from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from keras.models import Model
 
-from hexrec.network import ModelBase
+from hexrec.network import ModelDNN, ModelGNN, GNNRegression
 
-def test_save_load(size=1000):
+
+def test_save_load_DNN(size=1000):
     """Test of save, train and load methods of ModelBase class
     """
     xdata_train = np.random.uniform(0, 1, size=(size, 1))
@@ -27,7 +28,7 @@ def test_save_load(size=1000):
     model = Model(inputs=inputs, outputs=outputs)
     model.compile('adam', loss='mse')
 
-    modelbase = ModelBase(model)
+    modelbase = ModelDNN(model)
     logger.info('Training the network')
     history = modelbase.train(xdata_train, ydata_train, 30, verbose=False)
     logger.info('Training completed')
@@ -37,7 +38,7 @@ def test_save_load(size=1000):
     logger.info(f'NN Model save to {model_path}')
 
     # Loading the model
-    loaded_model = ModelBase.load(model_path)
+    loaded_model = ModelDNN.load(model_path)
     logger.info(f'NN Model loaded from {model_path}')
     logger.info(f'{loaded_model.model.summary()}')
 
@@ -54,10 +55,10 @@ def test_save_load(size=1000):
     plt.plot(history.history['val_loss'], label='val_loss')
     plt.xlabel('Epoch')
 
-def test_load_pretrained(size=10):
+def test_load_pretrained_DNN(size=10):
     """Test of pretrained models
     """
-    pretrained = ModelBase.load_pretrained()
+    pretrained = ModelDNN.load_pretrained()
     logger.info(f'{pretrained.model.summary()}')
 
     # Test with some data
@@ -65,10 +66,39 @@ def test_load_pretrained(size=10):
     xpos = np.array([ 0.,  -0.5,  0.5,  1.,   0.5, -1.,  -0.5])
     ypos = np.array([ 0., -0.8660254,  0.8660254,  0., -0.8660254,  0., 0.8660254])
     x_data = np.array([pha/pha.sum(), xpos, ypos]).T.flatten()
-    y_pred = pretrained.predict(np.array([x_data]))
+    x_pred, y_pred = pretrained.predict(np.array([x_data]))
 
-    logger.info(f'Pretrained network prediction: {y_pred[0]}')
+    logger.info(f'Pretrained network prediction: {x_pred, y_pred}')
+
+def test_event_to_graph():
+    pha = np.random.randint(0, 100, 7)
+    xpos = np.array([ 0.,  -0.5,  0.5,  1.,   0.5, -1.,  -0.5])
+    ypos = np.array([ 0., -0.8660254,  0.8660254,  0., -0.8660254,  0., 0.8660254])
+    xdata = np.array([pha, xpos, ypos]).T
+    ydata = np.array([0.1, 0.1])
+
+    logger.info(f'Array shape: {xdata.shape}')
+
+    graph = ModelGNN.event_to_graph(xdata)
+    logger.info(f'Graph without ydata: {graph}')
+    graph_xy = ModelGNN.event_to_graph(xdata, ydata)
+    logger.info(f'Graph with ydata: {graph_xy}')
+
+    data_loaded = ModelGNN.data_loader(xdata)
+    logger.info(f'Data loaded: {data_loaded}')
+    data_loaded_xy = ModelGNN.data_loader(xdata, ydata)
+    logger.info(f'Data loaded with ydata: {data_loaded_xy}')
+
+def test_load_GNN():
+    # model = GNNRegression()
+    # instance = ModelGNN(model)
+    # instance.load('/home/augusto/hexrec/hexrec/models/modelGNN.pt')
+
+    model = ModelGNN.load_pretrained()
+    
 
 if __name__ == '__main__':
-    test_save_load()
-    test_load_pretrained()
+    # test_save_load_DNN()
+    test_load_pretrained_DNN()
+    # test_load_GNN()
+    # test_event_to_graph()

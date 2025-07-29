@@ -10,11 +10,11 @@ from hexsample.readout import HexagonalReadoutCircular
 from hexsample.clustering import Cluster, ClusteringBase
 from hexsample.modeling import PowerLaw
 
-from hexrec.network import ModelBase
+from hexrec.network import ModelDNN, ModelGNN, ModelBase
 
 class Cluster(Cluster):
     def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray, 
-                gamma: float = None, model: ModelBase = None) -> None:
+                gamma: float = None, model: ModelBase =None) -> None:
         super().__init__(x, y, pha)
         self.gamma = gamma
         self.model = model
@@ -56,8 +56,12 @@ class Cluster(Cluster):
         x_norm = (self.x - self.x[0]) / pitch
         y_norm = (self.y - self.y[0]) / pitch
 
-        xdata = np.array([pha_norm, x_norm, y_norm]).T.reshape(1, len(self.pha)*3)
-        (x_pred, y_pred) = self.model.predict(xdata)[0]
+        if type(self.model) == ModelDNN:
+            xdata = np.array([pha_norm, x_norm, y_norm]).T.reshape(1, len(self.pha)*3)
+        elif type(self.model) == ModelGNN:
+            xdata = np.stack((pha_norm, x_norm, y_norm), axis=2)
+
+        x_pred, y_pred = self.model.predict(xdata)
         x_net = self.x[0] + x_pred*pitch
         y_net = self.y[0] + y_pred*pitch
 
