@@ -79,7 +79,7 @@ class ArgumentParser(ArgumentParser):
             help='number of neighbors to be considered (0--6)')
         group.add_argument('--npixels', type=int, default=2,
             help='cluster size of events to analyze, -1 means all events')
-        group.add_argument('--rcmethod', choices=['centroid', 'fit', 'nnet'], type=str,
+        group.add_argument('--rcmethod', choices=['centroid', 'fit', 'dnn', 'gnn'], type=str,
             default='centroid', help='How to reconstruct position')
         group.add_argument('--gamma', default=0.272, type=float,
             help='index of the power law for position fit')
@@ -95,8 +95,8 @@ class ArgumentParser(ArgumentParser):
         """Add an option group for neural network
         """
         group = self.add_argument_group('nnetwork', 'Options for event neural network training')
-        group.add_argument('--npixels', type=int, default=-1,
-            help='cluster size of events to analyze, -1 means all events')
+        # group.add_argument('--npixels', type=int, default=-1,
+        #     help='cluster size of events to analyze, -1 means all events')
         group.add_argument('--epochs', type=int, default=10,
             help='number of epochs for training')
 

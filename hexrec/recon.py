@@ -24,9 +24,6 @@ class ReconEventFitted:
     livetime : int
         The livetime (in us) since the last event.
 
-    roi_size : int
-        The ROI size for the event.
-
     cluster : Cluster
         The reconstructed cluster for the event.
     """
@@ -34,7 +31,6 @@ class ReconEventFitted:
     trigger_id: int
     timestamp: float
     livetime: int
-    #roi_size: int
     cluster: Cluster
 
     def energy(self, ionization_potential: float = DEFAULT_IONIZATION_POTENTIAL) -> float:
@@ -68,9 +64,6 @@ class ReconEventNNet:
     livetime : int
         The livetime (in us) since the last event.
 
-    roi_size : int
-        The ROI size for the event.
-
     cluster : Cluster
         The reconstructed cluster for the event.
     """
@@ -78,7 +71,6 @@ class ReconEventNNet:
     trigger_id: int
     timestamp: float
     livetime: int
-    #roi_size: int
     cluster: Cluster
 
     def energy(self, ionization_potential: float = DEFAULT_IONIZATION_POTENTIAL) -> float:

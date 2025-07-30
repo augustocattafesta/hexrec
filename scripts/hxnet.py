@@ -18,7 +18,7 @@ from hexsample.recon import ReconEvent
 
 from hexrec.app import ArgumentParser
 from hexrec.clustering import ClusteringNN
-from hexrec.network import ModelBase
+from hexrec.network import ModelBase, ModelGNN, ModelDNN, GNNRegression
 
 
 
@@ -41,47 +41,29 @@ def hxnet(**kwargs):
     readout = HexagonalReadoutCircular(*args)
     logger.info(f'Readout chip: {readout}')
 
-    # Devo modificare il clustering, serve che restituisca una matrice 3x3
-    # Ma dipende da quanti modelli voglio usare, se tutti CNN oppure no
-    # Comunque la grid 3x3 mi da invarianza sulla posizione dei pixel perchè
-    # non c'è dipendenza dagli adc, mentre se uso il pha ho dipendenza dalla posizione
-    clustering = ClusteringNN(readout, kwargs['zsupthreshold'], kwargs['nneighbors'],
-                              kwargs['gamma'])
+    # Define NN model
+    gnn_model = GNNRegression()
+    model = ModelGNN(gnn_model)
 
-    # devo mettere un'opzione per maskare a seconda di quanti pixel voglio, forse
-    # mi basta mettere se ne voglio due oppure tutti
+    clustering = ClusteringNN(readout, kwargs['zsupthreshold'], kwargs['nneighbors'],
+                              header['pitch'], kwargs['gamma'], model)
+
     xdata = []
     ydata = []
     for i, event in tqdm(enumerate(input_file)):
         cluster = clustering.run(event)
         if kwargs['npixels'] == -1 or cluster.size() == kwargs['npixels']:
-            xdata.append(cluster.grid)
+            xdata.append(cluster.xdata)
             mc_event = input_file.mc_event(i)
             ydata.append([mc_event.absx - cluster.x[0], mc_event.absy - cluster.y[0]])
 
     input_file.close()
 
-    xdata = np.array(xdata) / np.sum(xdata, axis=(1,2), keepdims=True)
+    xdata = np.array(xdata)
     ydata = np.array(ydata) / header['pitch']
 
-    # Opzioni per la rete: loss, optimizer (learning rate), 
-    inputs = Input(shape=(3,3,1))
-    h = Conv2D(4, (2,2), activation='relu')(inputs)
-    h = Flatten()(h)
-    h = Dense(4, activation='relu')(h)
-    outputs = Dense(2, activation='linear')(h)
-    optimizer = Adam(learning_rate=0.0001)
-
-    model = Model(inputs=inputs, outputs=outputs)
-
-    model.compile(loss='mse', optimizer=optimizer)
-    # add argument for callbacks, with early stopping, fixing the patience, and
-    # ReduceLRonplateu, fixing, factor, min lr
-    # also add an option for optimizer
-    # would be nice to have an output logging file with all info
-    modelbase = ModelBase(model)
-    modelbase.train(xdata, ydata, epochs=kwargs['epochs'])
-    modelbase.save(kwargs['nnmodel'])
+    model.train(xdata, ydata, epochs=kwargs['epochs'])
+    model.save(kwargs['nnmodel'])
 
 if __name__ == '__main__':
     hxnet(**vars(PARSER.parse_args()))

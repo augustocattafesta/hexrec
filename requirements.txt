@@ -10,4 +10,7 @@ uncertainties
 xraydb
 keras==3.10
 tensorflow==2.19.0
+torch
+torch_geometric
+scikit-learn
 git+https://github.com/lucabaldini/hexsample.git@main#egg=hexsample
