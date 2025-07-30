@@ -66,7 +66,9 @@ def test_load_pretrained_DNN(size=10):
     xpos = np.array([ 0.,  -0.5,  0.5,  1.,   0.5, -1.,  -0.5])
     ypos = np.array([ 0., -0.8660254,  0.8660254,  0., -0.8660254,  0., 0.8660254])
     x_data = np.array([pha/pha.sum(), xpos, ypos]).T.flatten()
-    x_pred, y_pred = pretrained.predict(np.array([x_data]))
+    predictions = pretrained.predict(np.array([x_data]))
+    x_pred = predictions[:, 0]
+    y_pred = predictions[:, 1]
 
     logger.info(f'Pretrained network prediction: {x_pred, y_pred}')
 
