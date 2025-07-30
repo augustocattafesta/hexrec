@@ -62,7 +62,10 @@ class Cluster(Cluster):
         """Return the reconstructed position of a pixels cluster
         using a neural network model 
         """
-        x_pred, y_pred = self.model.predict(self.xdata)
+        predictions = self.model.predict(self.xdata)
+        x_pred = predictions[:, 0]
+        y_pred = predictions[:, 1]
+        
         x_net = self.x[0] + x_pred*self.pitch
         y_net = self.y[0] + y_pred*self.pitch
 

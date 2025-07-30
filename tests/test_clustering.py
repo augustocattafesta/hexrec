@@ -33,7 +33,7 @@ def test_cluster():
     x_cen = np.zeros_like(eta)
 
     for i, _pha in enumerate(pha):
-        cluster = Cluster(x, y, _pha, gamma=0.25)
+        cluster = Cluster(x, y, _pha, pitch=pitch, gamma=0.25)
         x_fit[i], _ = cluster.fitted_position()
         x_cen[i], _ = cluster.centroid()
 

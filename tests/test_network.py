@@ -98,7 +98,7 @@ def test_load_GNN():
     
 
 if __name__ == '__main__':
-    # test_save_load_DNN()
+    test_save_load_DNN()
     test_load_pretrained_DNN()
-    # test_load_GNN()
-    # test_event_to_graph()
+    test_load_GNN()
+    test_event_to_graph()

@@ -107,7 +107,7 @@ class ModelDNN(ModelBase):
         prediction = self.model({input_layer_name: xdata})
         prediction = prediction.numpy()
 
-        return  prediction[:, 0], prediction[:, 1]
+        return  prediction
 
 @dataclass
 class ModelGNN(ModelBase):
@@ -277,7 +277,7 @@ class ModelGNN(ModelBase):
         
         predictions = np.array(predictions)
 
-        return predictions[:, 0], predictions[:, 1]
+        return predictions
 
 class GNNRegression(torch.nn.Module):
     def __init__(self):
