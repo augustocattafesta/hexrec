@@ -87,4 +87,3 @@ class ReconEventNNet:
         """Return the reconstructed position of the event.
         """
         return self.cluster.nnet_position()
-

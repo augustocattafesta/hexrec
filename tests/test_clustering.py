@@ -5,44 +5,127 @@ from loguru import logger
 import numpy as np
 import matplotlib.pyplot as plt
 
-from hexsample.hexagon import HexagonalGrid, HexagonalLayout
+from hexsample.hexagon import HexagonalLayout
 
 from hexrec.clustering import Cluster
+from hexrec.hexagon import HexagonalGrid
+from hexrec.network import ModelGNN, ModelDNN
 
-def test_cluster():
-    """Test and compare the methods for estimate the reconstructed position.
+def test_cluster_centroid(size=10):
+    """Test centroid position reconstruction
     """
-    # Should add also the neural network position.
     pitch = 0.005
     grid = HexagonalGrid(HexagonalLayout('ODD_R'), 10, 10, pitch)
 
-    x0, y0 = 0, 0
-    pix0 = grid.pixel_to_world(*grid.world_to_pixel(x0, y0))
-    pix1 = grid.pixel_to_world(*grid.world_to_pixel(x0+pitch, y0))
-    logger.debug(f'Pixel 0 position: {pix0}')
-    logger.debug(f'Pixel 1 position: {pix1}')
+    x0, y0 = grid.pixel_to_world(*grid.world_to_pixel(0, 0))
+    x = [x0]
+    y = [y0]
 
-    x = np.array([pix0[0], pix1[0]])
-    y = np.array([pix0[1], pix1[1]])
+    for _col, _row in grid.neighbors(*grid.world_to_pixel(x0, y0)):
+        _x, _y = grid.pixel_to_world(_col, _row)
+        x.append(_x)
+        y.append(_y)
 
-    pulse_height = 100
-    eta = np.linspace(0, 0.5, 100)
-    pha = np.array([[1-_eta, _eta] for _eta in eta])*pulse_height
+    x = np.array(x)
+    y = np.array(y)
 
-    x_fit = np.zeros_like(eta)
-    x_cen = np.zeros_like(eta)
+    peak = 1000
+    pha = np.sort(np.random.randint(0, peak, (size, len(x))))[:, ::-1]
 
+    x_centroid = np.zeros(size)
+    y_centroid = np.zeros(size)
+    for i, _pha in enumerate(pha):
+        cluster = Cluster(x, y, _pha)
+        x_centroid[i], y_centroid[i] = cluster.centroid()
+
+    plt.figure('Centroid reconstruction')
+    plt.scatter(x_centroid, y_centroid, s=1)
+    plt.xlabel('X position [cm]')
+    plt.xlabel('Y position [cm]')
+
+def test_cluster_eta(size=10):
+    """Test eta event reconstruction and compare with centroid reconstruction.
+    """
+    pitch = 0.005
+    grid = HexagonalGrid(HexagonalLayout('ODD_R'), 10, 10, pitch)
+
+    x0, y0 = grid.pixel_to_world(*grid.world_to_pixel(0, 0))
+    x = [x0]
+    y = [y0]
+
+    for _col, _row in grid.neighbors(*grid.world_to_pixel(x0, y0))[:1]:
+        _x, _y = grid.pixel_to_world(_col, _row)
+        x.append(_x)
+        y.append(_y)
+
+    x = np.array(x)
+    y = np.array(y)
+
+    peak = 1000
+    pha = np.sort(np.random.randint(0, peak, (size, len(x))))[:, ::-1]
+    eta = pha[:, 1] / (pha[:, 0] + pha[:, 1])
+
+    eta_position = np.zeros((size, 2))
+    centroid_position = np.zeros((size, 2))
     for i, _pha in enumerate(pha):
         cluster = Cluster(x, y, _pha, pitch=pitch, gamma=0.25)
-        x_fit[i], _ = cluster.fitted_position()
-        x_cen[i], _ = cluster.centroid()
+        eta_position[i] = cluster.fitted_position()
+        centroid_position[i] = cluster.centroid()
 
-    plt.plot(eta, (x_fit - x[0])/pitch, '-k', label='fit')
-    plt.plot(eta, (x_cen - x[0])/pitch, '-b', label='centroid')
+    dr_fit = np.sqrt((eta_position[:, 0] - x[0])**2 + (eta_position[:, 1] - y[0])**2)
+    dr_cent = np.sqrt((centroid_position[:, 0] - x[0])**2 + (centroid_position[:, 1] - y[0])**2)
+    plt.figure('Eta and centroid comparison')
+    plt.scatter(eta, dr_fit/pitch, s=1, color='k', label='fit')
+    plt.scatter(eta, dr_cent/pitch, s=1, color='b', label='centroid')
     plt.xlabel('eta')
-    plt.ylabel('x_rc / pitch')
+    plt.ylabel('dr / pitch')
+    plt.legend()
+
+def test_cluster_nnet(size=10):
+    """Test neural network position reconstruction
+    """
+    pitch = 0.005
+    grid = HexagonalGrid(HexagonalLayout('ODD_R'), 10, 10, pitch)
+
+    x0, y0 = grid.pixel_to_world(*grid.world_to_pixel(0, 0))
+    x = [x0]
+    y = [y0]
+
+    for _col, _row in grid.neighbors(*grid.world_to_pixel(x0, y0)):
+        _x, _y = grid.pixel_to_world(_col, _row)
+        x.append(_x)
+        y.append(_y)
+
+    x = np.array(x)
+    y = np.array(y)
+
+    peak = 1000
+    pha = np.sort(np.random.randint(0, peak, (size, len(x))))[:, ::-1]
+
+    gnn = ModelGNN.load_pretrained()
+    dnn = ModelDNN.load_pretrained()
+
+    gnn_position = []
+    dnn_position = []
+    for i, _pha in enumerate(pha):
+        cluster_gnn = Cluster(x, y, _pha, pitch=pitch, model=gnn)
+        cluster_dnn = Cluster(x, y, _pha, pitch=pitch, model=dnn)
+
+        gnn_position.append(cluster_gnn.nnet_position())
+        dnn_position.append(cluster_dnn.nnet_position())
+
+    gnn_position = np.array(gnn_position)
+    dnn_position = np.array(dnn_position)
+    
+    plt.figure('Neural network reconstruction')
+    plt.scatter(gnn_position[:, 0], gnn_position[:, 1], color='k', s=1, label='gnn')
+    plt.scatter(dnn_position[:, 0], dnn_position[:, 1], color='b', s=1, label='dnn')
+    plt.xlabel('X position [cm]')
+    plt.ylabel('Y position [cm]')
     plt.legend()
 
 if __name__ == '__main__':
-    test_cluster()
+    test_cluster_centroid(size=10000)
+    test_cluster_eta(size=1000)
+    test_cluster_nnet(size=1000)
     plt.show()

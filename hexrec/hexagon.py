@@ -4,17 +4,23 @@ from typing import Tuple
 
 import numpy as np
 
-from hexsample.hexagon import HexagonalLayout, HexagonalGrid
+from hexsample.hexagon import HexagonalGrid as HexagonalGridHexsample
 
-class HexagonalGrid(HexagonalGrid):
+class HexagonalGrid(HexagonalGridHexsample):
     """Extension of HexagonalGrid from hexsample
     """
-    def __init__(self, layout: HexagonalLayout, num_cols: int, num_rows: int,
-                 pitch: float) -> None:
-        super().__init__(layout, num_cols, num_rows, pitch)
 
     @staticmethod
     def create_rotator(theta: float):
+        """Create a 2D rotation function for a given angle
+
+        Args:
+            theta (float): the rotation angle in radians
+
+        Returns:
+            function: function that takes 2D vectors and returns the vector rotated
+            by theta radians
+        """
         c = np.cos(theta)
         s = np.sin(theta)
         def rotate(v):

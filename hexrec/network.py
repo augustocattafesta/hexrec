@@ -1,6 +1,5 @@
-# Deve contenere il necessario per gestire i modelli (training, salvataggio, caricamento e valutazione)
-# Si può anche inserire l'utilizzo di tflite, utile per valutare in cicli for
-
+"""Module to handle neural networks
+"""
 
 from dataclasses import dataclass
 from importlib import resources
@@ -12,17 +11,12 @@ from loguru import logger
 import numpy as np
 import matplotlib.pyplot as plt
 import keras
-from keras.layers import Input
-from keras.optimizers import Adam
-from keras.callbacks import EarlyStopping, ReduceLROnPlateau
-from keras.models import Model
-
 import torch
 from torch_geometric.data import Data
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn import GCNConv, global_mean_pool
-
 from sklearn.model_selection import train_test_split
+
 
 from hexrec import HEXREC_MODELS
 
@@ -44,7 +38,7 @@ class ModelBase:
         This needs to be overloaded by any derived classes.
         """
         raise NotImplementedError
-    
+
     @classmethod
     def load_pretrained(cls) -> 'ModelBase':
         """Load the pre-trained model of the package
@@ -52,14 +46,15 @@ class ModelBase:
         This needs to be overloaded by any derived classes.
         """
         raise NotImplementedError
-    
-    def train(self, *args) -> None:
+
+    def train(self, xdata: np.ndarray, ydata: np.ndarray, epochs: int,
+              val_split: float = 0.2, **kwargs):
         """Train the neural network
 
         This needs to be overloaded by any derived classes.
         """
         raise NotImplementedError
-        
+
     def predict(self, xdata: np.ndarray) -> np.ndarray:
         """Generate the predicted output for the input sample
         
@@ -97,17 +92,21 @@ class ModelDNN(ModelBase):
             return cls.load(str(model_path))
 
     def train(self, xdata: np.ndarray, ydata: np.ndarray, epochs: int,
-              val_split: float = 0.2, **kwargs) -> None:
-        
-        return self.model.fit(xdata, ydata, epochs=epochs, 
+              val_split: float = 0.2, **kwargs):
+        """Overloaded method
+        """
+
+        return self.model.fit(xdata, ydata, epochs=epochs,
                        validation_split=val_split, **kwargs)
 
     def predict(self, xdata: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+        """Overloaded method
+        """
         input_layer_name = self.model.layers[0].name
         prediction = self.model({input_layer_name: xdata})
         prediction = prediction.numpy()
 
-        return  prediction
+        return prediction
 
 @dataclass
 class ModelGNN(ModelBase):
@@ -154,7 +153,6 @@ class ModelGNN(ModelBase):
 
         nodes = torch.tensor(xdata, dtype=torch.float)
 
-        
         edge_list = [[0, i] for i in range(1, 7)] + [[i, 0] for i in range(1, 7)]
         positions = xdata[:, 1:]
         for i in range(1, 7):
@@ -174,36 +172,43 @@ class ModelGNN(ModelBase):
         data = Data(x=nodes, edge_index=edge_index, y=y)
 
         return data
-    
+
     @staticmethod
-    def data_loader(xdata: np.ndarray, ydata: np.ndarray = None, batch_size: int = 16, **kwargs) -> DataLoader:
+    def data_loader(xdata: np.ndarray, ydata: np.ndarray = None, batch_size: int = 16,
+                    **kwargs) -> DataLoader:
         """Prepare data for training or prediction
 
         Args:
-            xdata (np.ndarray): data for training or prediction. Shape must be (7, 3) for single data, or (N, 7, 3)
-                for multiple data
+            xdata (np.ndarray): data for training or prediction. Shape must be (7, 3) for 
+                single data, or (N, 7, 3) for multiple data
+
             ydata (np.ndarray, optional): data for training. Shape must be (2,) for single data
                 or (N, 2) for multiple data
-
-        Returns:
-            DataLoader: _description_
         """
+        # Check if there is only an event (7, 3)
         if len(xdata.shape) == 2:
             assert xdata.shape == (7, 3)
             dataset = [ModelGNN.event_to_graph(xdata, ydata)]
-        
+        # Or multiple events (N, 7, 3)
         elif len(xdata.shape) == 3:
             assert xdata.shape[1:] == (7, 3)
             if ydata is not None:
-                dataset = [ModelGNN.event_to_graph(_xdata, _ydata) for _xdata, _ydata in zip(xdata, ydata)]
+                dataset = [ModelGNN.event_to_graph(_xdata, _ydata) for _xdata, _ydata
+                           in zip(xdata, ydata)]
             else:
                 dataset = [ModelGNN.event_to_graph(_xdata) for _xdata in xdata]
+        else:
+            raise RuntimeError(f'''Incorrect xdata dimension: {xdata.shape}.
+                               Must be (7, 3) or (N, 7, 3)''')
 
         dataset_loader = DataLoader(dataset, batch_size=batch_size, **kwargs)
 
         return dataset_loader
 
-    def train(self, xdata: np.ndarray, ydata: np.ndarray, epochs: int, val_split: float = 0.2, **kwargs) -> None:
+    def train(self, xdata: np.ndarray, ydata: np.ndarray, epochs: int, val_split: float = 0.2,
+              **kwargs) -> None:
+        """Overloaded method
+        """
         if val_split != 0.:
             xdata_train, xdata_val, ydata_train, ydata_val = train_test_split(
                 xdata, ydata, test_size=val_split)
@@ -230,12 +235,12 @@ class ModelGNN(ModelBase):
                 optimizer.zero_grad()
                 total_loss += loss.item()
                 num_batches += 1
-            
+
             avg_train_loss = total_loss / num_batches
             self.history['loss'].append(avg_train_loss)
             if kwargs.get('verbose', True):
                 logger.info(f'Epoch {epoch:03d} -- Train Loss {avg_train_loss:.4f}')
-            
+
             if val_split != 0:
                 self.model.eval()
                 val_loss = 0
@@ -250,22 +255,26 @@ class ModelGNN(ModelBase):
                 self.history['val_loss'].append(avg_val_loss)
                 if kwargs.get('verbose', True):
                     logger.info(f'\t\t -- Val Loss {avg_val_loss:.4f}')
-            
+
             if avg_val_loss < best_val_loss:
                 best_val_loss = avg_val_loss
                 if kwargs.get('save_best', True):
                     model_name = kwargs.get('name', 'model.pt')
                     self.save(model_name)
                     logger.info(f'\t\t -- Model saved ({model_name})')
-        
+
         self.plot_history()
 
-    def plot_history(self):
+    def plot_history(self) -> None:
+        """Plot history of loss and val_loss metrics over training epochs
+        """
         plt.plot(self.history['loss'], label='loss')
-        plt.plto(self.history['val_loss'], label='val_loss')
+        plt.plot(self.history['val_loss'], label='val_loss')
         plt.show()
 
     def predict(self, xdata: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+        """Overloaded method
+        """
         predict_loader = self.data_loader(xdata)
         predictions = []
 
@@ -274,12 +283,14 @@ class ModelGNN(ModelBase):
             for batch in predict_loader:
                 out = self.model(batch.x, batch.edge_index, batch.batch)
                 predictions.extend(out.cpu())
-        
+
         predictions = np.array(predictions)
 
         return predictions
 
 class GNNRegression(torch.nn.Module):
+    """Class to define the architecture of the default GNN model
+    """
     def __init__(self):
         super().__init__()
         self.conv1 = GCNConv(3, 32)
@@ -288,6 +299,8 @@ class GNNRegression(torch.nn.Module):
         self.lin2 = torch.nn.Linear(32, 2)
 
     def forward(self, x, edge_index, batch):
+        """Define activation functions
+        """
         x = torch.nn.functional.relu(self.conv1(x, edge_index))
         x = torch.nn.functional.relu(self.conv2(x, edge_index))
         x = global_mean_pool(x, batch)
