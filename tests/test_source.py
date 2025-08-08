@@ -9,9 +9,10 @@ from loguru import logger
 from hexsample.hist import Histogram1d, Histogram2d
 from hexsample.plot import setup_gca
 from hexsample.display import HexagonalGridDisplay
+from hexsample.hexagon import HexagonalLayout
 
 from hexrec.source import Line, TriangularBeam, HexagonalBeam
-from hexrec.hexagon import HexagonalGrid, HexagonalLayout
+from hexrec.hexagon import HexagonalGrid
 
 def test_triangular_beam(num_photons = 1000000):
     """Test for TriangularBeam class

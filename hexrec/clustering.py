@@ -7,12 +7,15 @@ import numpy as np
 
 from hexsample.digi import DigiEventSparse, DigiEventCircular, DigiEventRectangular
 from hexsample.readout import HexagonalReadoutCircular
-from hexsample.clustering import Cluster, ClusteringBase
+from hexsample.clustering import Cluster as ClusterHexsample
+from hexsample.clustering import ClusteringBase as ClusteringBaseHexsample
 from hexsample.modeling import PowerLaw
 
 from hexrec.network import ModelDNN, ModelGNN, ModelBase
 
-class Cluster(Cluster):
+class Cluster(ClusterHexsample):
+    """Overwritten class Cluster from hexsample
+    """
     def __init__(self, x: np.ndarray, y: np.ndarray, pha: np.ndarray, pitch: float = None,
                 gamma: float = None, model: ModelBase =None) -> None:
         super().__init__(x, y, pha)
@@ -22,16 +25,22 @@ class Cluster(Cluster):
 
     @property
     def xdata(self):
-        if self.model is not None:
-            pha_norm = self.pha / self.pulse_height()
-            x_norm = (self.x - self.x[0]) / self.pitch
-            y_norm = (self.y - self.y[0]) / self.pitch
+        """Return normalized input data for the neural network model.
+        """
+        if self.model is None:
+            return None
 
-            data_array = np.array([pha_norm, x_norm, y_norm]).T  
-            if type(self.model) == ModelDNN:
-                return data_array.reshape(1, 21)
-            elif type(self.model) == ModelGNN:
-                return data_array
+        pha_norm = self.pha / self.pulse_height()
+        x_norm = (self.x - self.x[0]) / self.pitch
+        y_norm = (self.y - self.y[0]) / self.pitch
+
+        data_array = np.array([pha_norm, x_norm, y_norm]).T
+        if isinstance(self.model, ModelDNN):
+            return data_array.reshape(1, 21)
+        if isinstance(self.model, ModelGNN):
+            return data_array
+
+        raise TypeError('Neural Network model not supported')
 
     def size(self) -> int:
         """Return the size of the cluster, calculated as the number of
@@ -45,8 +54,8 @@ class Cluster(Cluster):
         using the eta function fit 
         """
         if not self.x.shape[0] == 2:
-            raise RuntimeError(f'Cluster must contain only 2 pixels')
-        
+            raise RuntimeError('Cluster must contain only 2 pixels')
+
         diff = np.array([np.diff(self.x), np.diff(self.y)])
         n = diff / self.pitch
 
@@ -57,7 +66,7 @@ class Cluster(Cluster):
         y_fit = self.y[0] + r_fit * n[1]
 
         return x_fit[0], y_fit[0]
-    
+
     def nnet_position(self) -> Tuple[float, float]:
         """Return the reconstructed position of a pixels cluster
         using a neural network model 
@@ -65,7 +74,7 @@ class Cluster(Cluster):
         predictions = self.model.predict(self.xdata)
         x_pred = predictions[:, 0]
         y_pred = predictions[:, 1]
-        
+
         x_net = self.x[0] + x_pred*self.pitch
         y_net = self.y[0] + y_pred*self.pitch
 
@@ -73,25 +82,28 @@ class Cluster(Cluster):
 
 
 @dataclass
-class ClusteringNN(ClusteringBase):
+class ClusteringNN(ClusteringBaseHexsample):
 
-    """Neirest neighbor clustering.
-
-    This is a very simple clustering strategy where we use the highest pixel in
-    the event as a seed, loop over the six neighbors (after the zero suppression)
-    and keep the N highest pixels.
+    """Overwritten class ClusteringBase from hexsample to handle eta function
+    and neural network event reconstruction
 
     Arguments
     ---------
     num_neighbors : int
         The number of neighbors (between 0 and 6) to include in the cluster.
+    putch : float = None
+        The pitch of the hexagonal grid
+    gamma : float = None
+        The index of the power law for eta function reconstruction
+    model : ModelBase = None
+        Instance of ModelBase or any of its subclasses
     """
 
     num_neighbors: int
     pitch: float = None
     gamma: float = None
     model: ModelBase = None
-    
+
 
     def run(self, event) -> Cluster:
         """Overladed method.
@@ -137,7 +149,7 @@ class ClusteringNN(ClusteringBase):
         # trick argsort into sorting values in decreasing order.
         idx = np.argsort(-pha)
         # Only pick the seed and the N highest pixels.
-        # This is useless for the circular readout because in that case all 
+        # This is useless for the circular readout because in that case all
         # neighbors are used for track reconstruction.
         mask = idx[:self.num_neighbors + 1]
         # If there's any zero left in the target pixels, get rid of it.

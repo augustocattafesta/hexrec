@@ -12,9 +12,10 @@ from hexsample.hist import Histogram1d
 from hexsample.analysis import fit_histogram
 from hexsample.modeling import Gaussian
 from hexsample.recon import DEFAULT_IONIZATION_POTENTIAL
+from hexsample.hexagon import HexagonalLayout
 
 from hexrec.hist import Histogram2d
-from hexrec.hexagon import HexagonalGrid, HexagonalLayout
+from hexrec.hexagon import HexagonalGrid
 from hexrec.app import ArgumentParser
 
 __description__ = \

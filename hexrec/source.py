@@ -123,13 +123,10 @@ class HexagonalBeam(BeamBase):
 class Line(SpectrumBase):
     """Class describing a monochromatic emission line at a given
     energy
-
-    Args:
-        SpectrumBase (_type_): _description_
     """
 
     def __init__(self, energy : float) -> None:
-        """Constructor
+        """Constructor of the class
         """
         self._energy = energy
         self._prob = 1
@@ -138,10 +135,11 @@ class Line(SpectrumBase):
         """
 
         Args:
-            size (int, optional): _description_. Defaults to 1.
+            size (int, optional): The number of X-ray photon energies to be generated. 
+            Defaults to 1.
 
         Returns:
-            np.ndarray: _description_
+            energy (np.ndarray): The photon energies in eV.
         """
         return np.full(size, self._energy)
 
