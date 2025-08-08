@@ -10,10 +10,11 @@ from hexsample.fileio import digioutput_class
 from hexsample.mc import PhotonList
 from hexsample.source import GaussianBeam, Source
 from hexsample.sensor import Material, Sensor
+from hexsample.hexagon import HexagonalLayout
 
 from hexrec import HEXREC_DATA
 from hexrec.source import Line, TriangularBeam, HexagonalBeam
-from hexrec.hexagon import HexagonalLayout, HexagonalGrid
+from hexrec.hexagon import HexagonalGrid
 from hexrec.app import ArgumentParser
 
 __description__ = \

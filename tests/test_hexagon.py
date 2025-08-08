@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 
 from hexsample.display import HexagonalGridDisplay
 from hexsample.plot import plt
+from hexsample.hexagon import HexagonalLayout
 
-from hexrec.hexagon import HexagonalLayout, HexagonalGrid
+from hexrec.hexagon import HexagonalGrid
 
 def test_find_vertices():
     """Test find_vertices method

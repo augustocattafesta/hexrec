@@ -11,10 +11,10 @@ from hexsample.fileio import DigiInputFileCircular
 from hexsample.readout import HexagonalReadoutCircular
 from hexsample.modeling import PowerLaw
 from hexsample.hist import Histogram1d
+from hexsample.hexagon import HexagonalLayout
 
 from hexrec.app import ArgumentParser
 from hexrec.clustering import ClusteringNN
-from hexrec.hexagon import HexagonalLayout
 
 __description__ = \
 """Analyze eta function and fit

@@ -1,7 +1,7 @@
 """Extension of app.py from hexsample"""
 
 from hexsample.app import ArgumentParser
-from hexrec.hexagon import HexagonalLayout
+from hexsample.hexagon import HexagonalLayout
 
 class ArgumentParser(ArgumentParser):
     def __init__(self, prog: str = None, usage: str = None, description: str = None) -> None:
