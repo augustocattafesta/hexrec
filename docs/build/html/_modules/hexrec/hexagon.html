@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>hexrec.hexagon &#8212; hexrec  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for hexrec.hexagon</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Extension of hexsample hexagon module&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">hexsample.hexagon</span><span class="w"> </span><span class="kn">import</span> <span class="n">HexagonalGrid</span> <span class="k">as</span> <span class="n">HexagonalGridHexsample</span>
+
+<div class="viewcode-block" id="HexagonalGrid">
+<a class="viewcode-back" href="../../hexrec.html#hexrec.hexagon.HexagonalGrid">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">HexagonalGrid</span><span class="p">(</span><span class="n">HexagonalGridHexsample</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extension of HexagonalGrid from hexsample</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="HexagonalGrid.create_rotator">
+<a class="viewcode-back" href="../../hexrec.html#hexrec.hexagon.HexagonalGrid.create_rotator">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_rotator</span><span class="p">(</span><span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a 2D rotation function for a given angle</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            theta (float): the rotation angle in radians</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            function: function that takes 2D vectors and returns the vector rotated</span>
+<span class="sd">            by theta radians</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">rotate</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">x_rot</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">c</span> <span class="o">-</span> <span class="n">y</span><span class="o">*</span><span class="n">s</span>
+            <span class="n">y_rot</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">s</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">c</span>
+
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x_rot</span><span class="p">,</span> <span class="n">y_rot</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">rotate</span></div>
+
+
+<div class="viewcode-block" id="HexagonalGrid.find_vertices">
+<a class="viewcode-back" href="../../hexrec.html#hexrec.hexagon.HexagonalGrid.find_vertices">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
+                      <span class="n">i</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the vertices of a triangular section of hexagons. The first section,</span>
+<span class="sd">        corresponding to i=0, is the one which lies on the x-axis or intersects it,</span>
+<span class="sd">        depending on the orientation of the hexagon. The sections are counted </span>
+<span class="sd">        counter-clockwise.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            col (np.array): array with column pixel coordinates of hexagons</span>
+<span class="sd">            row (np.array): array with row pixel coordinates of hexagons</span>
+<span class="sd">            i (int, optional): triangular section. Defaults to 0.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple[np.array, np.array, np.array]: the first array are the (x, y) coordinates</span>
+<span class="sd">            of the centers, the second and the third contain each the (x, y) coordinates of</span>
+<span class="sd">            one of the other two vertices of the triangle </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pixel_to_world</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pitch</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">rotator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_rotator</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointy_topped</span><span class="p">():</span>
+            <span class="n">v0</span> <span class="o">=</span> <span class="n">rotator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">size</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">size</span><span class="o">/</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="n">v1</span> <span class="o">=</span> <span class="n">rotator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">size</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">/</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">v0</span> <span class="o">=</span> <span class="n">rotator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">size</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+            <span class="n">v1</span> <span class="o">=</span> <span class="n">rotator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">size</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">]))</span>
+
+        <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">v0</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">v1</span>
+
+        <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">hexrec</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Augusto Cattafesta.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
