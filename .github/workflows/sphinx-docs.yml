@@ -2,8 +2,9 @@ name: Build and Deploy Sphinx Docs
 
 on:
   push:
-    branches: [main]  # o il branch che usi
-
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 jobs:
   docs:
     runs-on: ubuntu-latest
