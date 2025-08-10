@@ -26,22 +26,13 @@ jobs:
         pip install sphinx sphinx-autodoc-typehints
         pip install -r requirements.txt  # tolto || true
 
+    - name: Generate reStructuredText from source
+      run: |
+        sphinx-apidoc -o docs/source/ hexrec
+
     - name: Clean old Sphinx build
       run: |
         rm -rf docs/build
-
-    - name: Generate reStructuredText from source
-      run: |
-        sphinx-apidoc -o docs/ hexrec
-
-    - name: Debug .rst files
-      run: |
-        echo "📂 Lista file in docs/"
-        ls -la docs
-        echo "📄 index.rst"
-        cat docs/index.rst
-        echo "📄 modules.rst"
-        cat docs/modules.rst || echo "modules.rst non trovato!"
 
     - name: Build Docs
       run: |
@@ -49,14 +40,13 @@ jobs:
         make html
 
     - name: Upload built docs as artifact
-      if: github.event_name == 'pull_request'
       uses: actions/upload-artifact@v4
       with:
         name: sphinx-docs
         path: docs/build/html
 
     - name: Deploy to GitHub Pages
-      if: github.ref == 'refs/heads/main'
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
