@@ -1,10 +1,11 @@
 """Module to handle neural networks
 """
 
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from importlib import resources
-from pathlib import Path
 import math
+from pathlib import Path
 from typing import Tuple
 
 from loguru import logger
@@ -17,59 +18,109 @@ from torch_geometric.loader import DataLoader
 from torch_geometric.nn import GCNConv, global_mean_pool
 from sklearn.model_selection import train_test_split
 
-
 from hexrec import HEXREC_MODELS
 
-class ModelBase:
-    """Base class for the definition of a neural network model
+class ModelBase(ABC):
+    """Abstract base class for the definition of a neural network model class.
+    Subclasses must implement the core methods for saving and loading models,
+    loading pretrained models, training and prediction.
+
+    This class cannot be instantiated directly.
     """
 
+    @abstractmethod
     def save(self, name: str) -> Path:
-        """Save the model in "models" folder 
+        """Save the model to the default "models" folder with the given name.
 
-        This needs to be overloaded by any derived classes.
+        This method must be implemented by all subclasses. 
+
+        Args:
+            name (str): The name of the file to save the model as.
+
+        Returns:
+            Path: The path to the saved model file.
         """
-        raise NotImplementedError
+        pass
 
     @classmethod
+    @abstractmethod
     def load(cls, path: str) -> 'ModelBase':
-        """Load the model at the given path
-        
-        This needs to be overloaded by any derived classes.
         """
-        raise NotImplementedError
+        Load the model from the given path.
+
+        This method must be implemented by all subclasses.
+
+        Args:
+            path (str): The path to the model file to load.
+
+        Returns:
+            ModelBase: An instance of the loaded model.
+        """
+        pass
 
     @classmethod
+    @abstractmethod
     def load_pretrained(cls) -> 'ModelBase':
-        """Load the pre-trained model of the package
-        
-        This needs to be overloaded by any derived classes.
         """
-        raise NotImplementedError
+        Load the pre-trained model provided by the package.
 
+        This method must be implemented by all subclasses.
+
+        Returns:
+            ModelBase: An instance of the pre-trained model.
+        """
+        pass
+
+    @abstractmethod
     def train(self, xdata: np.ndarray, ydata: np.ndarray, epochs: int,
-              val_split: float = 0.2, **kwargs):
-        """Train the neural network
-
-        This needs to be overloaded by any derived classes.
+            val_split: float = 0.2, **kwargs):
         """
-        raise NotImplementedError
+        Train the neural network model.
 
+        This method must be implemented by all subclasses.
+
+        Args:
+            xdata (np.ndarray): Input training data.
+            ydata (np.ndarray): Target training data.
+            epochs (int): Number of training epochs.
+            val_split (float, optional): Fraction of data to use for validation. Defaults to 0.2.
+            **kwargs: Additional keyword arguments for training configuration.
+        """
+        pass
+
+    @abstractmethod
     def predict(self, xdata: np.ndarray) -> np.ndarray:
-        """Generate the predicted output for the input sample
-        
-        This needs to be overloaded by any derived classes.
         """
-        raise NotImplementedError
+        Generate predictions for the given input data.
+
+        This method must be implemented by all subclasses.
+
+        Args:
+            xdata (np.ndarray): Input data for prediction.
+
+        Returns:
+            np.ndarray: Predicted output data.
+        """
+        pass
 
 @dataclass
 class ModelDNN(ModelBase):
-    """Class to manage Deep Dense Network
+    """
+    Concrete implementation of a deep dense neural network model.
+
+    This class manages the saving, loading, training and prediction
+    of a deep dense neural network according to the ModelBase interface.
     """
     model: keras.models.Model
 
     def save(self, name: str) -> Path:
-        """Overloaded method
+        """Save the DNN model to the default "models" folder with the given name.
+
+        Args:
+            name (str): The name of the file to save the model as.
+
+        Returns:
+            Path: The path to the saved model file.
         """
         output_path = HEXREC_MODELS / f'{name}.keras'
         self.model.save(output_path)
@@ -78,7 +129,14 @@ class ModelDNN(ModelBase):
 
     @classmethod
     def load(cls, path: str) -> 'ModelDNN':
-        """Overloaded method
+        """
+        Load the DNN model from the given path.
+
+        Args:
+            path (str): The path to the model file to load.
+
+        Returns:
+            ModelDNN: An instance of the ModelDNN with the loaded architecture.
         """
         model = keras.models.load_model(path)
 
@@ -86,21 +144,39 @@ class ModelDNN(ModelBase):
 
     @classmethod
     def load_pretrained(cls) -> 'ModelDNN':
-        """Overloaded method
+        """
+        Load the pre-trained DNN model provided by the package.
+
+        Returns:
+            ModelBase: An instance of the pre-trained DNN model.
         """
         with resources.path('hexrec.models', 'modelDNN.keras') as model_path:
             return cls.load(str(model_path))
 
     def train(self, xdata: np.ndarray, ydata: np.ndarray, epochs: int,
               val_split: float = 0.2, **kwargs):
-        """Overloaded method
         """
+        Train the DNN model.
 
+        Args:
+            xdata (np.ndarray): Input training data.
+            ydata (np.ndarray): Target training data.
+            epochs (int): Number of training epochs.
+            val_split (float, optional): Fraction of data to use for validation. Defaults to 0.2.
+            **kwargs: Additional keyword arguments for training configuration.
+        """
         return self.model.fit(xdata, ydata, epochs=epochs,
                        validation_split=val_split, **kwargs)
 
     def predict(self, xdata: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-        """Overloaded method
+        """
+        Generate predictions for the given input data.
+
+        Args:
+            xdata (np.ndarray): Input data for prediction.
+
+        Returns:
+            np.ndarray: Predicted output data.
         """
         input_layer_name = self.model.layers[0].name
         prediction = self.model({input_layer_name: xdata})
@@ -110,26 +186,44 @@ class ModelDNN(ModelBase):
 
 @dataclass
 class ModelGNN(ModelBase):
-    """Class to manage Graph Neural Network 
+    """
+    Concrete implementation of a graph neural network model.
+
+    This class manages the saving, loading, training and prediction
+    of a graph neural network according to the ModelBase interface.
     """
     model: torch.nn.Module
 
     def save(self, name: str) -> Path:
-        """Overloaded method
+        """Save the GNN model to the default "models" folder with the given name.
+
+        Args:
+            name (str): The name of the file to save the model as.
+
+        Returns:
+            Path: The path to the saved model file.
         """
         output_path = HEXREC_MODELS / f'{name}.pt'
         torch.save(self.model.state_dict(), output_path)
         return output_path
 
     def load(self, path: str) -> None:
-        """Overloaded method
+        """
+        Load the GNN model from the given path.
+
+        Args:
+            path (str): The path to the model file to load.
         """
         state_dict = torch.load(path)
         self.model.load_state_dict(state_dict)
 
     @classmethod
     def load_pretrained(cls) -> 'ModelGNN':
-        """Overloaded method
+        """
+        Load the pre-trained GNN model provided by the package.
+
+        Returns:
+            ModelGNN: An instance of the pre-trained GNN model.
         """
         model = GNNRegression()
         instance = cls(model=model)
@@ -184,6 +278,9 @@ class ModelGNN(ModelBase):
 
             ydata (np.ndarray, optional): data for training. Shape must be (2,) for single data
                 or (N, 2) for multiple data
+
+        Returns:
+            DataLoader: data prepared for training and prediction
         """
         # Check if there is only an event (7, 3)
         if len(xdata.shape) == 2:
@@ -207,7 +304,15 @@ class ModelGNN(ModelBase):
 
     def train(self, xdata: np.ndarray, ydata: np.ndarray, epochs: int, val_split: float = 0.2,
               **kwargs) -> None:
-        """Overloaded method
+        """
+        Train the GNN model.
+
+        Args:
+            xdata (np.ndarray): Input training data.
+            ydata (np.ndarray): Target training data.
+            epochs (int): Number of training epochs.
+            val_split (float, optional): Fraction of data to use for validation. Defaults to 0.2.
+            **kwargs: Additional keyword arguments for training configuration.
         """
         if val_split != 0.:
             xdata_train, xdata_val, ydata_train, ydata_val = train_test_split(
@@ -273,7 +378,14 @@ class ModelGNN(ModelBase):
         plt.show()
 
     def predict(self, xdata: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-        """Overloaded method
+        """
+        Generate predictions for the given input data.
+
+        Args:
+            xdata (np.ndarray): Input data for prediction.
+
+        Returns:
+            np.ndarray: Predicted output data.
         """
         predict_loader = self.data_loader(xdata)
         predictions = []
@@ -289,7 +401,11 @@ class ModelGNN(ModelBase):
         return predictions
 
 class GNNRegression(torch.nn.Module):
-    """Class to define the architecture of the default GNN model
+    """Defines the architecture of the default Graph Neural Network (GNN) regression model.
+
+    The model consists of two graph convolutional layers followed by
+    two fully connected linear layers. It performs graph-level regression
+    by applying global mean pooling after convolutional layers.
     """
     def __init__(self):
         super().__init__()
@@ -299,7 +415,11 @@ class GNNRegression(torch.nn.Module):
         self.lin2 = torch.nn.Linear(32, 2)
 
     def forward(self, x, edge_index, batch):
-        """Define activation functions
+        """Perform a forward pass through the network.
+
+        Applies two graph convolutional layers with ReLU activations,
+        followed by global mean pooling, then two fully connected layers
+        with ReLU activation before the final output layer.
         """
         x = torch.nn.functional.relu(self.conv1(x, edge_index))
         x = torch.nn.functional.relu(self.conv2(x, edge_index))
