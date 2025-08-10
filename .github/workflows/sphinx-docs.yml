@@ -10,44 +10,37 @@ permissions:
   contents: write
 
 jobs:
-  docs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      docs_path: docs/build/html
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12.2'
+      - run: |
+          python -m pip install --upgrade pip
+          pip install sphinx sphinx-autodoc-typehints
+          pip install -r requirements.txt
+      - run: sphinx-apidoc -o docs/source/ hexrec
+      - run: rm -rf docs/build
+      - run: cd docs && make html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sphinx-docs
+          path: docs/build/html
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.12.2'
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install sphinx sphinx-autodoc-typehints
-        pip install -r requirements.txt  # tolto || true
-
-    - name: Generate reStructuredText from source
-      run: |
-        sphinx-apidoc -o docs/source/ hexrec
-
-    - name: Clean old Sphinx build
-      run: |
-        rm -rf docs/build
-
-    - name: Build Docs
-      run: |
-        cd docs
-        make html
-
-    - name: Upload built docs as artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: sphinx-docs
-        path: docs/build/html
-
-    - name: Deploy to GitHub Pages
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/build/html
+      - uses: actions/download-artifact@v4
+        with:
+          name: sphinx-docs
+          path: docs/build/html
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/build/html
