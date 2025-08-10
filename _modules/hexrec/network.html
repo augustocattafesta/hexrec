@@ -34,10 +34,11 @@
 <span></span><span class="sd">&quot;&quot;&quot;Module to handle neural networks</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">importlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">resources</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
@@ -50,66 +51,106 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_geometric.nn</span><span class="w"> </span><span class="kn">import</span> <span class="n">GCNConv</span><span class="p">,</span> <span class="n">global_mean_pool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
 
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">hexrec</span><span class="w"> </span><span class="kn">import</span> <span class="n">HEXREC_MODELS</span>
 
 <div class="viewcode-block" id="ModelBase">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelBase">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ModelBase</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for the definition of a neural network model</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelBase</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for the definition of a neural network model class.</span>
+<span class="sd">    Subclasses must implement the core methods for saving and loading models,</span>
+<span class="sd">    loading pretrained models, training and prediction.</span>
+
+<span class="sd">    This class cannot be instantiated directly.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ModelBase.save">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelBase.save">[docs]</a>
+    <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the model in &quot;models&quot; folder </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the model to the default &quot;models&quot; folder with the given name.</span>
 
-<span class="sd">        This needs to be overloaded by any derived classes.</span>
+<span class="sd">        This method must be implemented by all subclasses. </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The name of the file to save the model as.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: The path to the saved model file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="ModelBase.load">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelBase.load">[docs]</a>
     <span class="nd">@classmethod</span>
+    <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ModelBase&#39;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the model at the given path</span>
-<span class="sd">        </span>
-<span class="sd">        This needs to be overloaded by any derived classes.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the model from the given path.</span>
+
+<span class="sd">        This method must be implemented by all subclasses.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): The path to the model file to load.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ModelBase: An instance of the loaded model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="ModelBase.load_pretrained">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelBase.load_pretrained">[docs]</a>
     <span class="nd">@classmethod</span>
+    <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_pretrained</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ModelBase&#39;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the pre-trained model of the package</span>
-<span class="sd">        </span>
-<span class="sd">        This needs to be overloaded by any derived classes.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the pre-trained model provided by the package.</span>
+
+<span class="sd">        This method must be implemented by all subclasses.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ModelBase: An instance of the pre-trained model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="ModelBase.train">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelBase.train">[docs]</a>
+    <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xdata</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ydata</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-              <span class="n">val_split</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Train the neural network</span>
+            <span class="n">val_split</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Train the neural network model.</span>
 
-<span class="sd">        This needs to be overloaded by any derived classes.</span>
+<span class="sd">        This method must be implemented by all subclasses.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            xdata (np.ndarray): Input training data.</span>
+<span class="sd">            ydata (np.ndarray): Target training data.</span>
+<span class="sd">            epochs (int): Number of training epochs.</span>
+<span class="sd">            val_split (float, optional): Fraction of data to use for validation. Defaults to 0.2.</span>
+<span class="sd">            **kwargs: Additional keyword arguments for training configuration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="ModelBase.predict">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelBase.predict">[docs]</a>
+    <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xdata</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the predicted output for the input sample</span>
-<span class="sd">        </span>
-<span class="sd">        This needs to be overloaded by any derived classes.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate predictions for the given input data.</span>
+
+<span class="sd">        This method must be implemented by all subclasses.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            xdata (np.ndarray): Input data for prediction.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Predicted output data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">pass</span></div>
 </div>
 
 
@@ -117,14 +158,24 @@
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelDNN">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">ModelDNN</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to manage Deep Dense Network</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Concrete implementation of a deep dense neural network model.</span>
+
+<span class="sd">    This class manages the saving, loading, training and prediction</span>
+<span class="sd">    of a deep dense neural network according to the ModelBase interface.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span>
 
 <div class="viewcode-block" id="ModelDNN.save">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelDNN.save">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overloaded method</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the DNN model to the default &quot;models&quot; folder with the given name.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The name of the file to save the model as.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: The path to the saved model file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output_path</span> <span class="o">=</span> <span class="n">HEXREC_MODELS</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.keras&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
@@ -136,7 +187,14 @@
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelDNN.load">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ModelDNN&#39;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overloaded method</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the DNN model from the given path.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): The path to the model file to load.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ModelDNN: An instance of the ModelDNN with the loaded architecture.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
@@ -147,7 +205,11 @@
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelDNN.load_pretrained">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_pretrained</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ModelDNN&#39;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overloaded method</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the pre-trained DNN model provided by the package.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ModelBase: An instance of the pre-trained DNN model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="n">resources</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s1">&#39;hexrec.models&#39;</span><span class="p">,</span> <span class="s1">&#39;modelDNN.keras&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">model_path</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">model_path</span><span class="p">))</span></div>
@@ -157,9 +219,16 @@
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelDNN.train">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xdata</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ydata</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
               <span class="n">val_split</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overloaded method</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Train the DNN model.</span>
 
+<span class="sd">        Args:</span>
+<span class="sd">            xdata (np.ndarray): Input training data.</span>
+<span class="sd">            ydata (np.ndarray): Target training data.</span>
+<span class="sd">            epochs (int): Number of training epochs.</span>
+<span class="sd">            val_split (float, optional): Fraction of data to use for validation. Defaults to 0.2.</span>
+<span class="sd">            **kwargs: Additional keyword arguments for training configuration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
                        <span class="n">validation_split</span><span class="o">=</span><span class="n">val_split</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -167,7 +236,14 @@
 <div class="viewcode-block" id="ModelDNN.predict">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelDNN.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xdata</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overloaded method</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate predictions for the given input data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            xdata (np.ndarray): Input data for prediction.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Predicted output data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">input_layer_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
         <span class="n">prediction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">({</span><span class="n">input_layer_name</span><span class="p">:</span> <span class="n">xdata</span><span class="p">})</span>
@@ -181,14 +257,24 @@
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelGNN">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">ModelGNN</span><span class="p">(</span><span class="n">ModelBase</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to manage Graph Neural Network </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Concrete implementation of a graph neural network model.</span>
+
+<span class="sd">    This class manages the saving, loading, training and prediction</span>
+<span class="sd">    of a graph neural network according to the ModelBase interface.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span>
 
 <div class="viewcode-block" id="ModelGNN.save">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelGNN.save">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overloaded method</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the GNN model to the default &quot;models&quot; folder with the given name.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The name of the file to save the model as.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Path: The path to the saved model file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output_path</span> <span class="o">=</span> <span class="n">HEXREC_MODELS</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.pt&#39;</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">output_path</span><span class="p">)</span>
@@ -198,7 +284,11 @@
 <div class="viewcode-block" id="ModelGNN.load">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelGNN.load">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overloaded method</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the GNN model from the given path.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): The path to the model file to load.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">state_dict</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span></div>
@@ -208,7 +298,11 @@
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelGNN.load_pretrained">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_pretrained</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ModelGNN&#39;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overloaded method</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the pre-trained GNN model provided by the package.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ModelGNN: An instance of the pre-trained GNN model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">GNNRegression</span><span class="p">()</span>
         <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
@@ -269,6 +363,9 @@
 
 <span class="sd">            ydata (np.ndarray, optional): data for training. Shape must be (2,) for single data</span>
 <span class="sd">                or (N, 2) for multiple data</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            DataLoader: data prepared for training and prediction</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Check if there is only an event (7, 3)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xdata</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
@@ -295,7 +392,15 @@
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelGNN.train">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xdata</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ydata</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">val_split</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
               <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overloaded method</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Train the GNN model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            xdata (np.ndarray): Input training data.</span>
+<span class="sd">            ydata (np.ndarray): Target training data.</span>
+<span class="sd">            epochs (int): Number of training epochs.</span>
+<span class="sd">            val_split (float, optional): Fraction of data to use for validation. Defaults to 0.2.</span>
+<span class="sd">            **kwargs: Additional keyword arguments for training configuration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">val_split</span> <span class="o">!=</span> <span class="mf">0.</span><span class="p">:</span>
             <span class="n">xdata_train</span><span class="p">,</span> <span class="n">xdata_val</span><span class="p">,</span> <span class="n">ydata_train</span><span class="p">,</span> <span class="n">ydata_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
@@ -367,7 +472,14 @@
 <div class="viewcode-block" id="ModelGNN.predict">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.ModelGNN.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xdata</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overloaded method</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate predictions for the given input data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            xdata (np.ndarray): Input data for prediction.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Predicted output data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">predict_loader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_loader</span><span class="p">(</span><span class="n">xdata</span><span class="p">)</span>
         <span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
@@ -387,7 +499,11 @@
 <div class="viewcode-block" id="GNNRegression">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.GNNRegression">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GNNRegression</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to define the architecture of the default GNN model</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the architecture of the default Graph Neural Network (GNN) regression model.</span>
+
+<span class="sd">    The model consists of two graph convolutional layers followed by</span>
+<span class="sd">    two fully connected linear layers. It performs graph-level regression</span>
+<span class="sd">    by applying global mean pooling after convolutional layers.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -399,7 +515,11 @@
 <div class="viewcode-block" id="GNNRegression.forward">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.network.GNNRegression.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define activation functions</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a forward pass through the network.</span>
+
+<span class="sd">        Applies two graph convolutional layers with ReLU activations,</span>
+<span class="sd">        followed by global mean pooling, then two fully connected layers</span>
+<span class="sd">        with ReLU activation before the final output layer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">))</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">))</span>

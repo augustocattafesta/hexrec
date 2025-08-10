@@ -332,11 +332,17 @@ one of the other two vertices of the triangle</p>
 <dt class="sig sig-object py" id="hexrec.network.GNNRegression">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.network.</span></span><span class="sig-name descname"><span class="pre">GNNRegression</span></span><a class="reference internal" href="_modules/hexrec/network.html#GNNRegression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.GNNRegression" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
-<p>Class to define the architecture of the default GNN model</p>
+<p>Defines the architecture of the default Graph Neural Network (GNN) regression model.</p>
+<p>The model consists of two graph convolutional layers followed by
+two fully connected linear layers. It performs graph-level regression
+by applying global mean pooling after convolutional layers.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.GNNRegression.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#GNNRegression.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.GNNRegression.forward" title="Link to this definition">¶</a></dt>
-<dd><p>Define activation functions</p>
+<dd><p>Perform a forward pass through the network.</p>
+<p>Applies two graph convolutional layers with ReLU activations,
+followed by global mean pooling, then two fully connected layers
+with ReLU activation before the final output layer.</p>
 </dd></dl>
 
 </dd></dl>
@@ -344,61 +350,96 @@ one of the other two vertices of the triangle</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="hexrec.network.ModelBase">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.network.</span></span><span class="sig-name descname"><span class="pre">ModelBase</span></span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Base class for the definition of a neural network model</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract base class for the definition of a neural network model class.
+Subclasses must implement the core methods for saving and loading models,
+loading pretrained models, training and prediction.</p>
+<p>This class cannot be instantiated directly.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelBase.load">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.load" title="Link to this definition">¶</a></dt>
-<dd><p>Load the model at the given path</p>
-<p>This needs to be overloaded by any derived classes.</p>
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.load" title="Link to this definition">¶</a></dt>
+<dd><p>Load the model from the given path.</p>
+<p>This method must be implemented by all subclasses.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to the model file to load.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of the loaded model.</p>
+</dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#hexrec.network.ModelBase" title="hexrec.network.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></span></p>
+<dd class="field-odd"><p><a class="reference internal" href="#hexrec.network.ModelBase" title="hexrec.network.ModelBase">ModelBase</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelBase.load_pretrained">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_pretrained</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.load_pretrained"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.load_pretrained" title="Link to this definition">¶</a></dt>
-<dd><p>Load the pre-trained model of the package</p>
-<p>This needs to be overloaded by any derived classes.</p>
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_pretrained</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.load_pretrained"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.load_pretrained" title="Link to this definition">¶</a></dt>
+<dd><p>Load the pre-trained model provided by the package.</p>
+<p>This method must be implemented by all subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#hexrec.network.ModelBase" title="hexrec.network.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></span></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An instance of the pre-trained model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#hexrec.network.ModelBase" title="hexrec.network.ModelBase">ModelBase</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelBase.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.predict" title="Link to this definition">¶</a></dt>
-<dd><p>Generate the predicted output for the input sample</p>
-<p>This needs to be overloaded by any derived classes.</p>
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Generate predictions for the given input data.</p>
+<p>This method must be implemented by all subclasses.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xdata</strong> (<em>np.ndarray</em>) – Input data for prediction.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Predicted output data.</p>
+</dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelBase.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.save" title="Link to this definition">¶</a></dt>
-<dd><p>Save the model in “models” folder</p>
-<p>This needs to be overloaded by any derived classes.</p>
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.save" title="Link to this definition">¶</a></dt>
+<dd><p>Save the model to the default “models” folder with the given name.</p>
+<p>This method must be implemented by all subclasses.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The name of the file to save the model as.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the saved model file.</p>
+</dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span></p>
+<dd class="field-odd"><p>Path</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelBase.train">
-<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.train" title="Link to this definition">¶</a></dt>
-<dd><p>Train the neural network</p>
-<p>This needs to be overloaded by any derived classes.</p>
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.train" title="Link to this definition">¶</a></dt>
+<dd><p>Train the neural network model.</p>
+<p>This method must be implemented by all subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xdata</strong> (<em>np.ndarray</em>) – Input training data.</p></li>
+<li><p><strong>ydata</strong> (<em>np.ndarray</em>) – Target training data.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em>) – Number of training epochs.</p></li>
+<li><p><strong>val_split</strong> (<em>float</em><em>, </em><em>optional</em>) – Fraction of data to use for validation. Defaults to 0.2.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments for training configuration.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -407,14 +448,22 @@ one of the other two vertices of the triangle</p>
 <dt class="sig sig-object py" id="hexrec.network.ModelDNN">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.network.</span></span><span class="sig-name descname"><span class="pre">ModelDNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelDNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelDNN" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hexrec.network.ModelBase" title="hexrec.network.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></p>
-<p>Class to manage Deep Dense Network</p>
+<p>Concrete implementation of a deep dense neural network model.</p>
+<p>This class manages the saving, loading, training and prediction
+of a deep dense neural network according to the ModelBase interface.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelDNN.load">
 <em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelDNN.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelDNN.load" title="Link to this definition">¶</a></dt>
-<dd><p>Overloaded method</p>
+<dd><p>Load the DNN model from the given path.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to the model file to load.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of the ModelDNN with the loaded architecture.</p>
+</dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#hexrec.network.ModelDNN" title="hexrec.network.ModelDNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelDNN</span></code></a></span></p>
+<dd class="field-odd"><p><a class="reference internal" href="#hexrec.network.ModelDNN" title="hexrec.network.ModelDNN">ModelDNN</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -422,10 +471,13 @@ one of the other two vertices of the triangle</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelDNN.load_pretrained">
 <em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_pretrained</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelDNN.load_pretrained"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelDNN.load_pretrained" title="Link to this definition">¶</a></dt>
-<dd><p>Overloaded method</p>
+<dd><p>Load the pre-trained DNN model provided by the package.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#hexrec.network.ModelDNN" title="hexrec.network.ModelDNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelDNN</span></code></a></span></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An instance of the pre-trained DNN model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#hexrec.network.ModelBase" title="hexrec.network.ModelBase">ModelBase</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -438,10 +490,16 @@ one of the other two vertices of the triangle</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelDNN.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelDNN.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelDNN.predict" title="Link to this definition">¶</a></dt>
-<dd><p>Overloaded method</p>
+<dd><p>Generate predictions for the given input data.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xdata</strong> (<em>np.ndarray</em>) – Input data for prediction.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Predicted output data.</p>
+</dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</span></p>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -449,10 +507,16 @@ one of the other two vertices of the triangle</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelDNN.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelDNN.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelDNN.save" title="Link to this definition">¶</a></dt>
-<dd><p>Overloaded method</p>
+<dd><p>Save the DNN model to the default “models” folder with the given name.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The name of the file to save the model as.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the saved model file.</p>
+</dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span></p>
+<dd class="field-odd"><p>Path</p>
 </dd>
 </dl>
 </dd></dl>
@@ -460,7 +524,18 @@ one of the other two vertices of the triangle</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelDNN.train">
 <span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelDNN.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelDNN.train" title="Link to this definition">¶</a></dt>
-<dd><p>Overloaded method</p>
+<dd><p>Train the DNN model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xdata</strong> (<em>np.ndarray</em>) – Input training data.</p></li>
+<li><p><strong>ydata</strong> (<em>np.ndarray</em>) – Target training data.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em>) – Number of training epochs.</p></li>
+<li><p><strong>val_split</strong> (<em>float</em><em>, </em><em>optional</em>) – Fraction of data to use for validation. Defaults to 0.2.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments for training configuration.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -469,7 +544,9 @@ one of the other two vertices of the triangle</p>
 <dt class="sig sig-object py" id="hexrec.network.ModelGNN">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.network.</span></span><span class="sig-name descname"><span class="pre">ModelGNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hexrec.network.ModelBase" title="hexrec.network.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></p>
-<p>Class to manage Graph Neural Network</p>
+<p>Concrete implementation of a graph neural network model.</p>
+<p>This class manages the saving, loading, training and prediction
+of a graph neural network according to the ModelBase interface.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelGNN.data_loader">
 <em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_loader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.data_loader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.data_loader" title="Link to this definition">¶</a></dt>
@@ -483,8 +560,11 @@ single data, or (N, 7, 3) for multiple data</p></li>
 or (N, 2) for multiple data</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code></span></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>data prepared for training and prediction</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataLoader</p>
 </dd>
 </dl>
 </dd></dl>
@@ -513,10 +593,13 @@ or (N, 2) for multiple data</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelGNN.load">
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.load" title="Link to this definition">¶</a></dt>
-<dd><p>Overloaded method</p>
+<dd><p>Load the GNN model from the given path.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to the model file to load.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -524,10 +607,13 @@ or (N, 2) for multiple data</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelGNN.load_pretrained">
 <em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_pretrained</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.load_pretrained"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.load_pretrained" title="Link to this definition">¶</a></dt>
-<dd><p>Overloaded method</p>
+<dd><p>Load the pre-trained GNN model provided by the package.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#hexrec.network.ModelGNN" title="hexrec.network.ModelGNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelGNN</span></code></a></span></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An instance of the pre-trained GNN model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#hexrec.network.ModelGNN" title="hexrec.network.ModelGNN">ModelGNN</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -551,10 +637,16 @@ or (N, 2) for multiple data</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelGNN.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.predict" title="Link to this definition">¶</a></dt>
-<dd><p>Overloaded method</p>
+<dd><p>Generate predictions for the given input data.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xdata</strong> (<em>np.ndarray</em>) – Input data for prediction.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Predicted output data.</p>
+</dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</span></p>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -562,10 +654,16 @@ or (N, 2) for multiple data</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelGNN.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.save" title="Link to this definition">¶</a></dt>
-<dd><p>Overloaded method</p>
+<dd><p>Save the GNN model to the default “models” folder with the given name.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The name of the file to save the model as.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the saved model file.</p>
+</dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span></p>
+<dd class="field-odd"><p>Path</p>
 </dd>
 </dl>
 </dd></dl>
@@ -573,10 +671,19 @@ or (N, 2) for multiple data</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="hexrec.network.ModelGNN.train">
 <span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.train" title="Link to this definition">¶</a></dt>
-<dd><p>Overloaded method</p>
+<dd><p>Train the GNN model.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xdata</strong> (<em>np.ndarray</em>) – Input training data.</p></li>
+<li><p><strong>ydata</strong> (<em>np.ndarray</em>) – Target training data.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em>) – Number of training epochs.</p></li>
+<li><p><strong>val_split</strong> (<em>float</em><em>, </em><em>optional</em>) – Fraction of data to use for validation. Defaults to 0.2.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments for training configuration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
