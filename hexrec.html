@@ -40,7 +40,7 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="hexrec.models.html">hexrec.models package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="hexrec.models.html#module-contents">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hexrec.models.html#module-hexrec.models">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -49,29 +49,808 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 </section>
-<section id="hexrec-app-module">
-<h2>hexrec.app module<a class="headerlink" href="#hexrec-app-module" title="Link to this heading">¶</a></h2>
+<section id="module-hexrec.app">
+<span id="hexrec-app-module"></span><h2>hexrec.app module<a class="headerlink" href="#module-hexrec.app" title="Link to this heading">¶</a></h2>
+<p>Extension of app.py from hexsample</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.app.ArgumentParser">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.app.</span></span><span class="sig-name descname"><span class="pre">ArgumentParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/app.html#ArgumentParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.app.ArgumentParser" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ArgumentParser</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.app.ArgumentParser.add_analysis_options">
+<span class="sig-name descname"><span class="pre">add_analysis_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/app.html#ArgumentParser.add_analysis_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.app.ArgumentParser.add_analysis_options" title="Link to this definition">¶</a></dt>
+<dd><p>Add an option group for the analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.app.ArgumentParser.add_eta_options">
+<span class="sig-name descname"><span class="pre">add_eta_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/app.html#ArgumentParser.add_eta_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.app.ArgumentParser.add_eta_options" title="Link to this definition">¶</a></dt>
+<dd><p>Add an option group for eta function analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.app.ArgumentParser.add_line_source_options">
+<span class="sig-name descname"><span class="pre">add_line_source_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/app.html#ArgumentParser.add_line_source_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.app.ArgumentParser.add_line_source_options" title="Link to this definition">¶</a></dt>
+<dd><p>Add an option group for line source properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.app.ArgumentParser.add_model_name">
+<span class="sig-name descname"><span class="pre">add_model_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/app.html#ArgumentParser.add_model_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.app.ArgumentParser.add_model_name" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.app.ArgumentParser.add_neural_net_options">
+<span class="sig-name descname"><span class="pre">add_neural_net_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/app.html#ArgumentParser.add_neural_net_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.app.ArgumentParser.add_neural_net_options" title="Link to this definition">¶</a></dt>
+<dd><p>Add an option group for neural network</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.app.ArgumentParser.add_nnet_recon_options">
+<span class="sig-name descname"><span class="pre">add_nnet_recon_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/app.html#ArgumentParser.add_nnet_recon_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.app.ArgumentParser.add_nnet_recon_options" title="Link to this definition">¶</a></dt>
+<dd><p>Add an option group for neural network reconstruction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.app.ArgumentParser.add_reconstruction_options">
+<span class="sig-name descname"><span class="pre">add_reconstruction_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/app.html#ArgumentParser.add_reconstruction_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.app.ArgumentParser.add_reconstruction_options" title="Link to this definition">¶</a></dt>
+<dd><p>Add an option group for reconstruction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.app.ArgumentParser.add_simple_readout_options">
+<span class="sig-name descname"><span class="pre">add_simple_readout_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/app.html#ArgumentParser.add_simple_readout_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.app.ArgumentParser.add_simple_readout_options" title="Link to this definition">¶</a></dt>
+<dd><p>Add an option group for the readout properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="hexrec-clustering-module">
-<h2>hexrec.clustering module<a class="headerlink" href="#hexrec-clustering-module" title="Link to this heading">¶</a></h2>
+<section id="module-hexrec.clustering">
+<span id="hexrec-clustering-module"></span><h2>hexrec.clustering module<a class="headerlink" href="#module-hexrec.clustering" title="Link to this heading">¶</a></h2>
+<p>Extension of clustering.py from hexsample</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.clustering.Cluster">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.clustering.</span></span><span class="sig-name descname"><span class="pre">Cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pitch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/clustering.html#Cluster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.clustering.Cluster" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></p>
+<p>Overwritten class Cluster from hexsample</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.clustering.Cluster.fitted_position">
+<span class="sig-name descname"><span class="pre">fitted_position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/clustering.html#Cluster.fitted_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.clustering.Cluster.fitted_position" title="Link to this definition">¶</a></dt>
+<dd><p>Return the reconstructed position of a two pixel cluster
+using the eta function fit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.clustering.Cluster.nnet_position">
+<span class="sig-name descname"><span class="pre">nnet_position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/clustering.html#Cluster.nnet_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.clustering.Cluster.nnet_position" title="Link to this definition">¶</a></dt>
+<dd><p>Return the reconstructed position of a pixels cluster
+using a neural network model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.clustering.Cluster.size">
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/clustering.html#Cluster.size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.clustering.Cluster.size" title="Link to this definition">¶</a></dt>
+<dd><p>Return the size of the cluster, calculated as the number of
+pixels with charge greater than zero (overload the size function
+of hexsample because if NNet is used, size of x is always 7)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="hexrec.clustering.Cluster.xdata">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xdata</span></span><a class="headerlink" href="#hexrec.clustering.Cluster.xdata" title="Link to this definition">¶</a></dt>
+<dd><p>Return normalized input data for the neural network model.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.clustering.ClusteringNN">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.clustering.</span></span><span class="sig-name descname"><span class="pre">ClusteringNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_sup_threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_neighbors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pitch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/clustering.html#ClusteringNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.clustering.ClusteringNN" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ClusteringBase</span></code></p>
+<p>Overwritten class ClusteringBase from hexsample to handle eta function
+and neural network event reconstruction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_neighbors</strong> (<em>int</em>) – The number of neighbors (between 0 and 6) to include in the cluster.</p></li>
+<li><p><strong>putch</strong> (<em>float = None</em>) – The pitch of the hexagonal grid</p></li>
+<li><p><strong>gamma</strong> (<em>float = None</em>) – The index of the power law for eta function reconstruction</p></li>
+<li><p><strong>model</strong> (<em>ModelBase = None</em>) – Instance of ModelBase or any of its subclasses</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.clustering.ClusteringNN.gamma">
+<span class="sig-name descname"><span class="pre">gamma</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#hexrec.clustering.ClusteringNN.gamma" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.clustering.ClusteringNN.model">
+<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#hexrec.network.ModelBase" title="hexrec.network.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#hexrec.clustering.ClusteringNN.model" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.clustering.ClusteringNN.num_neighbors">
+<span class="sig-name descname"><span class="pre">num_neighbors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#hexrec.clustering.ClusteringNN.num_neighbors" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.clustering.ClusteringNN.pitch">
+<span class="sig-name descname"><span class="pre">pitch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#hexrec.clustering.ClusteringNN.pitch" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.clustering.ClusteringNN.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/clustering.html#ClusteringNN.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.clustering.ClusteringNN.run" title="Link to this definition">¶</a></dt>
+<dd><p>Overladed method.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The loop ever the neighbors might likely be vectorized and streamlined
+for speed using proper numpy array for the offset indexes.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#hexrec.clustering.Cluster" title="hexrec.clustering.Cluster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="hexrec-hexagon-module">
-<h2>hexrec.hexagon module<a class="headerlink" href="#hexrec-hexagon-module" title="Link to this heading">¶</a></h2>
+<section id="module-hexrec.hexagon">
+<span id="hexrec-hexagon-module"></span><h2>hexrec.hexagon module<a class="headerlink" href="#module-hexrec.hexagon" title="Link to this heading">¶</a></h2>
+<p>Extension of hexsample hexagon module</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.hexagon.HexagonalGrid">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.hexagon.</span></span><span class="sig-name descname"><span class="pre">HexagonalGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pitch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/hexagon.html#HexagonalGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.hexagon.HexagonalGrid" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">HexagonalGrid</span></code></p>
+<p>Extension of HexagonalGrid from hexsample</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.hexagon.HexagonalGrid.create_rotator">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_rotator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/hexagon.html#HexagonalGrid.create_rotator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.hexagon.HexagonalGrid.create_rotator" title="Link to this definition">¶</a></dt>
+<dd><p>Create a 2D rotation function for a given angle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>theta</strong> (<em>float</em>) – the rotation angle in radians</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>function that takes 2D vectors and returns the vector rotated
+by theta radians</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.hexagon.HexagonalGrid.find_vertices">
+<span class="sig-name descname"><span class="pre">find_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/hexagon.html#HexagonalGrid.find_vertices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.hexagon.HexagonalGrid.find_vertices" title="Link to this definition">¶</a></dt>
+<dd><p>Find the vertices of a triangular section of hexagons. The first section,
+corresponding to i=0, is the one which lies on the x-axis or intersects it,
+depending on the orientation of the hexagon. The sections are counted
+counter-clockwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>col</strong> (<em>np.array</em>) – array with column pixel coordinates of hexagons</p></li>
+<li><p><strong>row</strong> (<em>np.array</em>) – array with row pixel coordinates of hexagons</p></li>
+<li><p><strong>i</strong> (<em>int</em><em>, </em><em>optional</em>) – triangular section. Defaults to 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the first array are the (x, y) coordinates
+of the centers, the second and the third contain each the (x, y) coordinates of
+one of the other two vertices of the triangle</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[np.array, np.array, np.array]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="hexrec-hist-module">
-<h2>hexrec.hist module<a class="headerlink" href="#hexrec-hist-module" title="Link to this heading">¶</a></h2>
+<section id="module-hexrec.hist">
+<span id="hexrec-hist-module"></span><h2>hexrec.hist module<a class="headerlink" href="#module-hexrec.hist" title="Link to this heading">¶</a></h2>
+<p>Extension of hist.py from hexsample</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.hist.Histogram2d">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.hist.</span></span><span class="sig-name descname"><span class="pre">Histogram2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ybins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Entries/bin'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/hist.html#Histogram2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.hist.Histogram2d" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">HistogramBase</span></code></p>
+<p>Container class for two-dimensional histograms.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.hist.Histogram2d.PLOT_OPTIONS">
+<span class="sig-name descname"><span class="pre">PLOT_OPTIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'cmap':</span> <span class="pre">&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#hexrec.hist.Histogram2d.PLOT_OPTIONS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="hexrec-network-module">
-<h2>hexrec.network module<a class="headerlink" href="#hexrec-network-module" title="Link to this heading">¶</a></h2>
+<section id="module-hexrec.network">
+<span id="hexrec-network-module"></span><h2>hexrec.network module<a class="headerlink" href="#module-hexrec.network" title="Link to this heading">¶</a></h2>
+<p>Module to handle neural networks</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.network.GNNRegression">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.network.</span></span><span class="sig-name descname"><span class="pre">GNNRegression</span></span><a class="reference internal" href="_modules/hexrec/network.html#GNNRegression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.GNNRegression" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Class to define the architecture of the default GNN model</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.GNNRegression.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#GNNRegression.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.GNNRegression.forward" title="Link to this definition">¶</a></dt>
+<dd><p>Define activation functions</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.network.ModelBase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.network.</span></span><span class="sig-name descname"><span class="pre">ModelBase</span></span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for the definition of a neural network model</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelBase.load">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.load" title="Link to this definition">¶</a></dt>
+<dd><p>Load the model at the given path</p>
+<p>This needs to be overloaded by any derived classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#hexrec.network.ModelBase" title="hexrec.network.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelBase.load_pretrained">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_pretrained</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.load_pretrained"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.load_pretrained" title="Link to this definition">¶</a></dt>
+<dd><p>Load the pre-trained model of the package</p>
+<p>This needs to be overloaded by any derived classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#hexrec.network.ModelBase" title="hexrec.network.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelBase.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Generate the predicted output for the input sample</p>
+<p>This needs to be overloaded by any derived classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelBase.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.save" title="Link to this definition">¶</a></dt>
+<dd><p>Save the model in “models” folder</p>
+<p>This needs to be overloaded by any derived classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelBase.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelBase.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelBase.train" title="Link to this definition">¶</a></dt>
+<dd><p>Train the neural network</p>
+<p>This needs to be overloaded by any derived classes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.network.ModelDNN">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.network.</span></span><span class="sig-name descname"><span class="pre">ModelDNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelDNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelDNN" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hexrec.network.ModelBase" title="hexrec.network.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></p>
+<p>Class to manage Deep Dense Network</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelDNN.load">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelDNN.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelDNN.load" title="Link to this definition">¶</a></dt>
+<dd><p>Overloaded method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#hexrec.network.ModelDNN" title="hexrec.network.ModelDNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelDNN</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelDNN.load_pretrained">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_pretrained</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelDNN.load_pretrained"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelDNN.load_pretrained" title="Link to this definition">¶</a></dt>
+<dd><p>Overloaded method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#hexrec.network.ModelDNN" title="hexrec.network.ModelDNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelDNN</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.network.ModelDNN.model">
+<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></em><a class="headerlink" href="#hexrec.network.ModelDNN.model" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelDNN.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelDNN.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelDNN.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Overloaded method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelDNN.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelDNN.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelDNN.save" title="Link to this definition">¶</a></dt>
+<dd><p>Overloaded method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelDNN.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelDNN.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelDNN.train" title="Link to this definition">¶</a></dt>
+<dd><p>Overloaded method</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.network.ModelGNN">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.network.</span></span><span class="sig-name descname"><span class="pre">ModelGNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hexrec.network.ModelBase" title="hexrec.network.ModelBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelBase</span></code></a></p>
+<p>Class to manage Graph Neural Network</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelGNN.data_loader">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_loader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.data_loader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.data_loader" title="Link to this definition">¶</a></dt>
+<dd><p>Prepare data for training or prediction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xdata</strong> (<em>np.ndarray</em>) – data for training or prediction. Shape must be (7, 3) for
+single data, or (N, 7, 3) for multiple data</p></li>
+<li><p><strong>ydata</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – data for training. Shape must be (2,) for single data
+or (N, 2) for multiple data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelGNN.event_to_graph">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">event_to_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.event_to_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.event_to_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Convert event data to a graph of PyTorch Geometric</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pha</strong> (<em>np.ndarray</em>) – normalized pha array with values of all of the 7 pixels</p></li>
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – normalized x-position of all of the 7 pixels</p></li>
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – normalized y-position of all of the 7 pixels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>graph of the event</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelGNN.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.load" title="Link to this definition">¶</a></dt>
+<dd><p>Overloaded method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelGNN.load_pretrained">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_pretrained</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.load_pretrained"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.load_pretrained" title="Link to this definition">¶</a></dt>
+<dd><p>Overloaded method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#hexrec.network.ModelGNN" title="hexrec.network.ModelGNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelGNN</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.network.ModelGNN.model">
+<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></em><a class="headerlink" href="#hexrec.network.ModelGNN.model" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelGNN.plot_history">
+<span class="sig-name descname"><span class="pre">plot_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.plot_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.plot_history" title="Link to this definition">¶</a></dt>
+<dd><p>Plot history of loss and val_loss metrics over training epochs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelGNN.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Overloaded method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelGNN.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.save" title="Link to this definition">¶</a></dt>
+<dd><p>Overloaded method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.network.ModelGNN.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/network.html#ModelGNN.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.network.ModelGNN.train" title="Link to this definition">¶</a></dt>
+<dd><p>Overloaded method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="hexrec-recon-module">
-<h2>hexrec.recon module<a class="headerlink" href="#hexrec-recon-module" title="Link to this heading">¶</a></h2>
+<section id="module-hexrec.recon">
+<span id="hexrec-recon-module"></span><h2>hexrec.recon module<a class="headerlink" href="#module-hexrec.recon" title="Link to this heading">¶</a></h2>
+<p>Extension of recon.py from hexsample</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.recon.</span></span><span class="sig-name descname"><span class="pre">ReconEventFitted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trigger_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">livetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/recon.html#ReconEventFitted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.recon.ReconEventFitted" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Descriptor for a reconstructed event with only two pixels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trigger_id</strong> (<em>int</em>) – The trigger identifier.</p></li>
+<li><p><strong>timestamp</strong> (<em>float</em>) – The timestamp (in s) of the event.</p></li>
+<li><p><strong>livetime</strong> (<em>int</em>) – The livetime (in us) since the last event.</p></li>
+<li><p><strong>cluster</strong> (<a class="reference internal" href="#hexrec.clustering.Cluster" title="hexrec.clustering.Cluster"><em>Cluster</em></a>) – The reconstructed cluster for the event.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted.cluster">
+<span class="sig-name descname"><span class="pre">cluster</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#hexrec.clustering.Cluster" title="hexrec.clustering.Cluster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></a></em><a class="headerlink" href="#hexrec.recon.ReconEventFitted.cluster" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted.energy">
+<span class="sig-name descname"><span class="pre">energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ionization_potential</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.68</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/recon.html#ReconEventFitted.energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.recon.ReconEventFitted.energy" title="Link to this definition">¶</a></dt>
+<dd><p>Return the energy of the event in eV.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is currently using the ionization energy of Silicon to do the
+conversion, assuming a detector gain of 1. We will need to do some
+bookkeeping, here, to make this work reliably.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted.livetime">
+<span class="sig-name descname"><span class="pre">livetime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#hexrec.recon.ReconEventFitted.livetime" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted.position">
+<span class="sig-name descname"><span class="pre">position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/recon.html#ReconEventFitted.position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.recon.ReconEventFitted.position" title="Link to this definition">¶</a></dt>
+<dd><p>Return the reconstructed position of the event.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><a class="headerlink" href="#hexrec.recon.ReconEventFitted.timestamp" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted.trigger_id">
+<span class="sig-name descname"><span class="pre">trigger_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#hexrec.recon.ReconEventFitted.trigger_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventNNet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.recon.</span></span><span class="sig-name descname"><span class="pre">ReconEventNNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trigger_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">livetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/recon.html#ReconEventNNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.recon.ReconEventNNet" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Descriptor for a reconstructed event with only two pixels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trigger_id</strong> (<em>int</em>) – The trigger identifier.</p></li>
+<li><p><strong>timestamp</strong> (<em>float</em>) – The timestamp (in s) of the event.</p></li>
+<li><p><strong>livetime</strong> (<em>int</em>) – The livetime (in us) since the last event.</p></li>
+<li><p><strong>cluster</strong> (<a class="reference internal" href="#hexrec.clustering.Cluster" title="hexrec.clustering.Cluster"><em>Cluster</em></a>) – The reconstructed cluster for the event.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventNNet.cluster">
+<span class="sig-name descname"><span class="pre">cluster</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#hexrec.clustering.Cluster" title="hexrec.clustering.Cluster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></a></em><a class="headerlink" href="#hexrec.recon.ReconEventNNet.cluster" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventNNet.energy">
+<span class="sig-name descname"><span class="pre">energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ionization_potential</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.68</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/recon.html#ReconEventNNet.energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.recon.ReconEventNNet.energy" title="Link to this definition">¶</a></dt>
+<dd><p>Return the energy of the event in eV.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is currently using the ionization energy of Silicon to do the
+conversion, assuming a detector gain of 1. We will need to do some
+bookkeeping, here, to make this work reliably.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventNNet.livetime">
+<span class="sig-name descname"><span class="pre">livetime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#hexrec.recon.ReconEventNNet.livetime" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventNNet.position">
+<span class="sig-name descname"><span class="pre">position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/recon.html#ReconEventNNet.position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.recon.ReconEventNNet.position" title="Link to this definition">¶</a></dt>
+<dd><p>Return the reconstructed position of the event.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventNNet.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><a class="headerlink" href="#hexrec.recon.ReconEventNNet.timestamp" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventNNet.trigger_id">
+<span class="sig-name descname"><span class="pre">trigger_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#hexrec.recon.ReconEventNNet.trigger_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="hexrec-source-module">
-<h2>hexrec.source module<a class="headerlink" href="#hexrec-source-module" title="Link to this heading">¶</a></h2>
+<section id="module-hexrec.source">
+<span id="hexrec-source-module"></span><h2>hexrec.source module<a class="headerlink" href="#module-hexrec.source" title="Link to this heading">¶</a></h2>
+<p>Extension of Source class from hexsample</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.source.HexagonalBeam">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.source.</span></span><span class="sig-name descname"><span class="pre">HexagonalBeam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/source.html#HexagonalBeam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.source.HexagonalBeam" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BeamBase</span></code></p>
+<p>Triangular X-ray beam inside an hexagon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x0</strong> (<em>float</em>) – The x-coordinate of the center of the hexagon in cm.</p></li>
+<li><p><strong>y0</strong> (<em>float</em>) – The y-coordinate of the center of the hexagon in cm.</p></li>
+<li><p><strong>v0</strong> (<em>np.ndarray</em>) – The (x, y) coordinates of the first vertex of the hexagon in cm.</p></li>
+<li><p><strong>v1</strong> (<em>np.ndarray</em>) – The (x, y) coordinates of the second vertex of the hexagon in cm.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.source.HexagonalBeam.rvs">
+<span class="sig-name descname"><span class="pre">rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/source.html#HexagonalBeam.rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.source.HexagonalBeam.rvs" title="Link to this definition">¶</a></dt>
+<dd><p>Overloaded method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>int</em>) – The number of X-ray photon positions to be generated.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>x, y</strong> – The photon positions on the x-y plane.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2-element tuple of np.ndarray of shape <code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.source.HexagonalBeam.v0">
+<span class="sig-name descname"><span class="pre">v0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0,</span> <span class="pre">0)</span></em><a class="headerlink" href="#hexrec.source.HexagonalBeam.v0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.source.HexagonalBeam.v1">
+<span class="sig-name descname"><span class="pre">v1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0,</span> <span class="pre">0)</span></em><a class="headerlink" href="#hexrec.source.HexagonalBeam.v1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.source.Line">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.source.</span></span><span class="sig-name descname"><span class="pre">Line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/source.html#Line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.source.Line" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SpectrumBase</span></code></p>
+<p>Class describing a monochromatic emission line at a given
+energy</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.source.Line.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/source.html#Line.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.source.Line.plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plot the monochromatic line</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.source.Line.rvs">
+<span class="sig-name descname"><span class="pre">rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/source.html#Line.rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.source.Line.rvs" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of X-ray photon energies to be generated.</p></li>
+<li><p><strong>1.</strong> (<em>Defaults to</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The photon energies in eV.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>energy (np.ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hexrec.source.TriangularBeam">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.source.</span></span><span class="sig-name descname"><span class="pre">TriangularBeam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/source.html#TriangularBeam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.source.TriangularBeam" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BeamBase</span></code></p>
+<p>Triangular X-ray beam inside an hexagon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x0</strong> (<em>float</em>) – The x-coordinate of the center of the hexagon in cm.</p></li>
+<li><p><strong>y0</strong> (<em>float</em>) – The y-coordinate of the center of the hexagon in cm.</p></li>
+<li><p><strong>v0</strong> (<em>np.ndarray</em>) – The (x, y) coordinates of the first vertex of the hexagon in cm.</p></li>
+<li><p><strong>v1</strong> (<em>np.ndarray</em>) – The (x, y) coordinates of the second vertex of the hexagon in cm.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="hexrec.source.TriangularBeam.rvs">
+<span class="sig-name descname"><span class="pre">rvs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/source.html#TriangularBeam.rvs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.source.TriangularBeam.rvs" title="Link to this definition">¶</a></dt>
+<dd><p>Overloaded method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>int</em>) – The number of X-ray photon positions to be generated.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>x, y</strong> – The photon positions on the x-y plane.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2-element tuple of np.ndarray of shape <code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.source.TriangularBeam.v0">
+<span class="sig-name descname"><span class="pre">v0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0,</span> <span class="pre">0)</span></em><a class="headerlink" href="#hexrec.source.TriangularBeam.v0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hexrec.source.TriangularBeam.v1">
+<span class="sig-name descname"><span class="pre">v1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0,</span> <span class="pre">0)</span></em><a class="headerlink" href="#hexrec.source.TriangularBeam.v1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<section id="module-hexrec">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hexrec" title="Link to this heading">¶</a></h2>
+<p>Init constructor for package</p>
 </section>
 </section>
 
@@ -101,7 +880,7 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">hexrec</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">hexrec package</a></li>
