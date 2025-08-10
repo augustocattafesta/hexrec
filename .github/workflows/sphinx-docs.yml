@@ -34,6 +34,15 @@ jobs:
       run: |
         sphinx-apidoc -o docs/ hexrec
 
+    - name: Debug .rst files
+      run: |
+        echo "📂 Lista file in docs/"
+        ls -la docs
+        echo "📄 index.rst"
+        cat docs/index.rst
+        echo "📄 modules.rst"
+        cat docs/modules.rst || echo "modules.rst non trovato!"
+
     - name: Build Docs
       run: |
         cd docs
