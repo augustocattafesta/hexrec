@@ -10,7 +10,6 @@ from tqdm import tqdm
 from hexsample.fileio import DigiInputFileCircular
 from hexsample.readout import HexagonalReadoutCircular
 from hexsample.modeling import PowerLaw
-from hexsample.hist import Histogram1d
 from hexsample.hexagon import HexagonalLayout
 
 from hexrec.app import ArgumentParser
@@ -23,7 +22,6 @@ __description__ = \
 PARSER = ArgumentParser(description=__description__)
 PARSER.add_infile()
 PARSER.add_eta_options()
-# If use neural net for this, also add argument to choose bewteen fit and NN
 
 def hexeta(**kwargs):
     """Script to analyze eta function for 2 pixels events 
@@ -70,7 +68,6 @@ def hexeta(**kwargs):
     n = n / np.sqrt(np.sum(n**2, axis=1, keepdims=True))
 
     eta = pha[:, 1] / pha.sum(axis=1)
-    # dr = np.sqrt((absx-x_pix)**2 + (absy-y_pix)**2) / header['pitch'] # must project onto n versor
     pos = np.array([absx-x_pix, absy-y_pix]).T / header['pitch']
     dr = abs(pos[:, 0]*n[:, 0] + pos[:, 1]*n[:, 1])
 
@@ -91,7 +88,7 @@ def hexeta(**kwargs):
         y_true = dr[mask]
 
         mean = np.mean(y_true)
-        mean_std = np.std(y_true) / np.sqrt(y_true.shape[0])
+        mean_std = np.std(y_true)
         y_profile[i] = mean
         y_profile_std[i] = mean_std
 
@@ -101,14 +98,15 @@ def hexeta(**kwargs):
     popt, pcov = curve_fit(fit_model, bin_center, y_profile, sigma=y_profile_std)
 
     plt.figure('profile')
-    h = Histogram1d(eta_bins, xlabel=r'$\eta$', ylabel='dr / pitch')
-    h.fill(bin_center, weights=y_profile).plot()
+    plt.errorbar(bin_center, y_profile, y_profile_std, fmt='.k', label='data')
     xx = np.linspace(0, max(eta), 1000)
-    plt.plot(xx, fit_model(xx, popt[0]), '-k')
-    plt.xlim(0)
+    plt.plot(xx, fit_model(xx, popt[0]), '-k', label='best fit')
+    plt.xlabel(r'$\eta$')
+    plt.ylabel('dr/pitch')
+    plt.legend()
     plt.tight_layout()
 
-    chisq = np.sum((y_profile - fit_model(bin_center, popt[0])/y_profile_std)**2)
+    chisq = np.sum(((y_profile - fit_model(bin_center, popt[0]))/y_profile_std)**2)
     ddof = len(y_profile)-1
 
     logger.info(f'gamma: {popt[0]} +- {np.sqrt(pcov)[0, 0]}')
