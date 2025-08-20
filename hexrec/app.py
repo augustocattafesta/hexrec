@@ -48,13 +48,22 @@ class ArgumentParser(ArgumentParser):
         group.add_argument('--trngindex', type=int, default=0,
             help='triangular section of the hexagon')
 
+    def add_clustering_options(self) -> None:
+        group = self.add_argument_group('clustering', 'Options for clustering')
+        group.add_argument('--zsupthreshold', type=int, default=30,
+            help='zero-suppression threshold in ADC counts')
+        group.add_argument('--nneighbors', type=int, default=6,
+            help='number of neighbors to be considered (0--6)')
+        group.add_argument('--npixels', type=int, default=2,
+            help='cluster size of events to analyze, -1 means all events')
+
     def add_analysis_options(self) -> None:
         """Add an option group for the analysis.
         """
         group = self.add_argument_group('analysis', 'Options for analysis')
         group.add_argument('--bins', type=int, default=100,
                            help='number of bins for histogram analysis')
-        # Could add save plot option
+
 
     def add_eta_options(self) -> None:
         """Add an option group for eta function analysis.
@@ -86,20 +95,17 @@ class ArgumentParser(ArgumentParser):
         group.add_argument('--suffix', default='recon', type=str,
                     help='suffix for the output file')
 
-
-    def add_model_name(self) -> None:
-        self.add_argument('nnmodel', type=str, default='model',
-                          help='name of the neural network model')
-
-    def add_neural_net_options(self) -> None:
-        """Add an option group for neural network
+    def add_training_options(self) -> None:
+        """Add an option group for neural network training
         """
-        group = self.add_argument_group('nnetwork', 'Options for event neural network training')
-        # group.add_argument('--npixels', type=int, default=-1,
-        #     help='cluster size of events to analyze, -1 means all events')
+        group = self.add_argument_group('training', 'Options for event neural network training')
+        self.add_argument('arch', type=str, choices=['gnn', 'dnn'],
+            help='type of architecture to train')
         group.add_argument('--epochs', type=int, default=10,
             help='number of epochs for training')
-
+        group.add_argument('--modelname', type=str, default='model',
+            help='name of the model to save')
+        
     def add_nnet_recon_options(self) -> None:
         """Add an option group for neural network reconstruction
         """

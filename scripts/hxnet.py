@@ -4,21 +4,16 @@
 from tqdm import tqdm
 
 import numpy as np
-import matplotlib.pyplot as plt
-
-from keras.layers import Input, Dense, Conv2D, Flatten
-from keras.models import Model
-from keras.optimizers import Adam
+from keras.models import model_from_json
 
 from hexsample import logger
 from hexsample.readout import HexagonalReadoutCircular
-from hexsample.fileio import DigiInputFileCircular, ReconOutputFile
+from hexsample.fileio import DigiInputFileCircular
 from hexsample.hexagon import HexagonalLayout
-from hexsample.recon import ReconEvent
 
 from hexrec.app import ArgumentParser
 from hexrec.clustering import ClusteringNN
-from hexrec.network import ModelBase, ModelGNN, ModelDNN, GNNRegression
+from hexrec.network import ModelGNN, ModelDNN, GNNRegression
 
 
 
@@ -28,9 +23,8 @@ __description__ = \
 
 PARSER = ArgumentParser(description=__description__)
 PARSER.add_infile()
-PARSER.add_model_name()
-PARSER.add_reconstruction_options()
-PARSER.add_neural_net_options()
+PARSER.add_clustering_options()
+PARSER.add_training_options()
 
 def hxnet(**kwargs):
     input_file_path = kwargs['infile']
@@ -41,12 +35,17 @@ def hxnet(**kwargs):
     readout = HexagonalReadoutCircular(*args)
     logger.info(f'Readout chip: {readout}')
 
-    # Define NN model
-    gnn_model = GNNRegression()
-    model = ModelGNN(gnn_model)
+    if kwargs['arch'] == 'gnn':
+        gnn_model = GNNRegression()
+        model = ModelGNN(gnn_model)
+    elif kwargs['arch'] == 'dnn':
+        dnn_model = ModelDNN.load_pretrained()
+        # load only the architecture without training parameters
+        model_arch = model_from_json(dnn_model.model.to_json())
+        model = ModelDNN(model_arch)
 
     clustering = ClusteringNN(readout, kwargs['zsupthreshold'], kwargs['nneighbors'],
-                              header['pitch'], kwargs['gamma'], model)
+                              header['pitch'], None, model)
 
     xdata = []
     ydata = []
@@ -61,9 +60,14 @@ def hxnet(**kwargs):
 
     xdata = np.array(xdata)
     ydata = np.array(ydata) / header['pitch']
-
-    model.train(xdata, ydata, epochs=kwargs['epochs'])
-    model.save(kwargs['nnmodel'])
+    
+    if kwargs['arch'] == 'gnn':
+        # for gnn the best model is saved during training 
+        model.train(xdata, ydata, epochs=kwargs['epochs'], name=kwargs['modelname'])
+    if kwargs['arch'] == 'dnn':
+        xdata = xdata[:, 0, :]
+        model.train(xdata, ydata, epochs=kwargs['epochs'])
+        model.save(kwargs['modelname'])
 
 if __name__ == '__main__':
     hxnet(**vars(PARSER.parse_args()))
