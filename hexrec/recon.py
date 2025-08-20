@@ -9,7 +9,7 @@ from hexsample.recon import DEFAULT_IONIZATION_POTENTIAL
 from hexrec.clustering import Cluster
 
 @dataclass
-class ReconEventFitted:
+class ReconEventEta:
 
     """Descriptor for a reconstructed event with only two pixels.
 
@@ -46,7 +46,7 @@ class ReconEventFitted:
     def position(self) -> Tuple[float, float]:
         """Return the reconstructed position of the event.
         """
-        return self.cluster.fitted_position()
+        return self.cluster.eta_position()
 
 @dataclass
 class ReconEventNNet:

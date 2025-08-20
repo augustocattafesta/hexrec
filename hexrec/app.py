@@ -54,7 +54,7 @@ class ArgumentParser(ArgumentParser):
             help='zero-suppression threshold in ADC counts')
         group.add_argument('--nneighbors', type=int, default=6,
             help='number of neighbors to be considered (0--6)')
-        group.add_argument('--npixels', type=int, default=2,
+        group.add_argument('--npixels', type=int, default=-1,
             help='cluster size of events to analyze, -1 means all events')
 
     def add_analysis_options(self) -> None:
@@ -69,12 +69,6 @@ class ArgumentParser(ArgumentParser):
         """Add an option group for eta function analysis.
         """
         group = self.add_argument_group('analysis', 'Options for eta function analysis')
-        group.add_argument('--npixels', type=int, default=2,
-            help='cluster size of events to analyze, -1 means all events')
-        group.add_argument('--zsupthreshold', type=int, default=30,
-            help='zero-suppression threshold in ADC counts')
-        group.add_argument('--nneighbors', type=int, default=6,
-            help='number of neighbors to be considered (0--6)')
         group.add_argument('--bins', type=int, default=20,
             help='number of bins for the profile of eta')
 
@@ -82,18 +76,16 @@ class ArgumentParser(ArgumentParser):
         """Add an option group for reconstruction.
         """
         group = self.add_argument_group('reconstruction', 'Options for event reconstruction')
-        group.add_argument('--zsupthreshold', type=int, default=30,
-            help='zero-suppression threshold in ADC counts')
-        group.add_argument('--nneighbors', type=int, default=6,
-            help='number of neighbors to be considered (0--6)')
-        group.add_argument('--npixels', type=int, default=2,
-            help='cluster size of events to analyze, -1 means all events')
-        group.add_argument('--rcmethod', choices=['centroid', 'fit', 'dnn', 'gnn'], type=str,
-            default='centroid', help='How to reconstruct position')
-        group.add_argument('--gamma', default=0.272, type=float,
-            help='index of the power law for position fit')
         group.add_argument('--suffix', default='recon', type=str,
                     help='suffix for the output file')
+        group.add_argument('--rcmethod', choices=['centroid', 'eta', 'dnn', 'gnn'], type=str,
+            default='centroid', help='How to reconstruct position')
+        group.add_argument('--gamma', default=0.272, type=float,
+            help='index of the power law for eta reconstruction')
+        group.add_argument('--nnmodel', type=str, default='pretrained', choices=['pretrained', 'custom'],
+            help='model to use for neural network reconstruction')
+        group.add_argument('--modelpath', type=str,
+            help='path of the model to use, in case of custom model')
 
     def add_training_options(self) -> None:
         """Add an option group for neural network training
@@ -105,12 +97,3 @@ class ArgumentParser(ArgumentParser):
             help='number of epochs for training')
         group.add_argument('--modelname', type=str, default='model',
             help='name of the model to save')
-        
-    def add_nnet_recon_options(self) -> None:
-        """Add an option group for neural network reconstruction
-        """
-        group = self.add_argument_group('nnetwork', 'Options for event neural network training')
-        group.add_argument('--nnmodel', type=str, default='pretrained', choices=['pretrained', 'custom'],
-            help='model to use for neural network reconstruction')
-        group.add_argument('--modelpath', type=str, default=None,
-            help='path of the model to use, in case of custom model')

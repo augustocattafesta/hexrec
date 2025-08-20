@@ -69,7 +69,7 @@ def test_cluster_eta(size=10):
     centroid_position = np.zeros((size, 2))
     for i, _pha in enumerate(pha):
         cluster = Cluster(x, y, _pha, pitch=pitch, gamma=0.25)
-        eta_position[i] = cluster.fitted_position()
+        eta_position[i] = cluster.eta_position()
         centroid_position[i] = cluster.centroid()
 
     dr_fit = np.sqrt((eta_position[:, 0] - x[0])**2 + (eta_position[:, 1] - y[0])**2)
