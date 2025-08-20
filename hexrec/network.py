@@ -318,9 +318,12 @@ class ModelGNN(ModelBase):
             xdata_train, xdata_val, ydata_train, ydata_val = train_test_split(
                 xdata, ydata, test_size=val_split)
 
+            logger.info('Preparing training data')
             train_loader = ModelGNN.data_loader(xdata_train, ydata_train)
+            logger.info('Preparing validation data')
             val_loader = ModelGNN.data_loader(xdata_val, ydata_val)
         else:
+            logger.info('Preparing training data for training')
             train_loader = ModelGNN.data_loader(xdata, ydata)
 
         optimizer = torch.optim.Adam(self.model.parameters(), lr=1e-3)
@@ -328,7 +331,7 @@ class ModelGNN(ModelBase):
         best_val_loss = float('inf')
 
         self.history = {'loss':[], 'val_loss':[]}
-        for epoch in range(1, epochs):
+        for epoch in range(1, epochs+1):
             self.model.train()
             total_loss = 0
             num_batches = 0
@@ -364,7 +367,7 @@ class ModelGNN(ModelBase):
             if avg_val_loss < best_val_loss:
                 best_val_loss = avg_val_loss
                 if kwargs.get('save_best', True):
-                    model_name = kwargs.get('name', 'model.pt')
+                    model_name = kwargs.get('name', 'model')
                     self.save(model_name)
                     logger.info(f'\t\t -- Model saved ({model_name})')
 
@@ -374,7 +377,10 @@ class ModelGNN(ModelBase):
         """Plot history of loss and val_loss metrics over training epochs
         """
         plt.plot(self.history['loss'], label='loss')
-        plt.plot(self.history['val_loss'], label='val_loss')
+        plt.plot(self.history['val_loss'], label='val loss')
+        plt.xlabel('Epochs')
+        plt.ylabel('Mean squared error')
+        plt.legend()
         plt.show()
 
     def predict(self, xdata: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
