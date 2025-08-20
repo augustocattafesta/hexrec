@@ -406,9 +406,12 @@
             <span class="n">xdata_train</span><span class="p">,</span> <span class="n">xdata_val</span><span class="p">,</span> <span class="n">ydata_train</span><span class="p">,</span> <span class="n">ydata_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
                 <span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">val_split</span><span class="p">)</span>
 
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Preparing training data&#39;</span><span class="p">)</span>
             <span class="n">train_loader</span> <span class="o">=</span> <span class="n">ModelGNN</span><span class="o">.</span><span class="n">data_loader</span><span class="p">(</span><span class="n">xdata_train</span><span class="p">,</span> <span class="n">ydata_train</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Preparing validation data&#39;</span><span class="p">)</span>
             <span class="n">val_loader</span> <span class="o">=</span> <span class="n">ModelGNN</span><span class="o">.</span><span class="n">data_loader</span><span class="p">(</span><span class="n">xdata_val</span><span class="p">,</span> <span class="n">ydata_val</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Preparing training data for training&#39;</span><span class="p">)</span>
             <span class="n">train_loader</span> <span class="o">=</span> <span class="n">ModelGNN</span><span class="o">.</span><span class="n">data_loader</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">)</span>
 
         <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
@@ -416,7 +419,7 @@
         <span class="n">best_val_loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_loss&#39;</span><span class="p">:[]}</span>
-        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
             <span class="n">total_loss</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">num_batches</span> <span class="o">=</span> <span class="mi">0</span>
@@ -452,7 +455,7 @@
             <span class="k">if</span> <span class="n">avg_val_loss</span> <span class="o">&lt;</span> <span class="n">best_val_loss</span><span class="p">:</span>
                 <span class="n">best_val_loss</span> <span class="o">=</span> <span class="n">avg_val_loss</span>
                 <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_best&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
-                    <span class="n">model_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;model.pt&#39;</span><span class="p">)</span>
+                    <span class="n">model_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1"> -- Model saved (</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
 
@@ -465,7 +468,10 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot history of loss and val_loss metrics over training epochs</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;val_loss&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;val loss&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Mean squared error&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 

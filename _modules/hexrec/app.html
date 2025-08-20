@@ -89,6 +89,18 @@
             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;triangular section of the hexagon&#39;</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="ArgumentParser.add_clustering_options">
+<a class="viewcode-back" href="../../hexrec.html#hexrec.app.ArgumentParser.add_clustering_options">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_clustering_options</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;clustering&#39;</span><span class="p">,</span> <span class="s1">&#39;Options for clustering&#39;</span><span class="p">)</span>
+        <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--zsupthreshold&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;zero-suppression threshold in ADC counts&#39;</span><span class="p">)</span>
+        <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--nneighbors&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of neighbors to be considered (0--6)&#39;</span><span class="p">)</span>
+        <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--npixels&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;cluster size of events to analyze, -1 means all events&#39;</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="ArgumentParser.add_analysis_options">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.app.ArgumentParser.add_analysis_options">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_analysis_options</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -98,7 +110,7 @@
         <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--bins&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of bins for histogram analysis&#39;</span><span class="p">)</span></div>
 
-        <span class="c1"># Could add save plot option</span>
+
 
 <div class="viewcode-block" id="ArgumentParser.add_eta_options">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.app.ArgumentParser.add_eta_options">[docs]</a>
@@ -136,26 +148,20 @@
                     <span class="n">help</span><span class="o">=</span><span class="s1">&#39;suffix for the output file&#39;</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="ArgumentParser.add_model_name">
-<a class="viewcode-back" href="../../hexrec.html#hexrec.app.ArgumentParser.add_model_name">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_model_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;nnmodel&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
-                          <span class="n">help</span><span class="o">=</span><span class="s1">&#39;name of the neural network model&#39;</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="ArgumentParser.add_neural_net_options">
-<a class="viewcode-back" href="../../hexrec.html#hexrec.app.ArgumentParser.add_neural_net_options">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_neural_net_options</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an option group for neural network</span>
+<div class="viewcode-block" id="ArgumentParser.add_training_options">
+<a class="viewcode-back" href="../../hexrec.html#hexrec.app.ArgumentParser.add_training_options">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_training_options</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an option group for neural network training</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;nnetwork&#39;</span><span class="p">,</span> <span class="s1">&#39;Options for event neural network training&#39;</span><span class="p">)</span>
-        <span class="c1"># group.add_argument(&#39;--npixels&#39;, type=int, default=-1,</span>
-        <span class="c1">#     help=&#39;cluster size of events to analyze, -1 means all events&#39;)</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;training&#39;</span><span class="p">,</span> <span class="s1">&#39;Options for event neural network training&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;arch&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;gnn&#39;</span><span class="p">,</span> <span class="s1">&#39;dnn&#39;</span><span class="p">],</span>
+            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;type of architecture to train&#39;</span><span class="p">)</span>
         <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--epochs&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of epochs for training&#39;</span><span class="p">)</span></div>
+            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of epochs for training&#39;</span><span class="p">)</span>
+        <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--modelname&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;name of the model to save&#39;</span><span class="p">)</span></div>
 
-
+        
 <div class="viewcode-block" id="ArgumentParser.add_nnet_recon_options">
 <a class="viewcode-back" href="../../hexrec.html#hexrec.app.ArgumentParser.add_nnet_recon_options">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_nnet_recon_options</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
