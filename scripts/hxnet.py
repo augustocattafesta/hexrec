@@ -15,8 +15,6 @@ from hexrec.app import ArgumentParser
 from hexrec.clustering import ClusteringNN
 from hexrec.network import ModelGNN, ModelDNN, GNNRegression
 
-
-
 __description__ = \
 """Define a neural network model and train it
 """

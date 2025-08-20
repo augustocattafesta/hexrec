@@ -4,15 +4,13 @@
 from loguru import logger
 import numpy as np
 import matplotlib.pyplot as plt
-import tables
-from scipy.optimize import curve_fit
-
 
 from hexsample.hist import Histogram1d
 from hexsample.analysis import fit_histogram
 from hexsample.modeling import Gaussian
 from hexsample.recon import DEFAULT_IONIZATION_POTENTIAL
 from hexsample.hexagon import HexagonalLayout
+from hexsample.fileio import ReconInputFile
 
 from hexrec.hist import Histogram2d
 from hexrec.hexagon import HexagonalGrid
@@ -30,18 +28,26 @@ PARSER.add_analysis_options()
 def analyze(**kwargs):
     """Script to analyze a reconstructed file
     """
-    infile_path = kwargs['infile']
-    bins = kwargs['bins']
+    input_file_path = kwargs['infile']
+    input_file = ReconInputFile(input_file_path)
+    header = input_file.header
+    header['layout'] = HexagonalLayout('ODD_R')
+    header['numcolumns'] = 304
+    header['numrows'] = 352
+    header['pitch'] = 0.005
 
-    with tables.open_file(infile_path, 'r') as file:
-        recon_table = file.root.recon.recon_table.read()
-        mc_table = file.root.mc.mc_table.read()
+    args = HexagonalLayout(header['layout']), header['numcolumns'], header['numrows'],\
+        header['pitch']
+
+    recon_table = input_file.recon_table.read()
+    mc_table = input_file.mc_table.read()
 
     # Create grid for hexagon center
-    pitch = 0.005
-    grid = HexagonalGrid(HexagonalLayout('ODD_R'), 304, 352, pitch)
+    grid = HexagonalGrid(*args)
     x0, y0 = grid.pixel_to_world(*grid.world_to_pixel(0, 0))
 
+    bins = kwargs['bins']
+    pitch = header['pitch']
     # Recon energy distr
     energy = recon_table['energy']
     xbins_en = np.arange(min(energy), max(energy), DEFAULT_IONIZATION_POTENTIAL)
@@ -98,20 +104,6 @@ def analyze(**kwargs):
     plt.figure('Position distance')
     h_dist = Histogram2d(xbins_pos_mc, ybins_pos_mc, xlabel_pos, ylabel_pos, 'Mean distance [cm]')
     h_dist.fill(x_mc, y_mc, weights=dist).plot(mean=True)
-    plt.tight_layout()
-
-    # Angle distribution
-    phi_rc = np.arctan(y_rc/x_rc)
-    mask = np.invert(np.isnan(phi_rc))
-
-    phi_mc = np.arctan(y_mc/x_mc)[mask]
-    phi_rc = phi_rc[mask]
-    dphi = np.rad2deg(phi_mc - phi_rc)
-
-    plt.figure('Angle difference')
-    h_angle = Histogram2d(xbins_pos_mc, ybins_pos_mc, xlabel_pos, ylabel_pos,
-                          zlabel='Mean angle difference [deg]')
-    # h_angle.fill(x_mc[mask], y_mc[mask], weights=dphi).plot(mean=True)
     plt.tight_layout()
 
     # X axis position difference 

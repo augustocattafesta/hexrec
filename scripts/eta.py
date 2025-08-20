@@ -21,6 +21,7 @@ __description__ = \
 
 PARSER = ArgumentParser(description=__description__)
 PARSER.add_infile()
+PARSER.add_clustering_options()
 PARSER.add_eta_options()
 
 def hexeta(**kwargs):

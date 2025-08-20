@@ -11,8 +11,8 @@ from hexsample.recon import ReconEvent
 
 from hexrec.app import ArgumentParser
 from hexrec.clustering import ClusteringNN
-from hexrec.recon import ReconEventFitted, ReconEventNNet
-from hexrec.network import ModelBase, ModelDNN, ModelGNN
+from hexrec.recon import ReconEventEta, ReconEventNNet
+from hexrec.network import ModelDNN, ModelGNN
 
 __description__ = \
 """Run the reconstruction on a file produced by hxsim.py
@@ -20,8 +20,8 @@ __description__ = \
 
 PARSER = ArgumentParser(description=__description__)
 PARSER.add_infile()
+PARSER.add_clustering_options()
 PARSER.add_reconstruction_options()
-PARSER.add_nnet_recon_options()
 
 def hxrecon(**kwargs):
     """Application main entry point.
@@ -58,14 +58,18 @@ def hxrecon(**kwargs):
     output_file.update_header(**kwargs)
     output_file.update_digi_header(**input_file.header)
 
+    # eta reconstruction works only with 2 pixels, otherwise would get error
+    if kwargs['rcmethod'] == 'eta':
+        kwargs['npixels'] = 2
+
     for i, event in tqdm(enumerate(input_file)):
         cluster = clustering.run(event)
         if kwargs['npixels'] == -1 or cluster.size() == kwargs['npixels']:
             args = event.trigger_id, event.timestamp(), event.livetime, cluster
             if kwargs['rcmethod'] == 'centroid':
                 recon_event = ReconEvent(*args)
-            elif kwargs['rcmethod'] == 'fit':
-                recon_event = ReconEventFitted(*args)
+            elif kwargs['rcmethod'] == 'eta':
+                recon_event = ReconEventEta(*args)
             elif kwargs['rcmethod'] == 'dnn' or kwargs['rcmethod'] == 'gnn':
                 recon_event = ReconEventNNet(*args)
             else:

@@ -49,7 +49,7 @@ class Cluster(ClusterHexsample):
         """
         return np.count_nonzero(self.pha)
 
-    def fitted_position(self) -> Tuple[float, float]:
+    def eta_position(self) -> Tuple[float, float]:
         """Return the reconstructed position of a two pixel cluster
         using the eta function fit 
         """

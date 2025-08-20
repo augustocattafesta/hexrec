@@ -5,13 +5,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from loguru import logger
 
-import keras
 from keras.layers import Input, Dense
-from keras.optimizers import Adam
-from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from keras.models import Model
 
-from hexrec.network import ModelDNN, ModelGNN, GNNRegression
+from hexrec.network import ModelDNN, ModelGNN
 
 
 def test_save_load_DNN(size=1000):
