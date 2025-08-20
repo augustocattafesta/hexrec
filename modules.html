@@ -52,7 +52,6 @@
 <li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.app.ArgumentParser.add_clustering_options"><code class="docutils literal notranslate"><span class="pre">ArgumentParser.add_clustering_options()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.app.ArgumentParser.add_eta_options"><code class="docutils literal notranslate"><span class="pre">ArgumentParser.add_eta_options()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.app.ArgumentParser.add_line_source_options"><code class="docutils literal notranslate"><span class="pre">ArgumentParser.add_line_source_options()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.app.ArgumentParser.add_nnet_recon_options"><code class="docutils literal notranslate"><span class="pre">ArgumentParser.add_nnet_recon_options()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.app.ArgumentParser.add_reconstruction_options"><code class="docutils literal notranslate"><span class="pre">ArgumentParser.add_reconstruction_options()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.app.ArgumentParser.add_simple_readout_options"><code class="docutils literal notranslate"><span class="pre">ArgumentParser.add_simple_readout_options()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.app.ArgumentParser.add_training_options"><code class="docutils literal notranslate"><span class="pre">ArgumentParser.add_training_options()</span></code></a></li>
@@ -62,7 +61,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="hexrec.html#module-hexrec.clustering">hexrec.clustering module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="hexrec.html#hexrec.clustering.Cluster"><code class="docutils literal notranslate"><span class="pre">Cluster</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.clustering.Cluster.fitted_position"><code class="docutils literal notranslate"><span class="pre">Cluster.fitted_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.clustering.Cluster.eta_position"><code class="docutils literal notranslate"><span class="pre">Cluster.eta_position()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.clustering.Cluster.nnet_position"><code class="docutils literal notranslate"><span class="pre">Cluster.nnet_position()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.clustering.Cluster.size"><code class="docutils literal notranslate"><span class="pre">Cluster.size()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.clustering.Cluster.xdata"><code class="docutils literal notranslate"><span class="pre">Cluster.xdata</span></code></a></li>
@@ -130,13 +129,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="hexrec.html#module-hexrec.recon">hexrec.recon module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventFitted"><code class="docutils literal notranslate"><span class="pre">ReconEventFitted</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventFitted.cluster"><code class="docutils literal notranslate"><span class="pre">ReconEventFitted.cluster</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventFitted.energy"><code class="docutils literal notranslate"><span class="pre">ReconEventFitted.energy()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventFitted.livetime"><code class="docutils literal notranslate"><span class="pre">ReconEventFitted.livetime</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventFitted.position"><code class="docutils literal notranslate"><span class="pre">ReconEventFitted.position()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventFitted.timestamp"><code class="docutils literal notranslate"><span class="pre">ReconEventFitted.timestamp</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventFitted.trigger_id"><code class="docutils literal notranslate"><span class="pre">ReconEventFitted.trigger_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventEta"><code class="docutils literal notranslate"><span class="pre">ReconEventEta</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventEta.cluster"><code class="docutils literal notranslate"><span class="pre">ReconEventEta.cluster</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventEta.energy"><code class="docutils literal notranslate"><span class="pre">ReconEventEta.energy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventEta.livetime"><code class="docutils literal notranslate"><span class="pre">ReconEventEta.livetime</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventEta.position"><code class="docutils literal notranslate"><span class="pre">ReconEventEta.position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventEta.timestamp"><code class="docutils literal notranslate"><span class="pre">ReconEventEta.timestamp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventEta.trigger_id"><code class="docutils literal notranslate"><span class="pre">ReconEventEta.trigger_id</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="hexrec.html#hexrec.recon.ReconEventNNet"><code class="docutils literal notranslate"><span class="pre">ReconEventNNet</span></code></a><ul>

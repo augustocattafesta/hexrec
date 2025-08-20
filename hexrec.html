@@ -101,17 +101,6 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="hexrec.app.ArgumentParser.add_nnet_recon_options">
-<span class="sig-name descname"><span class="pre">add_nnet_recon_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/app.html#ArgumentParser.add_nnet_recon_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.app.ArgumentParser.add_nnet_recon_options" title="Link to this definition">¶</a></dt>
-<dd><p>Add an option group for neural network reconstruction</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="hexrec.app.ArgumentParser.add_reconstruction_options">
 <span class="sig-name descname"><span class="pre">add_reconstruction_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/app.html#ArgumentParser.add_reconstruction_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.app.ArgumentParser.add_reconstruction_options" title="Link to this definition">¶</a></dt>
 <dd><p>Add an option group for reconstruction.</p>
@@ -156,8 +145,8 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></p>
 <p>Overwritten class Cluster from hexsample</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="hexrec.clustering.Cluster.fitted_position">
-<span class="sig-name descname"><span class="pre">fitted_position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/clustering.html#Cluster.fitted_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.clustering.Cluster.fitted_position" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="hexrec.clustering.Cluster.eta_position">
+<span class="sig-name descname"><span class="pre">eta_position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/clustering.html#Cluster.eta_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.clustering.Cluster.eta_position" title="Link to this definition">¶</a></dt>
 <dd><p>Return the reconstructed position of a two pixel cluster
 using the eta function fit</p>
 <dl class="field-list simple">
@@ -696,8 +685,8 @@ or (N, 2) for multiple data</p></li>
 <span id="hexrec-recon-module"></span><h2>hexrec.recon module<a class="headerlink" href="#module-hexrec.recon" title="Link to this heading">¶</a></h2>
 <p>Extension of recon.py from hexsample</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.recon.</span></span><span class="sig-name descname"><span class="pre">ReconEventFitted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trigger_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">livetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/recon.html#ReconEventFitted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.recon.ReconEventFitted" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventEta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hexrec.recon.</span></span><span class="sig-name descname"><span class="pre">ReconEventEta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trigger_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">livetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/recon.html#ReconEventEta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.recon.ReconEventEta" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Descriptor for a reconstructed event with only two pixels.</p>
 <dl class="field-list simple">
@@ -711,13 +700,13 @@ or (N, 2) for multiple data</p></li>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted.cluster">
-<span class="sig-name descname"><span class="pre">cluster</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#hexrec.clustering.Cluster" title="hexrec.clustering.Cluster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></a></em><a class="headerlink" href="#hexrec.recon.ReconEventFitted.cluster" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventEta.cluster">
+<span class="sig-name descname"><span class="pre">cluster</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#hexrec.clustering.Cluster" title="hexrec.clustering.Cluster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cluster</span></code></a></em><a class="headerlink" href="#hexrec.recon.ReconEventEta.cluster" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted.energy">
-<span class="sig-name descname"><span class="pre">energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ionization_potential</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.68</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/recon.html#ReconEventFitted.energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.recon.ReconEventFitted.energy" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventEta.energy">
+<span class="sig-name descname"><span class="pre">energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ionization_potential</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.68</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/recon.html#ReconEventEta.energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.recon.ReconEventEta.energy" title="Link to this definition">¶</a></dt>
 <dd><p>Return the energy of the event in eV.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -733,13 +722,13 @@ bookkeeping, here, to make this work reliably.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted.livetime">
-<span class="sig-name descname"><span class="pre">livetime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#hexrec.recon.ReconEventFitted.livetime" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventEta.livetime">
+<span class="sig-name descname"><span class="pre">livetime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#hexrec.recon.ReconEventEta.livetime" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted.position">
-<span class="sig-name descname"><span class="pre">position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/recon.html#ReconEventFitted.position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.recon.ReconEventFitted.position" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventEta.position">
+<span class="sig-name descname"><span class="pre">position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/hexrec/recon.html#ReconEventEta.position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hexrec.recon.ReconEventEta.position" title="Link to this definition">¶</a></dt>
 <dd><p>Return the reconstructed position of the event.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -749,13 +738,13 @@ bookkeeping, here, to make this work reliably.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted.timestamp">
-<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><a class="headerlink" href="#hexrec.recon.ReconEventFitted.timestamp" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventEta.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><a class="headerlink" href="#hexrec.recon.ReconEventEta.timestamp" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="hexrec.recon.ReconEventFitted.trigger_id">
-<span class="sig-name descname"><span class="pre">trigger_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#hexrec.recon.ReconEventFitted.trigger_id" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="hexrec.recon.ReconEventEta.trigger_id">
+<span class="sig-name descname"><span class="pre">trigger_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#hexrec.recon.ReconEventEta.trigger_id" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

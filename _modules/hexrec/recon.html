@@ -41,10 +41,10 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">hexrec.clustering</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cluster</span>
 
-<div class="viewcode-block" id="ReconEventFitted">
-<a class="viewcode-back" href="../../hexrec.html#hexrec.recon.ReconEventFitted">[docs]</a>
+<div class="viewcode-block" id="ReconEventEta">
+<a class="viewcode-back" href="../../hexrec.html#hexrec.recon.ReconEventEta">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">ReconEventFitted</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ReconEventEta</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Descriptor for a reconstructed event with only two pixels.</span>
 
@@ -68,8 +68,8 @@
     <span class="n">livetime</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">cluster</span><span class="p">:</span> <span class="n">Cluster</span>
 
-<div class="viewcode-block" id="ReconEventFitted.energy">
-<a class="viewcode-back" href="../../hexrec.html#hexrec.recon.ReconEventFitted.energy">[docs]</a>
+<div class="viewcode-block" id="ReconEventEta.energy">
+<a class="viewcode-back" href="../../hexrec.html#hexrec.recon.ReconEventEta.energy">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ionization_potential</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_IONIZATION_POTENTIAL</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the energy of the event in eV.</span>
 
@@ -81,12 +81,12 @@
         <span class="k">return</span> <span class="n">ionization_potential</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">pulse_height</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="ReconEventFitted.position">
-<a class="viewcode-back" href="../../hexrec.html#hexrec.recon.ReconEventFitted.position">[docs]</a>
+<div class="viewcode-block" id="ReconEventEta.position">
+<a class="viewcode-back" href="../../hexrec.html#hexrec.recon.ReconEventEta.position">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the reconstructed position of the event.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">fitted_position</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">eta_position</span><span class="p">()</span></div>
 </div>
 
 
