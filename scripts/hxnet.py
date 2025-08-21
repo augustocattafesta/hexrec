@@ -4,7 +4,9 @@
 from tqdm import tqdm
 
 import numpy as np
+import matplotlib.pyplot as plt
 from keras.models import model_from_json
+from keras.callbacks import EarlyStopping
 
 from hexsample import logger
 from hexsample.readout import HexagonalReadoutCircular
@@ -64,8 +66,11 @@ def hxnet(**kwargs):
         model.train(xdata, ydata, epochs=kwargs['epochs'], name=kwargs['modelname'])
     if kwargs['arch'] == 'dnn':
         xdata = xdata[:, 0, :]
-        model.train(xdata, ydata, epochs=kwargs['epochs'])
+        earlystopping = EarlyStopping('val_loss', patience=10, restore_best_weights=True)
+        history = model.train(xdata, ydata, epochs=kwargs['epochs'], callbacks=[earlystopping])
         model.save(kwargs['modelname'])
+        ModelDNN.plot_history(history)
 
 if __name__ == '__main__':
     hxnet(**vars(PARSER.parse_args()))
+    plt.show()

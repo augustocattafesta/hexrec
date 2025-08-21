@@ -154,7 +154,7 @@ class ModelDNN(ModelBase):
             return cls.load(str(model_path))
 
     def train(self, xdata: np.ndarray, ydata: np.ndarray, epochs: int,
-              val_split: float = 0.2, **kwargs):
+              val_split: float = 0.2, **kwargs) :
         """
         Train the DNN model.
 
@@ -167,6 +167,16 @@ class ModelDNN(ModelBase):
         """
         return self.model.fit(xdata, ydata, epochs=epochs,
                        validation_split=val_split, **kwargs)
+
+    @staticmethod
+    def plot_history(history):
+        """Plot history of loss and val_loss metrics over training epochs
+        """
+        plt.plot(history.history['loss'], label='loss')
+        plt.plot(history.history['val_loss'], label='val loss')
+        plt.xlabel('Epochs')
+        plt.ylabel('Mean squared error')
+        plt.legend()
 
     def predict(self, xdata: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """
@@ -381,7 +391,6 @@ class ModelGNN(ModelBase):
         plt.xlabel('Epochs')
         plt.ylabel('Mean squared error')
         plt.legend()
-        plt.show()
 
     def predict(self, xdata: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """
