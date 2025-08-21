@@ -29,6 +29,7 @@ def test_save_load_DNN(size=1000):
     logger.info('Training the network')
     history = modelbase.train(xdata_train, ydata_train, 30, verbose=False)
     logger.info('Training completed')
+    ModelDNN.plot_history(history)
 
     model_name = 'test'
     model_path = modelbase.save(model_name)
@@ -47,10 +48,7 @@ def test_save_load_DNN(size=1000):
     plt.scatter(xdata_test, ydata_test, s=0.1, label='Test data')
     plt.legend()
 
-    plt.figure('History')
-    plt.plot(history.history['loss'], label='loss')
-    plt.plot(history.history['val_loss'], label='val_loss')
-    plt.xlabel('Epoch')
+    plt.show()
 
 def test_load_pretrained_DNN(size=10):
     """Test of pretrained models
