@@ -48,23 +48,20 @@ class TriangularBeam(BeamBase):
         assert len(self.v0) == 2
         assert len(self.v1) == 2
 
-        v0_array = np.array([[*self.v0]])
-        v1_array = np.array([[*self.v1]])
-        center = np.array([[self.x0, self.y0]])
+        v0_array = np.array(self.v0)
+        v1_array = np.array(self.v1)
+        center = np.array([self.x0, self.y0])
 
         a = v0_array - center
         b = v1_array - center
 
-        u = np.random.uniform(0, 1, (2, size))
+        u = np.random.uniform(0, 1, (size, 2))
+        mask = u[:, 0] + u[:, 1] > 1
+        u[mask, :] = 1 - u[mask, :]
 
-        mask = u[0, :] + u[1, :] > 1
-        u[:, mask] = 1 - u[:, mask]
-        w = np.dot(a.T, u[0, :, None].T) + np.dot(b.T, u[1, :, None].T)
+        w = a*u[:, 0, None] + b*u[:, 1, None] + center
 
-        x = w[0] + center[0, 0]
-        y = w[1] + center[0, 1]
-
-        return x, y
+        return w[:, 0], w[:, 1]
 
 @dataclass
 class HexagonalBeam(BeamBase):
